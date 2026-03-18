@@ -83,15 +83,15 @@ const Contact = () => {
         </section>
 
         {/* Content */}
-        <section className="bg-[#b8b6b6] section-padding-lg">
+        <section className="bg-[#f5f5f5] section-padding-lg">
           <div className="container-narrow grid grid-cols-1 lg:grid-cols-5 gap-20">
             {/* Info */}
             <div className="lg:col-span-2">
               <ScrollReveal direction="left">
-                <span className="section-label block mb-3">
+                <span className="section-label block mb-3 text-[#aca8a8]">
                   Contact Information
                 </span>
-                <h2 className="font-display text-2xl font-bold text-background mt-2 mb-10">
+                <h2 className="font-display text-2xl font-bold text-black mt-2 mb-10">
                   Get in Touch
                 </h2>
                 <div className="flex flex-col gap-7">
@@ -111,15 +111,15 @@ const Contact = () => {
                       <div className="w-11 h-11 bg-background/10 flex items-center justify-center flex-shrink-0 hover:bg-primary transition-colors duration-300 group">
                         <info.icon
                           size={17}
-                          className="text-background group-hover:text-primary-foreground transition-colors duration-300"
+                          className="text-black group-hover:text-primary-foreground transition-colors duration-300"
                         />
                       </div>
                       <div>
-                        <h4 className="font-display font-semibold text-background mb-1">
+                        <h4 className="font-display font-semibold text-black mb-1">
                           {info.title}
                         </h4>
                         {info.lines.map((line) => (
-                          <p key={line} className="text-background/50 text-sm">
+                          <p key={line} className="text-black text-sm">
                             {line}
                           </p>
                         ))}
@@ -144,10 +144,10 @@ const Contact = () => {
             {/* Form */}
             <div className="lg:col-span-3">
               <ScrollReveal direction="right">
-                <span className="section-label block mb-3">
+                <span className="section-label block mb-3 text-[#aca8a8]">
                   Send us a message
                 </span>
-                <h2 className="font-display text-2xl font-bold text-background mt-2 mb-10">
+                <h2 className="font-display text-2xl font-bold text-black mt-2 mb-10">
                   Import Inquiry Form
                 </h2>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -179,7 +179,7 @@ const Contact = () => {
                       },
                     ].map((field) => (
                       <div key={field.key}>
-                        <label className="text-xs font-medium text-white block mb-2">
+                        <label className="text-xs font-medium text-black block mb-2">
                           {field.label}
                         </label>
                         <input
@@ -195,7 +195,7 @@ const Contact = () => {
                     ))}
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-white block mb-2">
+                    <label className="text-xs font-medium text-black block mb-2">
                       Subject *
                     </label>
                     <select

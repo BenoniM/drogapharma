@@ -90,78 +90,80 @@ const MemberModal = ({
         initial={{ scale: 0.9, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.9, opacity: 0, y: 20 }}
-        className="bg-white w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl relative"
+        className="bg-white w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl relative"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6 flex items-center justify-between border-b border-gray-100">
-          <h2 className="font-display text-2xl font-bold text-black">
+        <div className="p-8 flex items-center justify-between border-b border-gray-100">
+          <h2 className="font-display text-3xl font-bold text-black">
             Member info
           </h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
-            <X size={20} />
+            <X size={24} />
           </button>
         </div>
 
-        <div className="p-8 text-center">
-          <div className="w-28 h-28 rounded-full overflow-hidden mx-auto mb-5 border-4 border-[#fff200]/20">
+        <div className="p-10 text-center">
+          <div className="w-36 h-36 rounded-full overflow-hidden mx-auto mb-6 border-4 border-[#fff200]/20">
             <img
               src={member.image}
               alt={member.name}
               className="w-full h-full object-cover"
             />
           </div>
-          <h3 className="font-display text-2xl font-bold text-black">
+          <h3 className="font-display text-3xl font-bold text-black">
             {member.name}
           </h3>
-          <p className="text-gray-500 uppercase tracking-widest text-xs font-bold mt-1">
+          <p className="text-gray-500 uppercase tracking-widest text-sm font-bold mt-1">
             {member.role}
           </p>
 
-          <div className="mt-8 pt-6 border-t border-gray-100 text-left space-y-6">
-            <div className="flex items-center gap-3 text-gray-800">
-              <div className="w-9 h-9 rounded-xl bg-gray-50 flex items-center justify-center">
-                <Mail size={16} className="text-black/60" />
+          <div className="mt-10 pt-10 border-t border-gray-100 text-left space-y-8">
+            <div className="flex items-center gap-4 text-gray-800">
+              <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center">
+                <Mail size={20} className="text-black/60" />
               </div>
-              <span className="text-sm font-medium">{member.email}</span>
+              <span className="font-medium">{member.email}</span>
             </div>
-            <div className="flex items-center gap-3 text-gray-800">
-              <div className="w-9 h-9 rounded-xl bg-gray-50 flex items-center justify-center">
-                <Phone size={16} className="text-black/60" />
+            <div className="flex items-center gap-4 text-gray-800">
+              <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center">
+                <Phone size={20} className="text-black/60" />
               </div>
-              <span className="text-sm font-medium">{member.phone}</span>
+              <span className="font-medium">{member.phone}</span>
             </div>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-8">
               <div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   Team Role
                 </p>
-                <p className="text-gray-900 text-sm font-semibold">{member.role}</p>
+                <p className="text-gray-900 font-semibold">{member.role}</p>
               </div>
               <div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   Start Date
                 </p>
-                <p className="text-gray-900 text-sm font-semibold">{member.startDate}</p>
+                <p className="text-gray-900 font-semibold">
+                  {member.startDate}
+                </p>
               </div>
             </div>
             <div>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+              <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                 Bio
               </p>
-              <p className="text-gray-600 text-[13px] leading-relaxed font-medium">
+              <p className="text-gray-600 text-sm leading-relaxed font-medium">
                 {member.bio}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="p-6 pt-0">
+        <div className="p-8 pt-0">
           <button
             onClick={onClose}
-            className="w-full py-4 bg-white border border-gray-200 rounded-2xl font-bold text-black hover:bg-gray-50 transition-all active:scale-[0.98]"
+            className="w-full py-5 bg-white border border-gray-200 rounded-2xl font-bold text-black hover:bg-gray-50 transition-all active:scale-[0.98]"
           >
             Close
           </button>
@@ -192,23 +194,23 @@ const TeamCard = ({
       transition={{ duration: 0.5 }}
     >
       {/* Main Inner Card with Notch */}
-      <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-[#fff200] to-[#fff200]">
+      <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden bg-gradient-to-br ">
         <img
           src={image}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#fff200]/80 via-transparent to-transparent pt-32 px-6 pb-12 flex flex-col justify-end">
+        <div className="absolute inset-0 bg-gradient-to-t hover:from-[#fff200]/80 hover:via-transparent hover:to-transparent pt-32 px-6 pb-12 flex flex-col justify-end">
           <div className="pr-16">
             <h3
-              className={`font-display font-bold text-black leading-tight ${
+              className={`font-display font-bold text-white leading-tight ${
                 isFeatured ? "text-4xl" : "text-3xl"
               }`}
             >
               {name}
             </h3>
             <p
-              className={`text-black/80 font-medium ${
+              className={`text-white font-medium ${
                 isFeatured ? "text-lg mt-2" : "text-sm mt-1"
               }`}
             >

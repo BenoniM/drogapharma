@@ -41,7 +41,9 @@ const TESTIMONIALS_DATA: Testimonial[] = [
 ];
 
 const TestimonialsSection = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(
+    Math.floor(TESTIMONIALS_DATA.length / 2),
+  );
   const isMobile = useIsMobile();
   const autoSlideInterval = 5000;
 
@@ -78,7 +80,7 @@ const TestimonialsSection = () => {
             <div
               className="flex items-center w-max transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
               style={{
-                transform: `translateX(calc(40% - ${centerOffset}px - ${currentIndex * cardWidth}px))`,
+                transform: `translateX(calc(38% - ${centerOffset}px - ${currentIndex * cardWidth}px))`,
               }}
             >
               {TESTIMONIALS_DATA.map((item, index) => {

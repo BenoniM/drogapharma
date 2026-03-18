@@ -32,7 +32,7 @@ import { staggerContainer, staggerItem, cardHover } from "@/lib/variants";
 
 const heroSlides = [
   {
-    image: heroImg,
+    image: warehouseImg,
     title: "Serving The People!",
     subtitle:
       "Droga Pharma Pvt.Ltd Co. is a private limited company based in Addis Ababa, Ethiopia, aiming on sustainable supply of quality medicines, sutures, orthopedic implants and medical devices.",

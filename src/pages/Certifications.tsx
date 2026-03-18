@@ -157,10 +157,10 @@ const Certifications = () => {
         </section>
 
         {/* Grid */}
-        <section className="bg-[#b8b6b6] section-padding-lg">
+        <section className="bg-[#f5f5f5] section-padding-lg">
           <div className="container-narrow">
             <ScrollReveal>
-              <p className="text-background/80 text-xl md:text-2xl font-light leading-relaxed max-w-3xl mb-12">
+              <p className="text-black text-xl md:text-2xl font-light leading-relaxed max-w-3xl mb-12">
                 We maintain the highest industry standards through rigorous
                 certifications and continuous compliance monitoring.
               </p>
@@ -169,13 +169,13 @@ const Certifications = () => {
             {/* Filters */}
             <div className="flex flex-col md:flex-row gap-4 mb-12">
               <div className="flex items-center gap-2 mr-4">
-                <Filter size={16} className="text-background/50" />
-                <span className="text-xs font-semibold text-background/50 uppercase tracking-wider">
+                <Filter size={16} className="text-black" />
+                <span className="text-xs font-semibold text-black uppercase tracking-wider">
                   Filter:
                 </span>
               </div>
               <div className="flex gap-2 flex-wrap">
-                <span className="text-xs font-semibold text-background/50 uppercase tracking-wider self-center mr-1">
+                <span className="text-xs font-semibold text-black uppercase tracking-wider self-center mr-1">
                   Type:
                 </span>
                 {types.map((t) => (
@@ -184,8 +184,8 @@ const Certifications = () => {
                     onClick={() => setSelectedType(t)}
                     className={`px-4 py-2 text-sm font-medium transition-all duration-300 ${
                       selectedType === t
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-background/10 text-background/70 hover:bg-background/20"
+                        ? "bg-primary text-black"
+                        : "bg-background/10 text-black hover:bg-background/20"
                     }`}
                   >
                     {t}
@@ -193,7 +193,7 @@ const Certifications = () => {
                 ))}
               </div>
               <div className="flex gap-2 flex-wrap">
-                <span className="text-xs font-semibold text-background/50 uppercase tracking-wider self-center mr-1">
+                <span className="text-xs font-semibold text-black uppercase tracking-wider self-center mr-1">
                   Date:
                 </span>
                 {years.map((y) => (
@@ -202,8 +202,8 @@ const Certifications = () => {
                     onClick={() => setSelectedYear(y)}
                     className={`px-4 py-2 text-sm font-medium transition-all duration-300 ${
                       selectedYear === y
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-background/10 text-background/70 hover:bg-background/20"
+                        ? "bg-primary text-black"
+                        : "bg-background/10 text-black hover:bg-background/20"
                     }`}
                   >
                     {y}

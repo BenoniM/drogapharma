@@ -205,8 +205,8 @@ const storySlides = [
       "We collaborate with public and private health institutions to ensure reliable supply and timely service.",
     outro:
       "By focusing on quality, ethics, and long-term partnerships, we continue to strengthen access to essential medical solutions.",
-    signatureName: "Droga Pharma Team",
-    signatureRole: "Healthcare Professionals",
+    signatureName: "Mr. Henok Teka",
+    signatureRole: "Group CEO",
   },
 ];
 

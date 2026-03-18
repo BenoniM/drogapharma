@@ -128,7 +128,7 @@ const HeroSlider = ({ slides, autoPlayInterval = 6000 }: HeroSliderProps) => {
                 {slide.title}
               </h1>
 
-              <p className="text-background/65 text-base sm:text-lg md:text-xl mb-10 max-w-2xl font-light leading-relaxed">
+              <p className="text-background text-base sm:text-lg md:text-xl mb-10 max-w-2xl font-light leading-relaxed">
                 {slide.subtitle}
               </p>
 

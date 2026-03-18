@@ -222,10 +222,10 @@ const Products = () => {
         </motion.section>
 
         {/* Filters & Grid */}
-        <section className="bg-[#b8b6b6] section-padding">
+        <section className="bg-[#f5f5f5] section-padding">
           <div className="container-narrow">
             <ScrollReveal>
-              <p className="text-background/80 text-xl font-light leading-relaxed max-w-3xl mb-16 md:text-lg">
+              <p className="text-black text-xl font-light leading-relaxed max-w-3xl mb-16 md:text-lg">
                 Our product range includes premium quality pharmaceuticals,
                 sutures, orthopedic implants, disposable medical devices and
                 diagnostic equipment.
@@ -237,7 +237,7 @@ const Products = () => {
               <div className="relative flex-1 max-w-sm">
                 <Search
                   size={16}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-black/30"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-black"
                 />
                 <input
                   type="text"
@@ -252,7 +252,7 @@ const Products = () => {
                   <button
                     key={c}
                     onClick={() => setCategory(c)}
-                    className={`px-4 py-2 text-sm font-medium transition-all duration-300 ${category === c ? "bg-primary text-primary-foreground" : "bg-background/10 text-background/70 hover:bg-background/20"}`}
+                    className={`px-4 py-2 text-sm text-black font-medium transition-all duration-300 ${category === c ? "bg-primary text-black" : "bg-white text-background/70 hover:bg-background/20"}`}
                   >
                     {c}
                   </button>
@@ -282,7 +282,7 @@ const Products = () => {
                       className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold transition-all ${
                         isSelected
                           ? "bg-primary text-black font-bold shadow-[0_0_15px_rgba(255,242,0,0.3)]"
-                          : "text-white/40 hover:text-white/70 hover:bg-white/5 cursor-pointer"
+                          : "text-black hover:text-white/70 hover:bg-white/5 cursor-pointer"
                       }`}
                     >
                       {l}
@@ -307,7 +307,7 @@ const Products = () => {
                       initial="rest"
                       whileHover="hover"
                       variants={cardHover}
-                      className="group cursor-pointer relative bg-white border border-black/10 p-5"
+                      className="group cursor-pointer relative bg-white border border-black/10 p-5 hover:shadow-lg transition-shadow duration-300 rounded-lg h-full flex flex-col hover:bg-primary"
                     >
                       <div
                         className="relative overflow-hidden aspect-[4/3] mb-4 bg-background/5"

@@ -111,7 +111,7 @@ const Services = () => {
         </section>
 
         {/* Services Grid */}
-        <section className="bg-[#b8b6b6] section-padding-lg">
+        <section className="bg-[#f5f5f5] section-padding-lg">
           <div className="container-narrow">
             <ScrollReveal>
               <p className="text-black text-xl md:text-2xl font-light leading-relaxed max-w-3xl mb-16">
@@ -133,25 +133,25 @@ const Services = () => {
                     initial="rest"
                     whileHover="hover"
                     variants={cardHover}
-                    className="group h-full p-8 border border-background/10 bg-foreground hover:bg-primary transition-colors duration-400"
+                    className="group h-full p-8 border border-background/10 bg-white hover:bg-primary transition-colors duration-400"
                   >
-                    <div className="w-12 h-12 bg-background/10 flex items-center justify-center mb-6 group-hover:bg-primary-foreground/20 transition-colors duration-400">
+                    <div className="w-12 h-12 bg-[#f5f5f5] flex items-center justify-center mb-6  transition-colors duration-400">
                       <service.icon
                         size={22}
-                        className="text-background group-hover:text-primary-foreground transition-colors duration-400"
+                        className="text-black  group-hover:text-primary-foreground transition-colors duration-400"
                       />
                     </div>
-                    <h3 className="font-display text-xl font-bold text-background group-hover:text-primary-foreground mb-3 transition-colors duration-400">
+                    <h3 className="font-display text-xl font-bold text-black group-hover:text-primary-foreground mb-3 transition-colors duration-400">
                       {service.title}
                     </h3>
-                    <p className="text-background/50 text-sm leading-relaxed mb-6 group-hover:text-primary-foreground/70 transition-colors duration-400">
+                    <p className="text-black text-sm leading-relaxed mb-6 group-hover:text-primary-foreground/70 transition-colors duration-400">
                       {service.desc}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {service.features.map((f) => (
                         <span
                           key={f}
-                          className="bg-background/10 text-background/50 text-xs font-medium px-3 py-1.5 group-hover:bg-primary-foreground/10 group-hover:text-primary-foreground/70 transition-colors duration-400"
+                          className="bg-[#f5f5f5] text-black text-xs font-medium px-3 py-1.5 group-hover:bg-primary-foreground/10 group-hover:text-primary-foreground/70 transition-colors duration-400"
                         >
                           {f}
                         </span>
