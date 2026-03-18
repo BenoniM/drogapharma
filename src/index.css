@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 13%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 13%;
+
+    --primary: 58 100% 50%;
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 97%;
+    --secondary-foreground: 0 0% 13%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 58 100% 50%;
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 91%;
+    --input: 0 0% 91%;
+    --ring: 58 100% 50%;
+
+    --radius: 0rem;
+
+    --brand-black: 0 0% 0%;
+    --brand-yellow: 58 100% 50%;
+    --brand-white: 0 0% 100%;
+    --brand-dark: 0 0% 13%;
+    --brand-gray: 0 0% 55%;
+    --brand-light: 0 0% 97%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 58 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 58 100% 50%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 58 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: hsl(58 100% 50% / 0.3);
+    color: hsl(0 0% 0%);
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-20 md:py-28;
+  }
+
+  .section-padding-lg {
+    @apply py-28 md:py-36;
+  }
+
+  .container-narrow {
+    @apply max-w-[1200px] mx-auto px-6 md:px-8;
+  }
+
+  .container-wide {
+    @apply max-w-[1400px] mx-auto px-6 md:px-8;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px -12px hsl(0 0% 0% / 0.1);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--brand-yellow)) 0%, hsl(58, 100%, 60%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-8 py-3.5 font-semibold text-sm inline-flex items-center justify-center gap-2 transition-all duration-200;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 4px 20px hsl(58 100% 50% / 0.35);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    @apply border-2 border-foreground text-foreground px-8 py-3.5 font-semibold text-sm inline-flex items-center justify-center gap-2 transition-all duration-200 hover:bg-foreground hover:text-background;
+  }
+
+  .btn-outline-white {
+    @apply border-2 border-background/80 text-background px-8 py-3.5 font-semibold text-sm inline-flex items-center justify-center gap-2 transition-all duration-200;
+  }
+
+  .btn-outline-white:hover {
+    @apply bg-background text-foreground;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    box-shadow: 0 0 0 3px hsl(58 100% 50% / 0.15);
+  }
+
+  img {
+    @apply transition-opacity duration-500;
+  }
+
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: hsl(var(--primary));
+    transition: width 0.3s ease;
+  }
+  .link-underline:hover::after {
+    width: 100%;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  .hr-gradient {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--border)), transparent);
+    border: none;
+  }
+
+  .section-label {
+    @apply text-xs font-semibold tracking-[0.2em] uppercase;
+    color: hsl(var(--primary));
+  }
+
+  .glass-card {
+    backdrop-filter: blur(20px) saturate(180%);
+    background: hsl(var(--background) / 0.7);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  .reveal-line {
+    position: relative;
+    overflow: hidden;
+  }
+  .reveal-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: hsl(var(--background));
+    transform: scaleX(1);
+    transform-origin: right;
+    transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  .reveal-line.revealed::after {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+}
+
+@layer utilities {
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
+  }
+
+  .glass {
+    backdrop-filter: blur(12px) saturate(180%);
+    background: hsl(var(--background) / 0.8);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
