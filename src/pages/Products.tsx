@@ -141,21 +141,11 @@ const categories = [
   "Sutures",
   "Medical Devices",
 ];
-const manufacturers = [
-  "All",
-  "Cipla",
-  "Denk Pharma",
-  "Sun Pharma",
-  "Julphar",
-  "Stada",
-  "Hikma",
-  "Partner Manufacturer",
-];
 
 const Products = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
-  const [manufacturer, setManufacturer] = useState("All");
+  const [letter, setLetter] = useState("All");
   const [selected, setSelected] = useState<(typeof allProducts)[0] | null>(
     null,
   );
@@ -163,11 +153,17 @@ const Products = () => {
 
   const filtered = allProducts.filter((p) => {
     if (category !== "All" && p.category !== category) return false;
-    if (manufacturer !== "All" && p.manufacturer !== manufacturer) return false;
+    if (letter !== "All" && !p.name.toUpperCase().startsWith(letter))
+      return false;
     if (search && !p.name.toLowerCase().includes(search.toLowerCase()))
       return false;
     return true;
   });
+
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const availableLetters = Array.from(
+    new Set(allProducts.map((p) => p.name[0].toUpperCase())),
+  );
 
   return (
     <PageTransition>
@@ -189,7 +185,7 @@ const Products = () => {
                 "linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0.75) 100%)",
             }}
           />
-          <div className="container-narrow relative z-[6]">
+          <div className="container-narrow relative z-[6] w-full">
             <motion.div
               initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -226,7 +222,7 @@ const Products = () => {
         </motion.section>
 
         {/* Filters & Grid */}
-        <section className="bg-foreground section-padding">
+        <section className="bg-[#b8b6b6] section-padding">
           <div className="container-narrow">
             <ScrollReveal>
               <p className="text-background/80 text-xl font-light leading-relaxed max-w-3xl mb-16 md:text-lg">
@@ -241,14 +237,14 @@ const Products = () => {
               <div className="relative flex-1 max-w-sm">
                 <Search
                   size={16}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-background/40"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-black/30"
                 />
                 <input
                   type="text"
                   placeholder="Search products..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-background/20 bg-foreground text-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow placeholder:text-background/30"
+                  className="w-full pl-10 pr-4 py-3 border border-background/20 bg-white text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow placeholder:text-black/30"
                 />
               </div>
               <div className="flex gap-2 flex-wrap">
@@ -264,19 +260,36 @@ const Products = () => {
               </div>
             </div>
 
-            <div className="flex gap-2.5 flex-wrap mb-12">
-              <span className="text-xs font-semibold text-background/40 uppercase tracking-wider self-center mr-2">
-                Manufacturer:
-              </span>
-              {manufacturers.map((m) => (
+            {/* Alphabetical Filter */}
+            <div className="mb-16">
+              <div className="flex flex-wrap gap-x-6 gap-y-4 justify-center max-w-2xl mx-auto">
                 <button
-                  key={m}
-                  onClick={() => setManufacturer(m)}
-                  className={`px-3 py-1.5 text-xs font-medium transition-all duration-300 ${manufacturer === m ? "bg-primary text-primary-foreground" : "bg-background/10 text-background/40 hover:text-background/70"}`}
+                  onClick={() => setLetter("All")}
+                  className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold transition-all ${
+                    letter === "All"
+                      ? "bg-primary/20 text-primary border border-primary/30"
+                      : "text-background/40 hover:text-background/70"
+                  }`}
                 >
-                  {m}
+                  All
                 </button>
-              ))}
+                {letters.map((l) => {
+                  const isSelected = letter === l;
+                  return (
+                    <button
+                      key={l}
+                      onClick={() => setLetter(isSelected ? "All" : l)}
+                      className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold transition-all ${
+                        isSelected
+                          ? "bg-primary text-black font-bold shadow-[0_0_15px_rgba(255,242,0,0.3)]"
+                          : "text-white/40 hover:text-white/70 hover:bg-white/5 cursor-pointer"
+                      }`}
+                    >
+                      {l}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Grid */}
@@ -288,14 +301,13 @@ const Products = () => {
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
               {filtered.map((product) => {
-                const inCart = hasItem(product.name);
                 return (
                   <motion.div key={product.name} variants={staggerItem}>
                     <motion.div
                       initial="rest"
                       whileHover="hover"
                       variants={cardHover}
-                      className="group cursor-pointer relative"
+                      className="group cursor-pointer relative bg-white border border-black/10 p-5"
                     >
                       <div
                         className="relative overflow-hidden aspect-[4/3] mb-4 bg-background/5"
@@ -319,30 +331,16 @@ const Products = () => {
                       </div>
                       <div className="flex items-start justify-between gap-3">
                         <div onClick={() => setSelected(product)}>
-                          <h3 className="font-display text-lg font-semibold text-background group-hover:text-primary transition-colors duration-300">
+                          <h3 className="font-display text-lg font-semibold text-black transition-colors duration-300">
                             {product.name}
                           </h3>
-                          <p className="text-background/50 text-sm mt-1">
+                          <p className="text-black/70 text-sm mt-1">
                             {product.desc}
                           </p>
-                          <p className="text-background/30 text-xs mt-2">
+                          <p className="text-black/50 text-xs mt-2">
                             {product.manufacturer} · {product.origin}
                           </p>
                         </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            addItem(product);
-                          }}
-                          className={`flex-shrink-0 w-10 h-10 flex items-center justify-center transition-all duration-300 mt-1 ${
-                            inCart
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-background/10 text-background hover:bg-primary hover:text-primary-foreground"
-                          }`}
-                          title={inCart ? "Added to inquiry" : "Add to inquiry"}
-                        >
-                          {inCart ? <Check size={16} /> : <Plus size={16} />}
-                        </button>
                       </div>
                     </motion.div>
                   </motion.div>

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Eye, Target } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
@@ -175,6 +176,11 @@ const missionVisionSlides = [
   },
 ];
 
+const missionBackgroundByTitle: Record<string, string> = {
+  "Our Vision": healthcareTeamImg,
+  "Our Mission": supplyImg,
+};
+
 const storySlides = [
   {
     image: teamImg,
@@ -213,6 +219,12 @@ const About = () => {
   const [storyCurrent, setStoryCurrent] = useState(0);
   const [missionCurrent, setMissionCurrent] = useState(0);
   const activeStory = storySlides[storyCurrent] ?? storySlides[0];
+  const currentMissionSlide =
+    missionVisionSlides[missionCurrent] ?? missionVisionSlides[0];
+  const currentTitle = currentMissionSlide?.title ?? "";
+  const MissionIcon = currentTitle.toLowerCase().includes("vision")
+    ? Eye
+    : Target;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -328,56 +340,102 @@ const About = () => {
               style={{ zIndex: index === missionCurrent ? 2 : 1 }}
             >
               <img
-                src={slide.image}
+                src={missionBackgroundByTitle[slide.title] ?? slide.image}
                 alt={slide.title}
                 className="w-full h-full object-cover"
               />
             </motion.div>
           ))}
 
-          <div className="absolute inset-0 z-10 bg-[#06293f]/65" />
+          <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/95 via-black/70 to-black/25" />
 
           <div className="absolute inset-0 z-20 flex items-center">
             <div className="w-full px-6 md:px-12 lg:px-14">
-              <div className="max-w-3xl">
-                <div className="flex items-center gap-4 mb-5">
-                  <div className="h-[2px] w-36 bg-primary" />
-                  <div className="w-3 h-3 bg-primary rounded-full" />
+              <div className="mx-auto max-w-[1300px] flex items-center justify-between gap-8">
+                <div className="max-w-3xl">
+                  <div className="flex items-center gap-4 mb-5">
+                    <div className="h-[2px] w-36 bg-primary" />
+                    <div className="w-3 h-3 bg-primary rounded-full" />
+                  </div>
+
+                  <motion.h2
+                    key={currentMissionSlide.title}
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="font-display text-5xl md:text-4xl font-semibold text-white mb-8"
+                  >
+                    {currentMissionSlide.title}
+                  </motion.h2>
+
+                  <motion.p
+                    key={currentMissionSlide.text}
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.08 }}
+                    className="text-white/95 text-2xl md:text-[1.5rem] leading-[1.35] max-w-4xl"
+                  >
+                    {currentMissionSlide.text}
+                  </motion.p>
+
+                  <div className="mt-8 flex items-center gap-2">
+                    {missionVisionSlides.map((slide, index) => (
+                      <button
+                        key={slide.title}
+                        onClick={() => setMissionCurrent(index)}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                          missionCurrent === index
+                            ? "w-10 bg-primary"
+                            : "w-4 bg-white/40 hover:bg-white/70"
+                        }`}
+                        aria-label={`Show ${slide.title}`}
+                      />
+                    ))}
+                  </div>
                 </div>
 
-                <motion.h2
-                  key={missionVisionSlides[missionCurrent].title}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="font-display text-5xl md:text-4xl font-semibold text-white mb-8"
-                >
-                  {missionVisionSlides[missionCurrent].title}
-                </motion.h2>
-
-                <motion.p
-                  key={missionVisionSlides[missionCurrent].text}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.08 }}
-                  className="text-white/95 text-2xl md:text-[1.5rem] leading-[1.35] max-w-4xl"
-                >
-                  {missionVisionSlides[missionCurrent].text}
-                </motion.p>
-
-                <div className="mt-8 flex items-center gap-2">
-                  {missionVisionSlides.map((slide, index) => (
-                    <button
-                      key={slide.title}
-                      onClick={() => setMissionCurrent(index)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        missionCurrent === index
-                          ? "w-10 bg-primary"
-                          : "w-4 bg-white/40 hover:bg-white/70"
-                      }`}
-                      aria-label={`Show ${slide.title}`}
+                <div className="hidden md:flex flex-1 justify-end">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.45 }}
+                    className="relative w-36 h-36 lg:w-44 lg:h-44 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm flex items-center justify-center"
+                  >
+                    <motion.div
+                      className="absolute inset-0 rounded-full border border-primary/60"
+                      animate={{
+                        scale: [1, 1.22, 1],
+                        opacity: [0.8, 0.2, 0.8],
+                      }}
+                      transition={{
+                        duration: 2.3,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
                     />
-                  ))}
+                    <motion.div
+                      className="absolute inset-[-16px] rounded-full border border-white/25"
+                      animate={{ rotate: [0, 360] }}
+                      transition={{
+                        duration: 7,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                    />
+                    <motion.div
+                      animate={{ y: [0, -7, 0], rotate: [0, 4, -4, 0] }}
+                      transition={{
+                        duration: 2.1,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      <MissionIcon
+                        className="w-14 h-14 lg:w-16 lg:h-16 text-primary"
+                        strokeWidth={2.2}
+                      />
+                    </motion.div>
+                  </motion.div>
                 </div>
               </div>
             </div>
@@ -485,7 +543,7 @@ const About = () => {
         </section>
 
         {/* Timeline / Journey */}
-        <section className="bg-white py-10 border-y border-slate-100">
+        <section className="bg-[#ebebeb] py-10 border-y border-slate-100">
           <div className="container-narrow">
             <ScrollReveal>
               <div className="text-center mb-12">

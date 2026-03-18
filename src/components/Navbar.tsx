@@ -89,13 +89,31 @@ const navLinks: NavItem[] = [
         external: true,
       },
       {
-        label: "DCS",
-        path: "/about",
+        label: "Droga Consulting",
+        path: "https://drogaconsulting.com/",
         description: "Distribution & consulting services",
+        external: true,
       },
     ],
   },
-  { label: "Certifications", path: "/certifications" },
+  {
+    label: "News",
+    path: "/#news",
+    mega: true,
+    children: [
+      {
+        label: "Certifications",
+        path: "/certifications",
+        description: "Quality standards and official recognitions",
+      },
+      {
+        label: "Blog",
+        path: "/#news",
+        description: "Latest updates, stories, and achievements",
+      },
+    ],
+  },
+  { label: "Careers", path: "/careers" },
   { label: "Contact", path: "/contact" },
 ];
 
