@@ -17,7 +17,6 @@ import DrogaPh from "@/assets/drogapha.png";
 import drogalab from "@/assets/drogalab.png";
 import ema from "@/assets/ema.png";
 import trust from "@/assets/trust.png";
-import { staggerContainer, staggerItem, cardHover } from "@/lib/variants";
 
 const coreValues = [
   {
@@ -176,11 +175,6 @@ const missionVisionSlides = [
   },
 ];
 
-const missionBackgroundByTitle: Record<string, string> = {
-  "Our Vision": healthcareTeamImg,
-  "Our Mission": supplyImg,
-};
-
 const storySlides = [
   {
     image: teamImg,
@@ -329,114 +323,94 @@ const About = () => {
         </section>
 
         {/* Mission & Vision */}
-        <section className="relative h-[420px] md:h-[360px] overflow-hidden">
-          {missionVisionSlides.map((slide, index) => (
-            <motion.div
-              key={slide.title}
-              className="absolute inset-0"
-              initial={false}
-              animate={{ opacity: index === missionCurrent ? 1 : 0 }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              style={{ zIndex: index === missionCurrent ? 2 : 1 }}
-            >
-              <img
-                src={missionBackgroundByTitle[slide.title] ?? slide.image}
-                alt={slide.title}
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-          ))}
-
-          <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/95 via-black/70 to-black/25" />
-
-          <div className="absolute inset-0 z-20 flex items-center">
-            <div className="w-full px-6 md:px-12 lg:px-14">
-              <div className="mx-auto max-w-[1300px] flex items-center justify-between gap-8">
-                <div className="max-w-3xl">
-                  <div className="flex items-center gap-4 mb-5">
-                    <div className="h-[2px] w-36 bg-primary" />
-                    <div className="w-3 h-3 bg-primary rounded-full" />
-                  </div>
-
-                  <motion.h2
-                    key={currentMissionSlide.title}
-                    initial={{ opacity: 0, y: 18 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="font-display text-5xl md:text-4xl font-semibold text-white mb-8"
-                  >
-                    {currentMissionSlide.title}
-                  </motion.h2>
-
-                  <motion.p
-                    key={currentMissionSlide.text}
-                    initial={{ opacity: 0, y: 18 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.08 }}
-                    className="text-white/95 text-2xl md:text-[1.5rem] leading-[1.35] max-w-4xl"
-                  >
-                    {currentMissionSlide.text}
-                  </motion.p>
-
-                  <div className="mt-8 flex items-center gap-2">
-                    {missionVisionSlides.map((slide, index) => (
-                      <button
-                        key={slide.title}
-                        onClick={() => setMissionCurrent(index)}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${
-                          missionCurrent === index
-                            ? "w-10 bg-primary"
-                            : "w-4 bg-white/40 hover:bg-white/70"
-                        }`}
-                        aria-label={`Show ${slide.title}`}
-                      />
-                    ))}
-                  </div>
+        <section className="relative bg-white py-16 md:py-14 overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/15 via-black/5 to-transparent" />
+          <div className="w-full px-6 md:px-12 lg:px-14">
+            <div className="mx-auto max-w-[1300px] flex items-center justify-between gap-8">
+              <div className="max-w-3xl">
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="h-[2px] w-36 bg-primary" />
+                  <div className="w-3 h-3 bg-primary rounded-full" />
                 </div>
 
-                <div className="hidden md:flex flex-1 justify-end">
+                <motion.h2
+                  key={currentMissionSlide.title}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="font-display text-5xl md:text-4xl font-semibold text-slate-900 mb-8"
+                >
+                  {currentMissionSlide.title}
+                </motion.h2>
+
+                <motion.p
+                  key={currentMissionSlide.text}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.08 }}
+                  className="text-slate-700 text-2xl md:text-[1.5rem] leading-[1.35] max-w-4xl"
+                >
+                  {currentMissionSlide.text}
+                </motion.p>
+
+                <div className="mt-8 flex items-center gap-2">
+                  {missionVisionSlides.map((slide, index) => (
+                    <button
+                      key={slide.title}
+                      onClick={() => setMissionCurrent(index)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        missionCurrent === index
+                          ? "w-10 bg-primary"
+                          : "w-4 bg-slate-300 hover:bg-slate-500"
+                      }`}
+                      aria-label={`Show ${slide.title}`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="hidden md:flex flex-1 justify-end">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.45 }}
+                  className="relative w-36 h-36 lg:w-44 lg:h-44 rounded-full border border-slate-200 bg-slate-50 flex items-center justify-center"
+                >
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.45 }}
-                    className="relative w-36 h-36 lg:w-44 lg:h-44 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm flex items-center justify-center"
+                    className="absolute inset-0 rounded-full border border-black/45"
+                    animate={{
+                      scale: [1, 1.22, 1],
+                      opacity: [0.8, 0.2, 0.8],
+                    }}
+                    transition={{
+                      duration: 2.3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
+                  <motion.div
+                    className="absolute inset-[-16px] rounded-full border border-slate-300"
+                    animate={{ rotate: [0, 360] }}
+                    transition={{
+                      duration: 7,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  />
+                  <motion.div
+                    animate={{ y: [0, -7, 0], rotate: [0, 4, -4, 0] }}
+                    transition={{
+                      duration: 2.1,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
                   >
-                    <motion.div
-                      className="absolute inset-0 rounded-full border border-primary/60"
-                      animate={{
-                        scale: [1, 1.22, 1],
-                        opacity: [0.8, 0.2, 0.8],
-                      }}
-                      transition={{
-                        duration: 2.3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
+                    <MissionIcon
+                      className="w-14 h-14 lg:w-16 lg:h-16 text-black"
+                      strokeWidth={2.2}
                     />
-                    <motion.div
-                      className="absolute inset-[-16px] rounded-full border border-white/25"
-                      animate={{ rotate: [0, 360] }}
-                      transition={{
-                        duration: 7,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                    />
-                    <motion.div
-                      animate={{ y: [0, -7, 0], rotate: [0, 4, -4, 0] }}
-                      transition={{
-                        duration: 2.1,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    >
-                      <MissionIcon
-                        className="w-14 h-14 lg:w-16 lg:h-16 text-primary"
-                        strokeWidth={2.2}
-                      />
-                    </motion.div>
                   </motion.div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
@@ -567,68 +541,53 @@ const About = () => {
         <Certifications />
 
         {/* Group Companies */}
-        <section className="bg-primary section-padding">
+        <section className="relative section-padding bg-[radial-gradient(circle_at_top,_#ffffff_0%,_#f4f6fb_55%,_#eef2f7_100%)] overflow-hidden">
+          <div className="pointer-events-none absolute -top-24 -left-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
           <div className="mx-auto w-full max-w-[1400px] px-6 md:px-10">
             <ScrollReveal>
-              <div className="text-center mb-12">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-primary-foreground">
+              <div className="text-center mb-10">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
                   Droga Group Companies
                 </h2>
               </div>
             </ScrollReveal>
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"
-            >
-              {groupCompanies.map((company) => (
-                <motion.div key={company.name} variants={staggerItem}>
-                  <a
-                    href={company.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <motion.div
-                      initial="rest"
-                      whileHover="hover"
-                      variants={cardHover}
-                      className="relative overflow-hidden rounded-2xl p-8 text-center border border-white/25 bg-white/10 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.22)] transition-all duration-400 hover:bg-white/15 hover:border-white/40 hover:shadow-[0_16px_48px_rgba(0,0,0,0.28)] group"
-                    >
-                      <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-white/18 via-white/6 to-transparent" />
+            <div className="relative overflow-hidden py-3">
+              <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-[#f4f6fb] to-transparent pointer-events-none" />
+              <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-[#f4f6fb] to-transparent pointer-events-none" />
 
-                      <div className="relative w-14 h-14 mx-auto mb-4 flex items-center justify-center overflow-hidden ">
-                        {company.logo ? (
+              <div className="flex animate-marquee">
+                {[...groupCompanies, ...groupCompanies].map(
+                  (company, index) => (
+                    <a
+                      key={`${company.name}-${index}`}
+                      href={company.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-shrink-0 mx-4"
+                    >
+                      <motion.div
+                        whileHover={{ scale: 1.03, y: -3 }}
+                        className="group relative min-w-[250px] rounded-2xl border border-slate-200/80 bg-white/85 px-7 py-6 text-center shadow-[0_6px_20px_rgba(15,23,42,0.08)] backdrop-blur-md transition-all duration-300 hover:border-primary/40 hover:bg-white hover:shadow-[0_14px_34px_rgba(15,23,42,0.16)]"
+                      >
+                        <h3 className="absolute inset-0 flex items-center justify-center px-5 font-display text-base md:text-lg font-semibold text-slate-900 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                          {company.name}
+                        </h3>
+
+                        <div className="h-10 flex items-center justify-center transition-opacity duration-300 group-hover:opacity-0">
                           <img
                             src={company.logo}
                             alt={`${company.name} logo`}
-                            className="w-10 h-10 object-contain"
+                            className="h-9 w-auto object-contain"
                             loading="lazy"
                           />
-                        ) : (
-                          <span className="font-display text-sm font-bold text-primary">
-                            {company.name
-                              .split(" ")
-                              .map((part) => part[0])
-                              .join("")
-                              .slice(0, 3)
-                              .toUpperCase()}
-                          </span>
-                        )}
-                      </div>
-
-                      <h3 className="relative font-display text-lg font-semibold text-primary-foreground group-hover:text-black mb-2 transition-colors duration-400">
-                        {company.name}
-                      </h3>
-                      <p className="relative text-primary-foreground/70 text-sm group-hover:text-gray-300 transition-colors duration-400">
-                        {company.desc}
-                      </p>
-                    </motion.div>
-                  </a>
-                </motion.div>
-              ))}
-            </motion.div>
+                        </div>
+                      </motion.div>
+                    </a>
+                  ),
+                )}
+              </div>
+            </div>
           </div>
         </section>
 

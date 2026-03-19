@@ -307,7 +307,7 @@ const Products = () => {
                       initial="rest"
                       whileHover="hover"
                       variants={cardHover}
-                      className="group cursor-pointer relative bg-white border border-black/10 p-5 hover:shadow-lg transition-shadow duration-300 rounded-lg h-full flex flex-col hover:bg-primary"
+                      className="group cursor-pointer relative bg-white p-3 hover:shadow-lg transition-shadow duration-300 rounded-lg h-full flex flex-col hover:bg-primary"
                     >
                       <div
                         className="relative overflow-hidden aspect-[4/3] mb-4 bg-background/5"
@@ -355,21 +355,6 @@ const Products = () => {
                 </p>
               </div>
             )}
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="bg-primary py-16">
-          <div className="container-narrow flex flex-col md:flex-row items-center justify-between gap-6">
-            <h3 className="font-display text-xl md:text-2xl font-bold text-primary-foreground">
-              Need specific product information?
-            </h3>
-            <Link
-              to="/contact"
-              className="bg-foreground text-background px-8 py-3.5 font-semibold text-sm inline-flex items-center gap-2 hover:opacity-90 transition-opacity flex-shrink-0"
-            >
-              Contact us <ArrowRight size={14} />
-            </Link>
           </div>
         </section>
 

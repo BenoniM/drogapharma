@@ -1,164 +1,217 @@
-import { motion } from "framer-motion";
+import {
+  User,
+  Search,
+  Settings,
+  BarChart3,
+  ArrowUp,
+  Check,
+} from "lucide-react";
+import { useState, useEffect } from "react";
 
-interface TimelineItem {
-  year: string;
-  event: string;
-}
+const milestones = [
+  {
+    year: "2015",
+    title: "Droga Pharma Established",
+    description:
+      "Founded in Addis Ababa by healthcare professionals with a mission to improve access to reliable medical products.",
+    icon: User,
+    colorClass: "bg-milestone-purple",
+    status: "completed" as const,
+  },
+  {
+    year: "2017",
+    title: "Sector Expansion",
+    description:
+      "Expanded operations to support both public and private healthcare institutions across Ethiopia.",
+    icon: Search,
+    colorClass: "bg-milestone-blue",
+    status: "completed" as const,
+  },
+  {
+    year: "2019",
+    title: "Major Tender Success",
+    description:
+      "Secured key government pharmaceutical tenders and strengthened nationwide supply capability.",
+    icon: Settings,
+    colorClass: "bg-milestone-green",
+    status: "completed" as const,
+  },
+  {
+    year: "2023",
+    title: "Growth Milestone",
+    description:
+      "Annual sales surpassed $25M USD and the Droga Research Grant was launched to support healthcare innovation.",
+    icon: BarChart3,
+    colorClass: "bg-milestone-orange",
+    status: "current" as const,
+  },
+  {
+    year: "2025",
+    title: "ISO 9001 Achievement",
+    description:
+      "Import and wholesale divisions achieved ISO 9001 certification, reinforcing quality and operational excellence.",
+    icon: ArrowUp,
+    colorClass: "bg-milestone-red",
+    status: "upcoming" as const,
+  },
+];
 
-interface JourneyStepperProps {
-  timeline: TimelineItem[];
-}
+const JourneyStepper = () => {
+  const [visibleItems, setVisibleItems] = useState<number[]>([]);
 
-const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
-  // Wavy path constants
-  const width = 1200;
-  const height = 400;
-  const canvasHeight = height + 100;
-  const paddingX = 100;
-  const nodeSpacing = (width - paddingX * 2) / (timeline.length - 1);
-
-  // Custom Y-offsets for organic wave (higher, lower, etc.)
-  const yOffsets = [200, 250, 150, 280, 180, 100];
-
-  const nodes = timeline.map((item, index) => {
-    const x = paddingX + index * nodeSpacing;
-    const y = yOffsets[index] || 200;
-    return { ...item, x, y };
-  });
-
-  const generatePath = () => {
-    if (nodes.length < 2) return "";
-    let path = `M ${nodes[0].x} ${nodes[0].y}`;
-    for (let i = 0; i < nodes.length - 1; i++) {
-      const curr = nodes[i];
-      const next = nodes[i + 1];
-      const cp1x = curr.x + nodeSpacing * 0.4;
-      const cp1y = curr.y;
-      const cp2x = next.x - nodeSpacing * 0.4;
-      const cp2y = next.y;
-      path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${next.x} ${next.y}`;
-    }
-    return path;
-  };
+  useEffect(() => {
+    milestones.forEach((_, i) => {
+      setTimeout(
+        () => {
+          setVisibleItems((prev) => [...prev, i]);
+        },
+        300 + i * 200,
+      );
+    });
+  }, []);
 
   return (
-    <div className="w-full py-16">
-      <div className="relative mx-auto w-full max-w-[1200px] h-[520px] md:h-[560px]">
-        {/* SVG Path */}
+    <div className=" py-10 px-4">
+      {/* Desktop: perspective path */}
+      <div
+        className="hidden md:block max-w-5xl mx-auto relative"
+        style={{ height: 700 }}
+      >
+        {/* The ascending colored path */}
         <svg
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          viewBox={`0 0 ${width} ${canvasHeight}`}
+          viewBox="0 0 900 600"
+          className="w-full h-full"
           preserveAspectRatio="xMidYMid meet"
         >
-          <defs>
-            <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#fff200" />
-              <stop offset="100%" stopColor="#fff200" />
-            </linearGradient>
-            <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feOffset dx="2" dy="2" result="offsetBlur" />
-              <feComposite
-                in="SourceGraphic"
-                in2="offsetBlur"
-                operator="over"
-              />
-            </filter>
-          </defs>
-          <motion.path
-            d={generatePath()}
+          <path
+            d="M 80 520 Q 200 500 250 420 Q 300 340 400 310 Q 500 280 520 220 Q 540 160 650 130 Q 760 100 820 50"
+            stroke="hsl(var(--primary))"
+            strokeWidth="60"
             fill="none"
-            stroke="url(#lineGrad)"
-            strokeWidth="12"
             strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            whileInView={{ pathLength: 1, opacity: 0.25 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            opacity="0.25"
           />
+          <path
+            d="M 80 520 Q 200 500 250 420 Q 300 340 400 310 Q 500 280 520 220 Q 540 160 650 130 Q 760 100 820 50"
+            stroke="hsl(var(--primary))"
+            strokeWidth="6"
+            fill="none"
+            strokeLinecap="round"
+          />
+          {/* Node circles on the path */}
+          {[
+            { cx: 80, cy: 520 },
+            { cx: 260, cy: 410 },
+            { cx: 420, cy: 300 },
+            { cx: 560, cy: 200 },
+            { cx: 780, cy: 70 },
+          ].map((pos, i) => (
+            <g key={i}>
+              <circle
+                cx={pos.cx}
+                cy={pos.cy}
+                r="16"
+                fill="white"
+                stroke="hsl(220,13%,91%)"
+                strokeWidth="3"
+              />
+              <circle
+                cx={pos.cx}
+                cy={pos.cy}
+                r="8"
+                fill={
+                  [
+                    "hsl(263,70%,50%)",
+                    "hsl(207,90%,54%)",
+                    "hsl(145,63%,42%)",
+                    "hsl(32,95%,55%)",
+                    "hsl(348,83%,47%)",
+                  ][i]
+                }
+              />
+            </g>
+          ))}
         </svg>
 
-        {/* Nodes */}
-        {nodes.map((node, index) => {
-          // Circle sizes can varies like the image
-          const size =
-            index === nodes.length - 1
-              ? "w-28 h-28"
-              : index === 2
-                ? "w-24 h-24"
-                : "w-20 h-20";
-          const innerSize =
-            index === nodes.length - 1
-              ? "w-20 h-20"
-              : index === 2
-                ? "w-16 h-16"
-                : "w-14 h-14";
+        {/* Milestone cards positioned absolutely */}
+        {milestones.map((m, i) => {
+          const positions = [
+            { left: "0%", top: "58%", align: "left" },
+            { left: "18%", top: "36%", align: "left" },
+            { left: "38%", top: "18%", align: "left" },
+            { left: "54%", top: "2%", align: "left" },
+            { left: "78%", top: "-10%", align: "left" },
+          ];
+          const pos = positions[i];
+          const Icon = m.icon;
+          const isVisible = visibleItems.includes(i);
 
           return (
-            <motion.div
-              key={index}
-              className="absolute flex flex-col items-center group"
-              style={{
-                left: `${(node.x / width) * 100}%`,
-                top: `${(node.y / canvasHeight) * 100}%`,
-                transform: "translate(-50%, -50%)",
-              }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.15 + 0.3 }}
+            <div
+              key={i}
+              className={`absolute w-52 transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+              style={{ left: pos.left, top: pos.top }}
             >
-              {/* Year Label (Above) */}
-              <div className="absolute -top-16 whitespace-nowrap">
-                <span className="font-display font-bold text-xl text-[#b8b6b6] group-hover:scale-110 transition-transform inline-block">
-                  {node.year}
-                </span>
-              </div>
-
-              {/* Circle Node */}
-              <div className="relative cursor-pointer">
-                {/* Glow Background */}
-                <div
-                  className={`absolute inset-0 rounded-full blur-xl opacity-0 group-hover:opacity-40 transition-opacity bg-[#b8b6b6] scale-150`}
-                />
-
-                {/* Main Circle */}
-                <div
-                  className={`${size} rounded-full bg-white border-[8px] border-[#b8b6b6]/80 flex items-center justify-center shadow-[0_10px_25px_rgba(184,182,182,0.3)] group-hover:border-[#b8b6b6] transition-colors relative z-10`}
-                >
-                  <div
-                    className={`${innerSize} rounded-full border-[3px] border-[#fff200]/40 flex items-center justify-center text-black font-bold`}
-                  >
-                    <span
-                      className={
-                        index === nodes.length - 1 ? "text-2xl" : "text-base"
-                      }
-                    >
-                      {index === 0
-                        ? "Start"
-                        : index === nodes.length - 1
-                          ? "+43%"
-                          : `+${30 + index * 4}%`}
-                    </span>
-                  </div>
+              <div
+                className={`${m.colorClass} text-white rounded-xl p-4 shadow-lg relative`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-2xl font-black">{m.year}</span>
+                  {m.status === "completed" && (
+                    <Check className="w-5 h-5 opacity-80" />
+                  )}
                 </div>
-
-                {/* Vertical Connector Line to text */}
-                <div className="absolute top-full left-1/2 w-[2px] h-10 bg-[#b8b6b6]/20 -translate-x-1/2 group-hover:h-12 transition-all" />
-              </div>
-
-              {/* Content (Below) */}
-              <div className="absolute top-24 w-44 md:w-56 text-center">
-                <h4 className="font-bold text-sm text-black mb-1">
-                  {index + 1 < 10 ? `0${index + 1}` : index + 1} Journey Detail
-                </h4>
-                <p className="text-[10px] md:text-[11px] text-foreground/70 leading-relaxed max-w-[180px] mx-auto italic">
-                  {node.event}
+                <h3 className="font-bold text-sm mb-1">{m.title}</h3>
+                <p className="text-xs leading-relaxed opacity-90">
+                  {m.description}
                 </p>
+                <div className="absolute bottom-3 right-3 opacity-30">
+                  <Icon className="w-6 h-6" />
+                </div>
+                {/* Arrow pointer */}
+                <div
+                  className={`absolute -bottom-2 left-6 w-4 h-4 ${m.colorClass} rotate-45`}
+                />
               </div>
-            </motion.div>
+            </div>
           );
         })}
+      </div>
+
+      {/* Mobile: vertical stepper */}
+      <div className="md:hidden max-w-sm mx-auto relative">
+        <div className="absolute left-8 top-0 bottom-0 w-1 bg-primary/70 rounded-full" />
+        <div className="space-y-8">
+          {milestones.map((m, i) => {
+            const Icon = m.icon;
+            const isVisible = visibleItems.includes(i);
+            return (
+              <div
+                key={i}
+                className={`relative pl-20 transition-all duration-500 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`}
+              >
+                <div
+                  className={`absolute left-4 top-4 w-9 h-9 rounded-full ${m.colorClass} flex items-center justify-center shadow-md`}
+                >
+                  {m.status === "completed" ? (
+                    <Check className="w-4 h-4 text-white" />
+                  ) : (
+                    <Icon className="w-4 h-4 text-white" />
+                  )}
+                </div>
+                <div
+                  className={`${m.colorClass} text-white rounded-xl p-4 shadow-lg`}
+                >
+                  <span className="text-xl font-black">{m.year}</span>
+                  <h3 className="font-bold text-sm mt-1">{m.title}</h3>
+                  <p className="text-xs leading-relaxed opacity-90 mt-1">
+                    {m.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

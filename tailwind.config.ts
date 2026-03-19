@@ -2,7 +2,12 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -57,6 +62,13 @@ export default {
           white: "hsl(var(--brand-white))",
           dark: "hsl(var(--brand-dark))",
           gray: "hsl(var(--brand-gray))",
+        },
+        milestone: {
+          purple: "hsl(263 70% 50%)",
+          blue: "hsl(207 90% 54%)",
+          green: "hsl(145 63% 42%)",
+          orange: "hsl(32 95% 55%)",
+          red: "hsl(348 83% 47%)",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

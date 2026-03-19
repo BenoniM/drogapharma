@@ -225,8 +225,6 @@ const CareersPage = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

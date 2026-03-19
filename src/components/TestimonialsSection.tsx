@@ -41,110 +41,150 @@ const TESTIMONIALS_DATA: Testimonial[] = [
 ];
 
 const TestimonialsSection = () => {
-  const [currentIndex, setCurrentIndex] = useState(
-    Math.floor(TESTIMONIALS_DATA.length / 2),
-  );
+  const N = TESTIMONIALS_DATA.length;
+  // Start at the first element of the middle set
+  const [currentIndex, setCurrentIndex] = useState(N);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+
   const isMobile = useIsMobile();
   const autoSlideInterval = 5000;
 
   const cardWidth = isMobile ? 300 : 400;
-  const centerOffset = cardWidth / 2;
+
+  // Make an extended array: 3 sets of the testimonials
+  const extendedData = [
+    ...TESTIMONIALS_DATA,
+    ...TESTIMONIALS_DATA,
+    ...TESTIMONIALS_DATA,
+  ];
 
   const handlePrev = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? TESTIMONIALS_DATA.length - 1 : prev - 1,
-    );
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => prev - 1);
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS_DATA.length);
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => prev + 1);
   };
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS_DATA.length);
+      handleNext();
     }, autoSlideInterval);
-
     return () => clearInterval(timer);
   }, [autoSlideInterval]);
 
+  useEffect(() => {
+    // Infinite loop jump logic
+    // If we transition to the end of the first set
+    if (currentIndex === N - 1) {
+      const timer = setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentIndex(2 * N - 1); // jump to end of middle set
+      }, 600); // Wait for transiton ease to mostly complete (0.6s)
+      return () => clearTimeout(timer);
+    }
+
+    // If we transition to the beginning of the third set
+    if (currentIndex === 2 * N) {
+      const timer = setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentIndex(N); // jump to beginning of middle set
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, N]);
+
+  // Modulo index for displaying "01", "02" safely
+  const realIndex = currentIndex % N;
+
   return (
-    <section className="bg-primary py-24 overflow-hidden">
-      <div className="container-narrow">
-        <h2 className="font-display text-3xl md:text-4xl font-semibold text-center text-black mb-14">
-          Testimonials
+    <section className="bg-primary py-16 md:py-24 overflow-hidden">
+      <div className="container-narrow mb-16">
+        <h2 className="font-display text-3xl md:text-5xl font-medium text-center text-black mb-4">
+          Experiences Droga Group
         </h2>
+      </div>
 
-        <div className="relative">
-          <div className="overflow-hidden">
-            <div
-              className="flex items-center w-max transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
-              style={{
-                transform: `translateX(calc(38% - ${centerOffset}px - ${currentIndex * cardWidth}px))`,
-              }}
-            >
-              {TESTIMONIALS_DATA.map((item, index) => {
-                const isActive = index === currentIndex;
+      <div className="relative w-full overflow-hidden h-[450px]">
+        {/* The absolute positioning places the left edge of this wrapper horizontally at the exact center of the screen */}
+        <div className="absolute left-1/2 top-0 h-full w-0">
+          <div
+            className="flex items-center w-max h-full"
+            style={{
+              transition: isTransitioning
+                ? "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
+                : "none",
+              transform: `translateX(calc(-${
+                currentIndex * cardWidth
+              }px - ${cardWidth / 2}px))`,
+            }}
+          >
+            {extendedData.map((item, index) => {
+              const isActive = index === currentIndex;
 
-                return (
-                  <div
-                    key={item.id}
-                    className="w-[300px] md:w-[400px] px-1 transition-all duration-700"
-                    style={{
-                      opacity: isActive ? 1 : 0.3,
-                      filter: isActive ? "none" : "blur(4px)",
-                      transform: isActive ? "scale(1.08)" : "scale(0.86)",
-                      zIndex: isActive ? 2 : 1,
-                    }}
-                  >
-                    <article className="h-full rounded-2xl  bg-[#fffdfd] p-7 md:p-9 shadow-sm">
-                      <Quote className="text-gray-500 mb-4" size={24} />
-                      <p className="text-gray-700 leading-relaxed text-sm md:text-base">
-                        {item.message}
+              return (
+                <div
+                  key={`${item.id}-${index}`}
+                  className="px-4 transition-all duration-600 ease-out"
+                  style={{
+                    width: `${cardWidth}px`,
+                    opacity: isActive ? 1 : 0.3,
+                    filter: isActive ? "none" : "blur(4px)",
+                    transform: isActive ? "scale(1.1)" : "scale(0.85)",
+                    zIndex: isActive ? 2 : 1,
+                  }}
+                >
+                  <article className="h-full rounded-2xl bg-[#fffdfd] p-7 md:p-9 shadow-lg border border-black/5">
+                    <Quote className="text-gray-400 mb-6 opacity-30" size={36} />
+                    <p className="text-gray-700 font-medium leading-relaxed text-sm md:text-lg line-clamp-4">
+                      {item.message}
+                    </p>
+                    <div className="mt-8">
+                      <h3 className="font-bold text-black text-sm md:text-base">
+                        {item.name}
+                      </h3>
+                      <p className="text-gray-500 text-xs md:text-sm mt-1.5 font-medium">
+                        {item.role}
                       </p>
-                      <div className="mt-6 pt-5 ">
-                        <h3 className="font-semibold text-black text-sm md:text-base">
-                          {item.name}
-                        </h3>
-                        <p className="text-gray-500 text-xs md:text-sm mt-1">
-                          {item.role}
-                        </p>
-                      </div>
-                    </article>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between mt-10 max-w-[600px] mx-auto">
-            <button
-              onClick={handlePrev}
-              aria-label="Previous testimonial"
-              className="w-12 h-12 rounded-full border border-gray-300 text-gray-600 flex items-center justify-center transition-colors duration-300 hover:bg-gray-100 hover:border-gray-400"
-            >
-              <ChevronLeft size={20} />
-            </button>
-
-            <div className="flex items-center gap-3">
-              <span className="text-gray-400 font-semibold text-sm">...</span>
-              <div className="w-11 h-11 rounded-full border-2 border-gray-400 text-gray-700 font-bold flex items-center justify-center text-sm tabular-nums">
-                {String(currentIndex + 1).padStart(2, "0")}
-              </div>
-              <span className="text-gray-400 font-semibold text-sm tabular-nums">
-                {String(TESTIMONIALS_DATA.length).padStart(2, "0")}
-              </span>
-            </div>
-
-            <button
-              onClick={handleNext}
-              aria-label="Next testimonial"
-              className="w-12 h-12 rounded-full border border-gray-300 text-gray-600 flex items-center justify-center transition-colors duration-300 hover:bg-gray-100 hover:border-gray-400"
-            >
-              <ChevronRight size={20} />
-            </button>
+                    </div>
+                  </article>
+                </div>
+              );
+            })}
           </div>
         </div>
+      </div>
+
+      <div className="flex items-center justify-between mt-10 max-w-[600px] mx-auto relative z-10 px-6">
+        <button
+          onClick={handlePrev}
+          className="w-[50px] h-[50px] rounded-full border border-black/20 text-black flex items-center justify-center transition-all duration-300 hover:bg-black/10 hover:border-black/40"
+          aria-label="Previous testimonial"
+        >
+          <ChevronLeft size={24} />
+        </button>
+
+        <div className="flex items-center gap-5">
+          <div className="w-[45px] h-[45px] rounded-full border-2 border-blue-500 flex items-center justify-center text-black font-bold text-lg leading-none">
+            {`0${realIndex + 1}`}
+          </div>
+          <span className="text-black/30 font-semibold tracking-widest">
+            ...
+          </span>
+          <span className="text-black/40 font-bold text-lg">
+            {`0${N}`}
+          </span>
+        </div>
+
+        <button
+          onClick={handleNext}
+          className="w-[50px] h-[50px] rounded-full border border-black/20 text-black flex items-center justify-center transition-all duration-300 hover:bg-black/10 hover:border-black/40"
+          aria-label="Next testimonial"
+        >
+          <ChevronRight size={24} />
+        </button>
       </div>
     </section>
   );

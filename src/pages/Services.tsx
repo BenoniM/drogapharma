@@ -256,21 +256,6 @@ const Services = () => {
             </motion.div>
           </div>
         </section>
-
-        {/* CTA */}
-        <section className="bg-foreground py-16">
-          <div className="container-narrow flex flex-col md:flex-row items-center justify-between gap-6">
-            <h3 className="font-display text-xl md:text-2xl font-bold text-background">
-              Ready to partner with us?
-            </h3>
-            <Link
-              to="/contact"
-              className="bg-primary text-primary-foreground px-8 py-3.5 font-semibold text-sm inline-flex items-center gap-2 hover:opacity-90 transition-opacity flex-shrink-0"
-            >
-              Get in touch <ArrowRight size={14} />
-            </Link>
-          </div>
-        </section>
       </div>
     </PageTransition>
   );

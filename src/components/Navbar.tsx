@@ -98,7 +98,6 @@ const navLinks: NavItem[] = [
   },
   {
     label: "News",
-    path: "/#news",
     mega: true,
     children: [
       {
