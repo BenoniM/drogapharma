@@ -6,11 +6,12 @@ import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
 import AnimatedCounter from "@/components/AnimatedCounter";
-import teamImg from "@/assets/team.jpg";
+import teamImg from "@/assets/abdi.jpg";
+import team from "@/assets/healthcare-team.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
 import heroImg from "@/assets/hero-pharma.jpg";
 import labImg from "@/assets/lab-research.jpg";
-import healthcareTeamImg from "@/assets/healthcare-team.jpg";
+import healthcareTeamImg from "@/assets/henoknew.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 import Drogaconsult from "@/assets/drogacon.png";
 import DrogaPh from "@/assets/drogapha.png";
@@ -35,19 +36,19 @@ const coreValues = [
     category: "Integrity",
     title: "Foster Sound Decisions",
     image:
-      "https://images.unsplash.com/photo-1454165833767-14639454174b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
   },
   {
     category: "Customer Centric",
     title: "Listen First",
     image:
-      "https://images.unsplash.com/photo-1521791136064-7986c2923216?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1521790797524-b2497295b8a0?auto=format&fit=crop&w=800&q=80",
   },
   {
     category: "Customer Centric",
     title: "Go The Extra Mile",
     image:
-      "https://images.unsplash.com/photo-1461896756913-c8b40e72c514?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80",
   },
   {
     category: "Customer Centric",
@@ -75,59 +76,85 @@ const coreValues = [
   },
 ];
 
-const clients = [
-  "Engender Health",
-  "Marie Stopes",
-  "UNOPS",
-  "World Vision",
-  "Save the Children",
-  "EPSA",
-  "AFD",
-  "Hawassa University",
-  "Landmark Hospital",
-  "Semah Hospital",
-  "Pathfinder International",
-  "St. Paul's Hospital",
-  "Gondar Hospital",
-  "Menelik Referral Hospital",
-  "Orbis International",
-  "Soddo Christian Hospital",
-  "Abet Hospital",
-  "Samaritan Surgical Center",
-  "Yordanos Hospital",
-  "AGHMO",
-  "CMS",
-];
+const clientLogoModules = import.meta.glob(
+  "@/assets/Clients/*.{png,jpg,jpeg,webp,svg}",
+  {
+    eager: true,
+    import: "default",
+  },
+) as Record<string, string>;
+
+const clients = Object.entries(clientLogoModules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([path, src]) => {
+    const filename = path.split("/").pop() ?? "Client";
+    const baseName = filename.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+    return {
+      src,
+      alt: `${baseName} logo`,
+    };
+  });
 
 const timeline = [
   {
     year: "2015",
-    event:
-      "Droga Pharma PLC established in Addis Ababa by healthcare professionals",
+    title: "BEGINNING",
+    image: teamImg,
+    event: "Establishment of Droga Pharma PLC (Whole Sale Division)",
+  },
+  {
+    year: "2016",
+    title: "SISTER COMPANY",
+    image: labImg,
+    event: "Establishment of Droga Physiotherapy Clinic",
   },
   {
     year: "2017",
+    title: "GET LARGER",
+    image: warehouseImg,
     event:
-      "Expanded operations to serve both public and private health sectors",
+      "Establishment of Droga Pharma PLC (Import Division) and Bole Branch Physiotherapy Clinic",
+  },
+  {
+    year: "2018",
+    title: "AWARDED",
+    image: supplyImg,
+    event: "20+ Million USD Award in International Tender With Our Suppliers",
   },
   {
     year: "2019",
-    event: "Won first major government tenders for pharmaceutical supply",
+    title: "GROWING",
+    image: teamImg,
+    event: "Establishment of EMA Private Limited Company",
+  },
+  {
+    year: "2020",
+    title: "NEW FACTORY",
+    image: heroImg,
+    event: "Establishment of Trust Pharmaceuticals Manufacturing PLC",
   },
   {
     year: "2021",
-    event: "Reached 1000+ products in stock, grew to 400+ employees",
-  },
-  {
-    year: "2023",
+    title: "NEW HEADQUARTER",
+    image: healthcareTeamImg,
     event:
-      "Annual sales surpassed $25 million USD, launched Droga Research Grant",
+      "Establishment of R & D Unit, and 4Killo Branch Physiotherapy Clinic",
   },
   {
-    year: "2025",
-    event: "Achieved ISO 9001 certification for import and wholesale divisions",
+    year: "2022",
+    title: "EXPANDING",
+    image: warehouseImg,
+    event: "Opening of hargelsa branch",
+  },
+  {
+    year: "NOW",
+    title: "WE ARE",
+    image: heroImg,
+    event:
+      "• The Leading supplier of Diagnostic and Therapeutic Instruments, Devices and Equipments\n• Leading Orthopedics, Quality Sutures & Glucose Strip Supplier in Ethiopia\n• Continuous Supplier of rare Medicine, Consumables & Supplies\n• 1000+ Customers, 150+ Supplier\n• 246+ Employees, 3 Distribution Centers\n• 7 Regional representative offices\n• 25 Million USD Annual Turn Over",
   },
 ];
+
 
 const groupCompanies = [
   {
@@ -236,7 +263,7 @@ const About = () => {
           <ImageSlider
             images={[
               { src: heroImg, alt: "About" },
-              { src: healthcareTeamImg, alt: "Healthcare team" },
+              { src: team, alt: "Healthcare team" },
               { src: labImg, alt: "Lab" },
             ]}
             className="absolute inset-0 z-0"

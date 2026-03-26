@@ -4,8 +4,21 @@ import wholesaleCert from "../assets/DrogaWholesaleCertificate.png";
 
 const Certifications = () => {
   return (
-    <section className="bg-[#ebebeb] py-20 overflow-hidden">
+    <section className="relative bg-[#ebebeb] py-20 overflow-hidden">
       <div className="container-narrow">
+        {/* Decorative ISO watermark */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none select-none absolute inset-0 flex items-center justify-center overflow-hidden"
+        >
+          <span
+            className="font-display font-black leading-none tracking-tighter text-black/[0.04] whitespace-nowrap w-full text-center"
+            style={{ fontSize: "72vw" }}
+          >
+            ISO
+          </span>
+        </div>
+
         {/* Title */}
         <div className="text-center mb-16">
           <h2 className="font-display text-5xl font-bold text-black tracking-tight">

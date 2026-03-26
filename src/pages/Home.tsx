@@ -22,11 +22,13 @@ import CMSBanner from "@/components/CMSBanner";
 import heroImg from "@/assets/hero-pharma.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
 import productsImg from "@/assets/products.jpg";
-import teamImg from "@/assets/team.jpg";
-import labImg from "@/assets/lab-research.jpg";
+import teamImg from "@/assets/CertificateofRecognitionFromMinistryofHealthEthiopia.jpg";
+
+import labImg from "@/assets/DrogaResearchGrant2023Winnerjpg.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
+import Headquarters from "@/assets/building.jpg";
 import medicinesImg from "@/assets/medicines.jpg";
-import healthcareTeamImg from "@/assets/healthcare-team.jpg";
+import healthcareTeamImg from "@/assets/CertificateofAppreciationFromTheMinistryofHealth.jpg";
 import medDevicesImg from "@/assets/medical-devices.jpg";
 import { staggerContainer, staggerItem, cardHover } from "@/lib/variants";
 
@@ -117,6 +119,25 @@ const clients = [
 ];
 
 const Home = () => {
+  const clientLogoModules = import.meta.glob(
+    "@/assets/OurPartners/*.{png,jpg,jpeg,webp,svg}",
+    {
+      eager: true,
+      import: "default",
+    },
+  ) as Record<string, string>;
+
+  const clients = Object.entries(clientLogoModules)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([path, src]) => {
+      const filename = path.split("/").pop() ?? "Client";
+      const baseName = filename.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+      return {
+        src,
+        alt: `${baseName} logo`,
+      };
+    });
+
   return (
     <PageTransition>
       <div>
@@ -248,15 +269,13 @@ const Home = () => {
 
         {/* Split — HQ */}
         <section className="bg-white">
-          <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[650px]">
-            <div className="relative overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[650px] ">
+            <div className="relative overflow-hidden object-contain">
               <ImageSlider
                 images={[
-                  { src: teamImg, alt: "Droga Pharma team" },
-                  { src: healthcareTeamImg, alt: "Healthcare professionals" },
-                  { src: labImg, alt: "Laboratory research" },
+                  { src: Headquarters, alt: "Droga Pharma headquarters" },
                 ]}
-                className="min-h-[450px] lg:min-h-full h-full"
+                className="min-h-[450px] lg:min-h-full h-full "
               />
             </div>
             <div className="flex items-center p-10 md:p-16 lg:p-20">

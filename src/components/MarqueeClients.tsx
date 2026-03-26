@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 interface MarqueeClientsProps {
-  clients: string[];
+  clients: { src: string; alt: string }[];
 }
 
 const MarqueeClients = ({ clients }: MarqueeClientsProps) => {
@@ -27,16 +27,19 @@ const MarqueeClients = ({ clients }: MarqueeClientsProps) => {
         >
           {row.items.map((client, i) => (
             <div
-              key={`${row.id}-${client}-${i}`}
+              key={`${row.id}-${client.src}-${i}`}
               className="flex-shrink-0 mx-4"
             >
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
-                className="bg-secondary/80 border border-border rounded-xl py-5 px-8 cursor-default min-w-[160px] text-center hover:border-primary/30 hover:shadow-sm transition-all duration-300"
+                className="bg-secondary/80 border border-border rounded-xl py-4 px-5 cursor-default min-w-[180px] h-[86px] flex items-center justify-center hover:border-primary/30 hover:shadow-sm transition-all duration-300"
               >
-                <span className="font-display font-semibold text-muted-foreground text-xs whitespace-nowrap tracking-wide">
-                  {client}
-                </span>
+                <img
+                  src={client.src}
+                  alt={client.alt}
+                  loading="lazy"
+                  className="max-h-12 w-auto max-w-[150px] object-contain"
+                />
               </motion.div>
             </div>
           ))}

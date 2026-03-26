@@ -107,7 +107,7 @@ const navLinks: NavItem[] = [
       },
       {
         label: "Blog",
-        path: "/#news",
+        path: "/blog",
         description: "Latest updates, stories, and achievements",
       },
     ],

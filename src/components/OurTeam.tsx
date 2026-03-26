@@ -1,75 +1,59 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Plus, X, Mail, Phone } from "lucide-react";
-import abdiImg from "../assets/abdi.png";
-import henokImg from "../assets/henok.png";
+import abdiImg from "../assets/abdi.jpg";
+import henokImg from "../assets/henoknew.jpg";
 
-// Sample team members
-const teamMembers = [
-  {
-    name: "Abayneh Tilahun",
-    role: "Production Director - Trust",
-    image: "https://i.pravatar.cc/300?u=1",
-    email: "abayneh.tilahun@drogapharma.com",
-    phone: "+251 911 223 445",
-    bio: "Leading production strategies for Trust Pharma with over 15 years of industry experience.",
-    startDate: "12/05/2018",
-  },
-  {
-    name: "Member Two",
-    role: "Department Head",
-    image: "https://i.pravatar.cc/300?u=2",
-    email: "member.two@drogapharma.com",
-    phone: "+251 911 334 556",
-    bio: "Strategic leader focused on operational excellence and team growth.",
-    startDate: "08/11/2020",
-  },
-  {
-    name: "Member Three",
-    role: "Operations Manager",
-    image: "https://i.pravatar.cc/300?u=3",
-    email: "member.three@drogapharma.com",
-    phone: "+251 911 445 667",
-    bio: "Managing cross-functional teams to deliver high-quality pharmaceutical solutions.",
-    startDate: "03/22/2019",
-  },
-  {
-    name: "Member Four",
-    role: "Quality Control",
-    image: "https://i.pravatar.cc/300?u=4",
-    email: "member.four@drogapharma.com",
-    phone: "+251 911 556 778",
-    bio: "Ensuring all products meet the highest safety and regulatory standards.",
-    startDate: "11/02/2021",
-  },
-  {
-    name: "Member Five",
-    role: "Logistics Lead",
-    image: "https://i.pravatar.cc/300?u=5",
-    email: "member.five@drogapharma.com",
-    phone: "+251 911 667 889",
-    bio: "Optimizing supply chain routes and ensuring timely global delivery.",
-    startDate: "06/15/2017",
-  },
-  {
-    name: "Member Six",
-    role: "Supply Chain",
-    image: "https://i.pravatar.cc/300?u=6",
-    email: "member.six@drogapharma.com",
-    phone: "+251 911 778 990",
-    bio: "Strategic sourcing and procurement expert for pharmaceutical materials.",
-    startDate: "01/30/2022",
-  },
-  {
-    name: "Member Seven",
-    role: "Financing Director",
-    image: "https://i.pravatar.cc/300?u=7",
-    email: "member.seven@drogapharma.com",
-    phone: "+251 911 889 001",
-    bio: "Directing financial planning and investment strategies for group growth.",
-    startDate: "09/14/2016",
-  },
-];
+const teamImages = import.meta.glob("../assets/ourTeam/*.{jpg,JPG,jpeg,png}", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+
+const formatNameMapping: Record<string, string> = {
+  abaynehtilahun: "Abayneh Tilahun",
+  batitariku: "Bati Tariku",
+  befikadutaye: "Befikadu Taye",
+  besufekadsoressa: "Besufekad Soressa",
+  danieltesfaye: "Daniel Tesfaye",
+  entoniosbirhane: "Entonios Birhane",
+  firesenayabayneh: "Firesenay Abayneh",
+  getachewtsega: "Getachew Tsega",
+  getahuntefera: "Getahun Tefera",
+  getahunzenebe: "Getahun Zenebe",
+  gizachewterega: "Gizachew Terega",
+  henokwamlak: "Henok Wamlak",
+  jaleleyadeta: "Jalele Yadeta",
+  jenberumechal: "Jenberu Mechal",
+  jibrilmuhajer: "Jibril Muhajer",
+  manayehwubalem: "Manayeh Wubalem",
+  melakumeseret: "Melaku Meseret",
+  merongetachew: "Meron Getachew",
+  mikiyasgizaw: "Mikiyas Gizaw",
+  mulukennigatu: "Muluken Nigatu",
+  nebiyoutesfaye: "Nebiyou Tesfaye",
+  nuredinhassen: "Nuredin Hassen",
+  samuelabera: "Samuel Abera",
+  tegegnaklliu: "Tegegn Aklliu",
+  yemeserachmolla: "Yemeserach Molla",
+  yohannestamerat: "Yohannes Tamerat",
+  yosanchari: "Yosan Chari",
+};
+
+const teamMembers = Object.entries(teamImages).map(([path, src]) => {
+  const filename = path.split("/").pop() || "";
+  const rawName = filename.replace(/\.[^/.]+$/, "");
+  const formattedName = formatNameMapping[rawName.toLowerCase()] || rawName;
+
+  return {
+    name: formattedName,
+    role: "Team Member",
+    image: src,
+    email: `${rawName.toLowerCase()}@drogapharma.com`,
+    phone: "+251 911 000 000",
+    bio: `Dedicated team member contributing to the success and continuous growth of Droga Pharma.`,
+    startDate: "2020",
+  };
+});
 
 const MemberModal = ({
   member,
@@ -251,6 +235,24 @@ const OurTeam = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedMember, setSelectedMember] = useState<any>(null);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (trackRef.current) {
+      const activeElement = trackRef.current.children[
+        activeIndex
+      ] as HTMLElement;
+      if (activeElement) {
+        const trackCenter = trackRef.current.offsetWidth / 2;
+        const elementCenter =
+          activeElement.offsetLeft + activeElement.offsetWidth / 2;
+        trackRef.current.scrollTo({
+          left: elementCenter - trackCenter,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [activeIndex]);
 
   const nextSlide = () => {
     setActiveIndex((prev) => (prev + 1) % teamMembers.length);
@@ -324,35 +326,27 @@ const OurTeam = () => {
         </div>
 
         {/* Team Carousel */}
-        <div className="relative">
-          <div className="flex justify-center items-center gap-4 h-[400px] overflow-hidden px-4">
+        <div className="relative w-full -mx-4 md:mx-0">
+          <div
+            ref={trackRef}
+            className="flex items-center gap-4 md:gap-8 h-[480px] overflow-x-auto no-scrollbar snap-x snap-mandatory px-[calc(50vw-130px)] md:px-[calc(50%-160px)]"
+            style={{ scrollBehavior: "smooth" }}
+          >
             {teamMembers.map((member, index) => {
               const isActive = index === activeIndex;
-              // Calculate relative distance for z-index and opacity
-              const dist = Math.abs(index - activeIndex);
-              const isVisible = dist <= 2; // Show only 5 members at once
-
-              if (!isVisible && teamMembers.length > 5) return null;
 
               return (
-                <motion.div
-                  layout
+                <div
                   key={index}
                   onClick={() => {
                     setActiveIndex(index);
                     resetTimer();
                   }}
-                  className={`cursor-pointer transition-all duration-700 flex-shrink-0 ${
+                  className={`flex-shrink-0 snap-center cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                     isActive
-                      ? "w-64 md:w-80 h-full z-20"
-                      : "w-40 md:w-56 h-[320px] z-10"
+                      ? "w-[260px] md:w-[320px] h-[400px] md:h-[450px] z-20"
+                      : "w-[180px] md:w-[220px] h-[300px] md:h-[340px] z-10 opacity-70 hover:opacity-100"
                   }`}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 30,
-                    layout: { duration: 0.6 },
-                  }}
                 >
                   <TeamCard
                     name={member.name}
@@ -361,19 +355,19 @@ const OurTeam = () => {
                     isActive={isActive}
                     onOpen={() => setSelectedMember(member)}
                   />
-                </motion.div>
+                </div>
               );
             })}
           </div>
 
           {/* Navigation */}
-          <div className="flex justify-center gap-6 mt-12">
+          <div className="flex justify-center gap-6 mt-8">
             <button
               onClick={() => {
                 prevSlide();
                 resetTimer();
               }}
-              className="w-14 h-14 rounded-full border-2 border-black/10 flex items-center justify-center text-black hover:bg-black hover:text-white transition-all shadow-sm"
+              className="w-14 h-14 rounded-full border border-black/10 bg-white shadow-md flex items-center justify-center text-black hover:bg-black hover:text-white transition-all active:scale-95 z-10"
               aria-label="Previous team member"
             >
               <ChevronLeft size={28} />
@@ -383,7 +377,7 @@ const OurTeam = () => {
                 nextSlide();
                 resetTimer();
               }}
-              className="w-14 h-14 rounded-full border-2 border-black/10 flex items-center justify-center text-black hover:bg-black hover:text-white transition-all shadow-sm"
+              className="w-14 h-14 rounded-full border border-black/10 bg-white shadow-md flex items-center justify-center text-black hover:bg-black hover:text-white transition-all active:scale-95 z-10"
               aria-label="Next team member"
             >
               <ChevronRight size={28} />
