@@ -4,6 +4,25 @@ import { Plus, X, Mail, Phone } from "lucide-react";
 import abdiImg from "../assets/abdi.jpg";
 import henokImg from "../assets/henoknew.jpg";
 
+type TeamMember = {
+  name: string;
+  role: string;
+  image: string;
+  email: string;
+  phone: string;
+  bio: string;
+  startDate: string;
+};
+
+type TeamCardProps = {
+  name: string;
+  role: string;
+  image: string;
+  isActive?: boolean;
+  isFeatured?: boolean;
+  onOpen: () => void;
+};
+
 const teamImages = import.meta.glob("../assets/ourTeam/*.{jpg,JPG,jpeg,png}", {
   eager: true,
   import: "default",
@@ -39,16 +58,47 @@ const formatNameMapping: Record<string, string> = {
   yosanchari: "Yosan Chari",
 };
 
+const roleNameMapping: Record<string, string> = {
+  abaynehtilahun: "Product Director-Trust",
+  batitariku: "Whalesales Manager",
+  befikadutaye: "Import Manager-EMA",
+  besufekadsoressa: "Group chief officer",
+  danieltesfaye: "Pharmacy Supply Chain Manager",
+  entoniosbirhane: "Human Resources Manager",
+  firesenayabayneh: "Area Sales Manager-central",
+  getachewtsega: "Strategic and planning Director",
+  getahuntefera: "Chain  Pharmacy Director",
+  getahunzenebe: "Quality and Regulatory Affairs Director",
+  gizachewterega: "Operations Director",
+  henokwamlak: "Warehouse and Distribution Manager",
+  jaleleyadeta: "Regulatory Affairs Manager",
+  jenberumechal: "Project officer  Director-Droga Group",
+  jibrilmuhajer: "Deputy General Manager-EMA",
+  manayehwubalem: "Procurement Manager",
+  melakumeseret: "Legal Director",
+  merongetachew: "Export Manager-EMA",
+  mikiyasgizaw: "General Services Manager",
+  mulukennigatu: "R&D Director",
+  nebiyoutesfaye: "Physiotherapist Director",
+  nuredinhassen: "Tender Operation Manager",
+  samuelabera: "Chief Strategy officer",
+  tegegnaklliu: "Quality Director-Trust",
+  yemeserachmolla: "Finance Director",
+  yohannestamerat: "Marketing Director",
+  yosanchari: "Human Resource Director",
+};
+
 const teamMembers = Object.entries(teamImages).map(([path, src]) => {
   const filename = path.split("/").pop() || "";
   const rawName = filename.replace(/\.[^/.]+$/, "");
-  const formattedName = formatNameMapping[rawName.toLowerCase()] || rawName;
+  const normalizedName = rawName.toLowerCase();
+  const formattedName = formatNameMapping[normalizedName] || rawName;
 
   return {
     name: formattedName,
-    role: "Team Member",
+    role: roleNameMapping[normalizedName] || "Team Member",
     image: src,
-    email: `${rawName.toLowerCase()}@drogapharma.com`,
+    email: `${normalizedName}@drogapharma.com`,
     phone: "+251 911 000 000",
     bio: `Dedicated team member contributing to the success and continuous growth of Droga Pharma.`,
     startDate: "2020",
@@ -59,7 +109,7 @@ const MemberModal = ({
   member,
   onClose,
 }: {
-  member: any;
+  member: TeamMember;
   onClose: () => void;
 }) => {
   return (
@@ -67,71 +117,66 @@ const MemberModal = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md"
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.9, opacity: 0, y: 20 }}
-        className="bg-white w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl relative"
+        className="bg-white w-full max-w-3xl rounded-[2rem] overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.25)] relative border border-black/5"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-8 flex items-center justify-between border-b border-gray-100">
-          <h2 className="font-display text-3xl font-bold text-black">
+        <div className="p-6 flex items-center justify-between border-b border-gray-100 bg-gradient-to-r from-[#fff200]/35 via-[#fff200]/10 to-transparent">
+          <h2 className="font-display text-2xl font-bold text-black tracking-tight">
             Member info
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2.5 hover:bg-black/5 rounded-full transition-colors"
           >
             <X size={24} />
           </button>
         </div>
 
-        <div className="p-10 text-center">
-          <div className="w-36 h-36 rounded-full overflow-hidden mx-auto mb-6 border-4 border-[#fff200]/20">
-            <img
-              src={member.image}
-              alt={member.name}
-              className="w-full h-full object-cover"
-            />
+        <div className="p-6 md:p-7 grid grid-cols-1 md:grid-cols-[220px_1fr] gap-6 md:gap-8 items-start">
+          <div className="text-center md:text-left">
+            <div className="w-28 h-28 rounded-full overflow-hidden mx-auto md:mx-0 mb-4 border-4 border-[#fff200]/30 shadow-md">
+              <img
+                src={member.image}
+                alt={member.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-black leading-tight">
+              {member.name}
+            </h3>
+            <div className="mt-3 flex items-center justify-center md:justify-start gap-2 flex-wrap">
+              <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-black text-white text-[11px] uppercase tracking-wider font-semibold">
+                {member.role}
+              </span>
+              <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-[11px] uppercase tracking-wider font-semibold">
+                Since {member.startDate}
+              </span>
+            </div>
           </div>
-          <h3 className="font-display text-3xl font-bold text-black">
-            {member.name}
-          </h3>
-          <p className="text-gray-500 uppercase tracking-widest text-sm font-bold mt-1">
-            {member.role}
-          </p>
 
-          <div className="mt-10 pt-10 border-t border-gray-100 text-left space-y-8">
-            <div className="flex items-center gap-4 text-gray-800">
-              <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center">
+          <div className="text-left space-y-4">
+            <div className="flex items-center gap-4 text-gray-800 p-3 rounded-2xl bg-gray-50/80 border border-gray-100">
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center border border-gray-100">
                 <Mail size={20} className="text-black/60" />
               </div>
-              <span className="font-medium">{member.email}</span>
+              <span className="font-medium text-sm md:text-base">
+                {member.email}
+              </span>
             </div>
-            <div className="flex items-center gap-4 text-gray-800">
-              <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center">
+            <div className="flex items-center gap-4 text-gray-800 p-3 rounded-2xl bg-gray-50/80 border border-gray-100">
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center border border-gray-100">
                 <Phone size={20} className="text-black/60" />
               </div>
-              <span className="font-medium">{member.phone}</span>
-            </div>
-            <div className="grid grid-cols-2 gap-8">
-              <div>
-                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
-                  Team Role
-                </p>
-                <p className="text-gray-900 font-semibold">{member.role}</p>
-              </div>
-              <div>
-                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
-                  Start Date
-                </p>
-                <p className="text-gray-900 font-semibold">
-                  {member.startDate}
-                </p>
-              </div>
+              <span className="font-medium text-sm md:text-base">
+                {member.phone}
+              </span>
             </div>
             <div>
               <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
@@ -144,10 +189,10 @@ const MemberModal = ({
           </div>
         </div>
 
-        <div className="p-8 pt-0">
+        <div className="p-6 pt-0">
           <button
             onClick={onClose}
-            className="w-full py-5 bg-white border border-gray-200 rounded-2xl font-bold text-black hover:bg-gray-50 transition-all active:scale-[0.98]"
+            className="w-full py-4 bg-black border border-black rounded-2xl font-bold text-white hover:bg-black/90 transition-all active:scale-[0.98]"
           >
             Close
           </button>
@@ -164,7 +209,7 @@ const TeamCard = ({
   isActive = true,
   isFeatured = false,
   onOpen,
-}: any) => {
+}: TeamCardProps) => {
   return (
     <motion.div
       className={`relative group h-full w-full ${
@@ -178,13 +223,13 @@ const TeamCard = ({
       transition={{ duration: 0.5 }}
     >
       {/* Main Inner Card with Notch */}
-      <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden bg-gradient-to-br ">
+      <div className="relative w-full h-full rounded-[2.2rem] overflow-hidden bg-gradient-to-br from-black/5 to-black/20 shadow-xl border border-black/10">
         <img
           src={image}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t hover:from-black/80 hover:via-transparent hover:to-transparent pt-32 px-6 pb-12 flex flex-col justify-end">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent hover:from-black/85 hover:via-black/20 hover:to-transparent pt-32 px-6 pb-8 flex flex-col justify-end transition-colors duration-300">
           <div className="pr-16">
             <h3
               className={`font-display font-bold text-white leading-tight ${
@@ -222,7 +267,7 @@ const TeamCard = ({
           e.stopPropagation();
           onOpen();
         }}
-        className={`absolute bottom-2 right-2 flex items-center justify-center bg-[#fff200] text-black shadow-xl z-20 transition-transform duration-300 hover:scale-110 active:scale-95
+        className={`absolute bottom-2 right-2 flex items-center justify-center bg-[#fff200] text-black shadow-xl z-20 transition-all duration-300 hover:scale-110 hover:rotate-6 active:scale-95
           ${isFeatured ? "w-16 h-16 rounded-[1.5rem]" : "w-12 h-12 rounded-[1.2rem]"}`}
       >
         <Plus size={isFeatured ? 28 : 22} strokeWidth={2.5} />
@@ -232,16 +277,20 @@ const TeamCard = ({
 };
 
 const OurTeam = () => {
-  const [selectedMember, setSelectedMember] = useState<any>(null);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const marqueeItems = [...teamMembers, ...teamMembers];
 
   return (
     <section className="bg-white py-24 overflow-hidden">
-      <div className="container-narrow">
+      <div className="container-wide">
         <div className="text-center mb-20">
           <h2 className="font-display text-5xl md:text-6xl font-bold text-black tracking-tight">
             Our Team
           </h2>
+          <p className="text-gray-500 mt-4 text-base md:text-lg max-w-2xl mx-auto">
+            Meet the professionals driving innovation, quality, and healthcare
+            access across our group companies.
+          </p>
         </div>
 
         {/* Featured Leaders */}
@@ -287,7 +336,7 @@ const OurTeam = () => {
           <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-white to-transparent pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-white to-transparent pointer-events-none" />
 
-          <div className="flex animate-marquee">
+          <div className="flex animate-marquee-fast">
             {marqueeItems.map((member, index) => (
               <div
                 key={`${member.name}-${index}`}

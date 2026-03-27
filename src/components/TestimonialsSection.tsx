@@ -137,7 +137,10 @@ const TestimonialsSection = () => {
                   }}
                 >
                   <article className="h-full rounded-2xl bg-[#fffdfd] p-7 md:p-9 shadow-lg border border-black/5">
-                    <Quote className="text-gray-400 mb-6 opacity-30" size={36} />
+                    <Quote
+                      className="text-gray-400 mb-6 opacity-30"
+                      size={36}
+                    />
                     <p className="text-gray-700 font-medium leading-relaxed text-sm md:text-lg line-clamp-4">
                       {item.message}
                     </p>
@@ -173,9 +176,7 @@ const TestimonialsSection = () => {
           <span className="text-black/30 font-semibold tracking-widest">
             ...
           </span>
-          <span className="text-black/40 font-bold text-lg">
-            {`0${N}`}
-          </span>
+          <span className="text-black/40 font-bold text-lg">{`0${N}`}</span>
         </div>
 
         <button
