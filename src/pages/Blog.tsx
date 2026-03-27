@@ -20,6 +20,9 @@ import medicinesImg from "@/assets/medicines.jpg";
 import medDevicesImg from "@/assets/medical-devices.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
+import heroBgOne from "@/assets/herobg/2.jpg";
+import heroBgTwo from "@/assets/herobg/4.jpg";
+import heroBgThree from "@/assets/herobg/5.jpg";
 
 const categories = [
   "All",
@@ -145,9 +148,9 @@ const Blog = () => {
         <section className="relative h-[70vh] min-h-[560px] flex items-end pb-20 bg-foreground overflow-hidden">
           <ImageSlider
             images={[
-              { src: heroImg, alt: "Droga Pharma blog" },
-              { src: healthcareTeamImg, alt: "Healthcare" },
-              { src: labImg, alt: "Research" },
+              { src: heroBgOne, alt: "Droga Pharma blog" },
+              { src: heroBgTwo, alt: "Healthcare" },
+              { src: heroBgThree, alt: "Research" },
             ]}
             className="absolute inset-0 z-0"
           />

@@ -16,6 +16,9 @@ import warehouseImg from "@/assets/warehouse.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 import labImg from "@/assets/lab-research.jpg";
 import healthcareTeamImg from "@/assets/healthcare-team.jpg";
+import heroBgOne from "@/assets/herobg/2.jpg";
+import heroBgTwo from "@/assets/herobg/4.jpg";
+import heroBgThree from "@/assets/herobg/5.jpg";
 import { staggerContainer, staggerItem, cardHover } from "@/lib/variants";
 
 const services = [
@@ -77,9 +80,9 @@ const Services = () => {
         <section className="relative h-[70vh] min-h-[500px] flex items-end pb-20 bg-foreground">
           <ImageSlider
             images={[
-              { src: warehouseImg, alt: "Services" },
-              { src: supplyImg, alt: "Supply chain" },
-              { src: healthcareTeamImg, alt: "Healthcare" },
+              { src: heroBgOne, alt: "Services" },
+              { src: heroBgTwo, alt: "Supply chain" },
+              { src: heroBgThree, alt: "Healthcare" },
             ]}
             className="absolute inset-0 z-0"
           />

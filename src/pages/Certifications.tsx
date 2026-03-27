@@ -9,6 +9,9 @@ import heroImg from "@/assets/hero-pharma.jpg";
 import labImg from "@/assets/lab-research.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 import medicinesImg from "@/assets/medicines.jpg";
+import heroBgOne from "@/assets/herobg/2.jpg";
+import heroBgTwo from "@/assets/herobg/4.jpg";
+import heroBgThree from "@/assets/herobg/5.jpg";
 import certificateRecognitionImg from "@/assets/CertificateofRecognitionFromMinistryofHealthEthiopia.jpg";
 import researchGrant2023Img from "@/assets/DrogaResearchGrant2023Winnerjpg.jpg";
 import researchGrant2026Img from "@/assets/DROGARESEARCHGRANT2026.png";
@@ -123,9 +126,9 @@ const Certifications = () => {
         <section className="relative h-[70vh] min-h-[500px] flex items-end pb-20 bg-foreground">
           <ImageSlider
             images={[
-              { src: heroImg, alt: "Certifications" },
-              { src: labImg, alt: "Quality" },
-              { src: medicinesImg, alt: "Medicines" },
+              { src: heroBgOne, alt: "Certifications" },
+              { src: heroBgTwo, alt: "Quality" },
+              { src: heroBgThree, alt: "Medicines" },
             ]}
             className="absolute inset-0 z-0"
           />

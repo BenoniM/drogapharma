@@ -5,7 +5,6 @@ import Footer from "@/components/Footer";
 // import CyclingWave from "@/components/CyclingWave";
 // import TextPressure from "@/components/TextPressure";
 // import AccordGallery from "@/components/AccordGallery";
-import heroImg from "@/assets/hero-pharma.jpg";
 import healthcareTeamImg from "@/assets/healthcare-team.jpg";
 import teamImg from "@/assets/team.jpg";
 import medicinesImg from "@/assets/medicines.jpg";
@@ -20,6 +19,21 @@ import TextPressure from "@/components/TextPressure";
 import AccordGallery from "@/components/AccordGallery";
 import ImageSlider from "@/components/ImageSlider";
 import { cardHover } from "@/lib/variants";
+
+const careersHeroImages = [
+  {
+    src: "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1920&q=80",
+    alt: "Careers at Droga Pharma",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1920&q=80",
+    alt: "Career growth opportunities",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1920&q=80",
+    alt: "Professional hiring process",
+  },
+];
 
 const openings = [
   {
@@ -45,7 +59,8 @@ const openings = [
     department: "Marketing",
     location: "Addis Ababa / Remote",
     type: "Full-time",
-    image: heroImg,
+    image:
+      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1200&q=80",
     description:
       "Drive data-driven marketing campaigns and build brand presence.",
   },
@@ -93,11 +108,7 @@ const CareersPage = () => {
       {/* Hero with team photo */}
       <section className="relative h-[70vh] min-h-[600px] flex items-end pb-20 bg-foreground">
         <ImageSlider
-          images={[
-            { src: heroImg, alt: "Contact" },
-            { src: healthcareTeamImg, alt: "Team" },
-            { src: teamImg, alt: "Our team" },
-          ]}
+          images={careersHeroImages}
           className="absolute inset-0 z-0"
         />
         <div
@@ -120,7 +131,8 @@ const CareersPage = () => {
               Careers
             </h1>
             <p className="text-background/55 text-lg md:text-xl mt-4 max-w-xl leading-relaxed">
-              We'd love to hear from you. Get Here.
+              Build your career with us and help shape the future of healthcare
+              access in Ethiopia.
             </p>
           </motion.div>
         </div>

@@ -77,20 +77,20 @@ const TestimonialsSection = () => {
 
   useEffect(() => {
     // Infinite loop jump logic
-    // If we transition to the end of the first set
-    if (currentIndex === N - 1) {
+    // If we move into (or past) the first set while moving backward
+    if (currentIndex < N) {
       const timer = setTimeout(() => {
         setIsTransitioning(false);
-        setCurrentIndex(2 * N - 1); // jump to end of middle set
+        setCurrentIndex((prev) => prev + N); // jump back to middle set
       }, 600); // Wait for transiton ease to mostly complete (0.6s)
       return () => clearTimeout(timer);
     }
 
-    // If we transition to the beginning of the third set
-    if (currentIndex === 2 * N) {
+    // If we move into (or past) the third set while moving forward
+    if (currentIndex >= 2 * N) {
       const timer = setTimeout(() => {
         setIsTransitioning(false);
-        setCurrentIndex(N); // jump to beginning of middle set
+        setCurrentIndex((prev) => prev - N); // jump back to middle set
       }, 600);
       return () => clearTimeout(timer);
     }

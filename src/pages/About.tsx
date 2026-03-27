@@ -11,6 +11,9 @@ import team from "@/assets/healthcare-team.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
 import heroImg from "@/assets/hero-pharma.jpg";
 import labImg from "@/assets/lab-research.jpg";
+import heroBgOne from "@/assets/herobg/2.jpg";
+import heroBgTwo from "@/assets/herobg/4.jpg";
+import heroBgThree from "@/assets/herobg/5.jpg";
 import healthcareTeamImg from "@/assets/henoknew.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 import Drogaconsult from "@/assets/drogacon.png";
@@ -155,7 +158,6 @@ const timeline = [
   },
 ];
 
-
 const groupCompanies = [
   {
     name: "Trust Pharma",
@@ -262,9 +264,9 @@ const About = () => {
         <section className="relative h-[75vh] min-h-[550px] flex items-end pb-20 bg-foreground">
           <ImageSlider
             images={[
-              { src: heroImg, alt: "About" },
-              { src: team, alt: "Healthcare team" },
-              { src: labImg, alt: "Lab" },
+              { src: heroBgOne, alt: "About" },
+              { src: heroBgTwo, alt: "Healthcare team" },
+              { src: heroBgThree, alt: "Lab" },
             ]}
             className="absolute inset-0 z-0"
           />
@@ -618,6 +620,7 @@ const About = () => {
           </div>
         </section>
 
+        {/* { Trusted Partners / Clients } */}
         <section className="bg-[#f5f5f5] section-padding ">
           <div className="container-narrow mb-12">
             <ScrollReveal>

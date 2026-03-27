@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Plus, X, Mail, Phone } from "lucide-react";
+import { Plus, X, Mail, Phone } from "lucide-react";
 import abdiImg from "../assets/abdi.jpg";
 import henokImg from "../assets/henoknew.jpg";
 
@@ -184,7 +184,7 @@ const TeamCard = ({
           alt={name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t hover:from-[#fff200]/80 hover:via-transparent hover:to-transparent pt-32 px-6 pb-12 flex flex-col justify-end">
+        <div className="absolute inset-0 bg-gradient-to-t hover:from-black/80 hover:via-transparent hover:to-transparent pt-32 px-6 pb-12 flex flex-col justify-end">
           <div className="pr-16">
             <h3
               className={`font-display font-bold text-white leading-tight ${
@@ -232,51 +232,8 @@ const TeamCard = ({
 };
 
 const OurTeam = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
   const [selectedMember, setSelectedMember] = useState<any>(null);
-  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (trackRef.current) {
-      const activeElement = trackRef.current.children[
-        activeIndex
-      ] as HTMLElement;
-      if (activeElement) {
-        const trackCenter = trackRef.current.offsetWidth / 2;
-        const elementCenter =
-          activeElement.offsetLeft + activeElement.offsetWidth / 2;
-        trackRef.current.scrollTo({
-          left: elementCenter - trackCenter,
-          behavior: "smooth",
-        });
-      }
-    }
-  }, [activeIndex]);
-
-  const nextSlide = () => {
-    setActiveIndex((prev) => (prev + 1) % teamMembers.length);
-  };
-
-  const prevSlide = () => {
-    setActiveIndex(
-      (prev) => (prev - 1 + teamMembers.length) % teamMembers.length,
-    );
-  };
-
-  const resetTimer = () => {
-    if (autoPlayRef.current) {
-      clearInterval(autoPlayRef.current);
-      autoPlayRef.current = setInterval(nextSlide, 5000);
-    }
-  };
-
-  useEffect(() => {
-    autoPlayRef.current = setInterval(nextSlide, 5000);
-    return () => {
-      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-    };
-  }, []);
+  const marqueeItems = [...teamMembers, ...teamMembers];
 
   return (
     <section className="bg-white py-24 overflow-hidden">
@@ -326,62 +283,26 @@ const OurTeam = () => {
         </div>
 
         {/* Team Carousel */}
-        <div className="relative w-full -mx-4 md:mx-0">
-          <div
-            ref={trackRef}
-            className="flex items-center gap-4 md:gap-8 h-[480px] overflow-x-auto no-scrollbar snap-x snap-mandatory px-[calc(50vw-130px)] md:px-[calc(50%-160px)]"
-            style={{ scrollBehavior: "smooth" }}
-          >
-            {teamMembers.map((member, index) => {
-              const isActive = index === activeIndex;
+        <div className="relative overflow-hidden py-3">
+          <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-white to-transparent pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-white to-transparent pointer-events-none" />
 
-              return (
-                <div
-                  key={index}
-                  onClick={() => {
-                    setActiveIndex(index);
-                    resetTimer();
-                  }}
-                  className={`flex-shrink-0 snap-center cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
-                    isActive
-                      ? "w-[260px] md:w-[320px] h-[400px] md:h-[450px] z-20"
-                      : "w-[180px] md:w-[220px] h-[300px] md:h-[340px] z-10 opacity-70 hover:opacity-100"
-                  }`}
-                >
+          <div className="flex animate-marquee">
+            {marqueeItems.map((member, index) => (
+              <div
+                key={`${member.name}-${index}`}
+                className="flex-shrink-0 mx-4"
+              >
+                <div className="w-[200px] md:w-[240px] h-[320px] md:h-[360px]">
                   <TeamCard
                     name={member.name}
                     role={member.role}
                     image={member.image}
-                    isActive={isActive}
                     onOpen={() => setSelectedMember(member)}
                   />
                 </div>
-              );
-            })}
-          </div>
-
-          {/* Navigation */}
-          <div className="flex justify-center gap-6 mt-8">
-            <button
-              onClick={() => {
-                prevSlide();
-                resetTimer();
-              }}
-              className="w-14 h-14 rounded-full border border-black/10 bg-white shadow-md flex items-center justify-center text-black hover:bg-black hover:text-white transition-all active:scale-95 z-10"
-              aria-label="Previous team member"
-            >
-              <ChevronLeft size={28} />
-            </button>
-            <button
-              onClick={() => {
-                nextSlide();
-                resetTimer();
-              }}
-              className="w-14 h-14 rounded-full border border-black/10 bg-white shadow-md flex items-center justify-center text-black hover:bg-black hover:text-white transition-all active:scale-95 z-10"
-              aria-label="Next team member"
-            >
-              <ChevronRight size={28} />
-            </button>
+              </div>
+            ))}
           </div>
         </div>
       </div>

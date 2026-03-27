@@ -4,9 +4,21 @@ import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
 import { Mail, Phone, MapPin, Send, Clock, Globe } from "lucide-react";
-import heroImg from "@/assets/hero-pharma.jpg";
-import healthcareTeamImg from "@/assets/healthcare-team.jpg";
-import teamImg from "@/assets/team.jpg";
+
+const contactHeroImages = [
+  {
+    src: "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=1920&q=80",
+    alt: "Contact us",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1516387938699-a93567ec168e?auto=format&fit=crop&w=1920&q=80",
+    alt: "Communication",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1920&q=80",
+    alt: "Office location",
+  },
+];
 
 const Contact = () => {
   const [form, setForm] = useState({
@@ -49,11 +61,7 @@ const Contact = () => {
         {/* Hero */}
         <section className="relative h-[70vh] min-h-[500px] flex items-end pb-20 bg-foreground">
           <ImageSlider
-            images={[
-              { src: heroImg, alt: "Contact" },
-              { src: healthcareTeamImg, alt: "Team" },
-              { src: teamImg, alt: "Our team" },
-            ]}
+            images={contactHeroImages}
             className="absolute inset-0 z-0"
           />
           <div

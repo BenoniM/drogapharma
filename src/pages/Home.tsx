@@ -26,6 +26,8 @@ import teamImg from "@/assets/CertificateofRecognitionFromMinistryofHealthEthiop
 
 import labImg from "@/assets/DrogaResearchGrant2023Winnerjpg.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
+import heroBgMain from "@/assets/herobg/IMG_2004.jpg";
+import heroBgSecondary from "@/assets/herobg/5.jpg";
 import Headquarters from "@/assets/building.jpg";
 import medicinesImg from "@/assets/medicines.jpg";
 import healthcareTeamImg from "@/assets/CertificateofAppreciationFromTheMinistryofHealth.jpg";
@@ -34,32 +36,25 @@ import { staggerContainer, staggerItem, cardHover } from "@/lib/variants";
 
 const heroSlides = [
   {
-    image: warehouseImg,
+    image: heroBgMain,
     title: "Serving The People!",
     subtitle:
       "Droga Pharma Pvt.Ltd Co. is a private limited company based in Addis Ababa, Ethiopia, aiming on sustainable supply of quality medicines, sutures, orthopedic implants and medical devices.",
     cta: { label: "More about us", to: "/about" },
   },
   {
-    image: labImg,
+    image: heroBgSecondary,
     title: "Quality You Can Trust",
     subtitle:
       "WHO-approved products from globally certified manufacturers ensuring the highest standards.",
     cta: { label: "Our Products", to: "/products" },
   },
   {
-    image: healthcareTeamImg,
+    image: supplyImg,
     title: "Our Experts",
     subtitle:
       "Highly experienced pharmacists and manufacturing industry professionals that drive our partners' success.",
     cta: { label: "Our Team", to: "/about" },
-  },
-  {
-    image: supplyImg,
-    title: "Our Headquarters",
-    subtitle:
-      "Located in the center of Addis Ababa — where we innovate to make people's lives better.",
-    cta: { label: "Our Services", to: "/services" },
   },
 ];
 
@@ -270,12 +265,11 @@ const Home = () => {
         {/* Split — HQ */}
         <section className="bg-white">
           <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[650px] ">
-            <div className="relative overflow-hidden object-contain">
-              <ImageSlider
-                images={[
-                  { src: Headquarters, alt: "Droga Pharma headquarters" },
-                ]}
-                className="min-h-[450px] lg:min-h-full h-full "
+            <div className="relative overflow-hidden bg-[#f5f5f5] min-h-[450px] lg:min-h-full h-full flex items-center justify-center p-4 md:p-6">
+              <img
+                src={Headquarters}
+                alt="Droga Pharma headquarters"
+                className="w-full h-full object-contain"
               />
             </div>
             <div className="flex items-center p-10 md:p-16 lg:p-20">

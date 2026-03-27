@@ -10,6 +10,9 @@ import productsImg from "@/assets/products.jpg";
 import medicinesImg from "@/assets/medicines.jpg";
 import medDevicesImg from "@/assets/medical-devices.jpg";
 import labImg from "@/assets/lab-research.jpg";
+import heroBgOne from "@/assets/herobg/2.jpg";
+import heroBgTwo from "@/assets/herobg/4.jpg";
+import heroBgThree from "@/assets/herobg/5.jpg";
 import { staggerContainer, staggerItem, cardHover } from "@/lib/variants";
 
 const allProducts = [
@@ -172,9 +175,9 @@ const Products = () => {
         <section className="relative h-[70vh] min-h-[500px] flex items-end pb-20 bg-foreground">
           <ImageSlider
             images={[
-              { src: productsImg, alt: "Products" },
-              { src: medicinesImg, alt: "Medicines" },
-              { src: medDevicesImg, alt: "Medical devices" },
+              { src: heroBgOne, alt: "Products" },
+              { src: heroBgTwo, alt: "Medicines" },
+              { src: heroBgThree, alt: "Medical devices" },
             ]}
             className="absolute inset-0 z-0"
           />
@@ -296,8 +299,7 @@ const Products = () => {
             <motion.div
               variants={staggerContainer}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
+              animate="visible"
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
               {filtered.map((product) => {
