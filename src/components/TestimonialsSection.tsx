@@ -100,7 +100,7 @@ const TestimonialsSection = () => {
   const realIndex = currentIndex % N;
 
   return (
-    <section className="bg-primary py-16 md:py-24 overflow-hidden">
+    <section className="bg-primary py-16 md:py-16 overflow-hidden">
       <div className="container-narrow mb-16">
         <h2 className="font-display text-3xl md:text-5xl font-medium text-center text-black mb-4">
           Experiences Droga Group
@@ -136,12 +136,9 @@ const TestimonialsSection = () => {
                     zIndex: isActive ? 2 : 1,
                   }}
                 >
-                  <article className="h-full rounded-2xl bg-[#fffdfd] p-7 md:p-9 shadow-lg border border-black/5">
-                    <Quote
-                      className="text-gray-400 mb-6 opacity-30"
-                      size={36}
-                    />
-                    <p className="text-gray-700 font-medium leading-relaxed text-sm md:text-lg line-clamp-4">
+                  <article className="h-full   p-7 md:p-9  border-black/5">
+                    <Quote className="text-black mb-6 opacity-30" size={36} />
+                    <p className="text-black font-medium leading-relaxed text-sm md:text-lg line-clamp-4">
                       {item.message}
                     </p>
                     <div className="mt-8">

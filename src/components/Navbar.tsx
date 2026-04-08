@@ -64,11 +64,6 @@ const navLinks: NavItem[] = [
         path: "/products?category=Orthopedics+and+Surgical+Instrument",
         description: "Precision surgical tools and orthopedic care",
       },
-      {
-        label: "Implants",
-        path: "/products?category=Implants",
-        description: "High-quality surgical and medical implants",
-      },
     ],
   },
   { label: "Services", path: "/services" },
@@ -94,10 +89,34 @@ const navLinks: NavItem[] = [
         description: "Distribution & consulting services",
         external: true,
       },
+      {
+        label: "Breeeze Pharmaceutical",
+        path: "https://drogaconsulting.com/",
+        description: "Distribution & consulting services",
+        external: true,
+      },
+      {
+        label: "Orbit",
+        path: "https://drogaconsulting.com/",
+        description: "Distribution & consulting services",
+        external: true,
+      },
+      {
+        label: "Droga Pharmacy",
+        path: "https://drogapharmacy.com/",
+        description: "Distribution & consulting services",
+        external: true,
+      },
+      {
+        label: "Droga Physiotherapy",
+        path: "https://drogaphysiotherapy.com/",
+        description: "Distribution & consulting services",
+        external: true,
+      },
     ],
   },
   {
-    label: "News",
+    label: "Media",
     mega: true,
     children: [
       {
@@ -110,10 +129,14 @@ const navLinks: NavItem[] = [
         path: "/blog",
         description: "Latest updates, stories, and achievements",
       },
+      {
+        label: "Gallery",
+        path: "/gallery",
+        description: "Photos and visual highlights from Droga Pharma",
+      },
     ],
   },
   { label: "Careers", path: "/careers" },
-  { label: "Contact", path: "/contact" },
 ];
 
 /* ─── Mega Dropdown ─── */
@@ -142,6 +165,13 @@ const MegaDropdown = ({
     : showWhiteNav
       ? "text-foreground/80 hover:text-foreground"
       : "text-background/90 hover:text-background";
+  const isHorizontalMega = item.label === "Products" || item.label === "Group";
+  const dropdownPositionClass =
+    item.label === "Group"
+      ? "left-[-560px]"
+      : item.label === "Products"
+        ? "left-[-250px]"
+        : "left-0";
 
   return (
     <div className="relative" onMouseEnter={enter} onMouseLeave={leave}>
@@ -182,55 +212,75 @@ const MegaDropdown = ({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.97 }}
             transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-            className="absolute top-full left-1/2 -translate-x-1/2 pt-4 z-50"
+            className={`absolute top-full pt-4 z-50 ${dropdownPositionClass}`}
           >
-            <div className="bg-background/95 backdrop-blur-2xl  shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] border border-border/50 p-2 min-w-[280px]">
-              {item.children.map((child, i) => {
-                const inner = (
-                  <motion.div
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05, duration: 0.2 }}
-                    className="group flex items-start gap-3 px-4 py-3 rounded-xl hover:bg-secondary/80 transition-all duration-200 cursor-pointer"
-                  >
-                    {/* <div className="mt-0.5 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+            <div
+              className={`bg-background/95 backdrop-blur-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] border border-border/50 p-2 ${
+                item.label === "Group"
+                  ? "min-w-[1040px]"
+                  : isHorizontalMega
+                    ? "min-w-[860px]"
+                    : "min-w-[280px]"
+              }`}
+            >
+              <div
+                className={
+                  isHorizontalMega
+                    ? item.label === "Group"
+                      ? "grid grid-cols-4 gap-1"
+                      : "grid grid-cols-3 gap-1"
+                    : "flex flex-col"
+                }
+              >
+                {item.children.map((child, i) => {
+                  const inner = (
+                    <motion.div
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05, duration: 0.2 }}
+                      className={`group flex items-start gap-3 px-4 py-3 rounded-xl hover:bg-secondary/80 transition-all duration-200 cursor-pointer ${
+                        isHorizontalMega ? "min-h-[84px]" : ""
+                      }`}
+                    >
+                      {/* <div className="mt-0.5 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
                       <div className="w-2 h-2 rounded-full bg-primary" />
                     </div> */}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-sm font-semibold text-foreground group-hover:text-gray-700 transition-colors">
-                          {child.label}
-                        </span>
-                        {child.external && (
-                          <ArrowUpRight
-                            size={11}
-                            className="text-muted-foreground"
-                          />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-sm font-semibold text-foreground group-hover:text-gray-700 transition-colors">
+                            {child.label}
+                          </span>
+                          {child.external && (
+                            <ArrowUpRight
+                              size={11}
+                              className="text-muted-foreground"
+                            />
+                          )}
+                        </div>
+                        {child.description && (
+                          <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                            {child.description}
+                          </p>
                         )}
                       </div>
-                      {child.description && (
-                        <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                          {child.description}
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
-                );
-                return child.external ? (
-                  <a
-                    key={child.label}
-                    href={child.path}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {inner}
-                  </a>
-                ) : (
-                  <Link key={child.label} to={child.path}>
-                    {inner}
-                  </Link>
-                );
-              })}
+                    </motion.div>
+                  );
+                  return child.external ? (
+                    <a
+                      key={child.label}
+                      href={child.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    <Link key={child.label} to={child.path}>
+                      {inner}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           </motion.div>
         )}
@@ -348,18 +398,18 @@ const Navbar = () => {
           <div className="flex items-center gap-6">
             <a
               href="mailto:info@drogapharma.com"
-              className="flex items-center gap-1.5 text-black text-xs hover:text-background transition-colors"
+              className="flex items-center gap-1.5 text-black text-xs hover:text-black transition-colors"
             >
               <Mail size={11} className="text-black" />
-              info@droga-pharma.com
+              info@drogapharma.com
             </a>
             <div className="w-px h-3 bg-background/20" />
             <a
               href="tel:+251112734554"
-              className="flex items-center gap-1.5 text-black text-xs hover:text-background transition-colors"
+              className="flex items-center gap-1.5 text-black text-xs hover:text-black transition-colors"
             >
               <Phone size={11} className="text-black" />
-              +251-112-73-45-54
+              +25111 273 4554
             </a>
           </div>
         </div>

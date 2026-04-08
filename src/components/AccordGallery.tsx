@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 interface AccordGalleryItem {
   image: string;
   label: string;
+  description?: string;
 }
 
 interface AccordGalleryProps {
@@ -12,7 +13,11 @@ interface AccordGalleryProps {
   borderRadius?: number;
 }
 
-const AccordGallery = ({ items, height = "500px", borderRadius = 16 }: AccordGalleryProps) => {
+const AccordGallery = ({
+  items,
+  height = "500px",
+  borderRadius = 16,
+}: AccordGalleryProps) => {
   const [activeIndex, setActiveIndex] = useState<number>(items.length - 1);
 
   return (
@@ -52,14 +57,20 @@ const AccordGallery = ({ items, height = "500px", borderRadius = 16 }: AccordGal
               animate={{ opacity: 1 }}
             >
               {isActive ? (
-                <motion.p
+                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15, duration: 0.3 }}
-                  className="text-white text-base sm:text-lg font-semibold"
                 >
-                  {item.label}
-                </motion.p>
+                  <p className="text-white text-base sm:text-lg font-semibold">
+                    {item.label}
+                  </p>
+                  {item.description && (
+                    <p className="text-white/85 text-xs sm:text-sm mt-1.5 leading-relaxed max-w-[90%] line-clamp-3">
+                      {item.description}
+                    </p>
+                  )}
+                </motion.div>
               ) : (
                 <p
                   className="text-white text-xs sm:text-sm font-medium whitespace-nowrap"

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
-import { Award, ArrowRight, Filter } from "lucide-react";
+import { Award, ArrowRight, ChevronDown } from "lucide-react";
 import heroImg from "@/assets/hero-pharma.jpg";
 import labImg from "@/assets/lab-research.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
@@ -162,56 +162,63 @@ const Certifications = () => {
         {/* Grid */}
         <section className="bg-[#f5f5f5] section-padding-lg">
           <div className="container-narrow">
-            <ScrollReveal>
-              <p className="text-black text-xl md:text-2xl font-light leading-relaxed max-w-3xl mb-12">
-                We maintain the highest industry standards through rigorous
-                certifications and continuous compliance monitoring.
-              </p>
-            </ScrollReveal>
+            <div className="mb-12 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8">
+              <ScrollReveal>
+                <p className="text-black text-xl md:text-2xl font-light leading-relaxed max-w-3xl text-center">
+                  We maintain the highest industry standards through rigorous
+                  certifications and continuous compliance monitoring.
+                </p>
+              </ScrollReveal>
 
-            {/* Filters */}
-            <div className="flex flex-col md:flex-row gap-4 mb-12">
-              <div className="flex items-center gap-2 mr-4">
-                <Filter size={16} className="text-black" />
-                <span className="text-xs font-semibold text-black uppercase tracking-wider">
-                  Filter:
-                </span>
-              </div>
-              <div className="flex gap-2 flex-wrap">
-                <span className="text-xs font-semibold text-black uppercase tracking-wider self-center mr-1">
-                  Type:
-                </span>
-                {types.map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setSelectedType(t)}
-                    className={`px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                      selectedType === t
-                        ? "bg-primary text-black"
-                        : "bg-background/10 text-black hover:bg-background/20"
-                    }`}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
-              <div className="flex gap-2 flex-wrap">
-                <span className="text-xs font-semibold text-black uppercase tracking-wider self-center mr-1">
-                  Date:
-                </span>
-                {years.map((y) => (
-                  <button
-                    key={y}
-                    onClick={() => setSelectedYear(y)}
-                    className={`px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                      selectedYear === y
-                        ? "bg-primary text-black"
-                        : "bg-background/10 text-black hover:bg-background/20"
-                    }`}
-                  >
-                    {y}
-                  </button>
-                ))}
+              {/* Filters */}
+              <div className="w-full md:w-auto lg:shrink-0 rounded-xl border border-black/10 bg-white/90 backdrop-blur-sm p-3 md:p-4 shadow-[0_8px_24px_rgba(15,23,42,0.08)]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                  <label className="block">
+                    <span className="text-[10px] font-semibold text-black/65 uppercase tracking-[0.12em] block mb-1.5">
+                      Type
+                    </span>
+                    <div className="relative">
+                      <select
+                        value={selectedType}
+                        onChange={(e) => setSelectedType(e.target.value)}
+                        className="w-full sm:w-[170px] h-10 pl-3 pr-9 rounded-lg bg-[#f7f7f7] border border-black/10 text-xs font-medium text-black appearance-none outline-none transition-all duration-200 hover:border-black/30 focus:border-primary focus:bg-white"
+                      >
+                        {types.map((t) => (
+                          <option key={t} value={t}>
+                            {t}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown
+                        size={14}
+                        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-black/55"
+                      />
+                    </div>
+                  </label>
+
+                  <label className="block">
+                    <span className="text-[10px] font-semibold text-black/65 uppercase tracking-[0.12em] block mb-1.5">
+                      Date
+                    </span>
+                    <div className="relative">
+                      <select
+                        value={selectedYear}
+                        onChange={(e) => setSelectedYear(e.target.value)}
+                        className="w-full sm:w-[170px] h-10 pl-3 pr-9 rounded-lg bg-[#f7f7f7] border border-black/10 text-xs font-medium text-black appearance-none outline-none transition-all duration-200 hover:border-black/30 focus:border-primary focus:bg-white"
+                      >
+                        {years.map((y) => (
+                          <option key={y} value={y}>
+                            {y}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown
+                        size={14}
+                        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-black/55"
+                      />
+                    </div>
+                  </label>
+                </div>
               </div>
             </div>
 

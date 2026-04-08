@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Eye, Target } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
@@ -79,13 +79,44 @@ const coreValues = [
   },
 ];
 
-const clientLogoModules = import.meta.glob(
+const coreValueGroups = Object.values(
+  coreValues.reduce<
+    Record<string, { category: string; image: string; titles: string[] }>
+  >((acc, item) => {
+    if (!acc[item.category]) {
+      acc[item.category] = {
+        category: item.category,
+        image: item.image,
+        titles: [item.title],
+      };
+    } else {
+      acc[item.category].titles.push(item.title);
+    }
+
+    return acc;
+  }, {}),
+);
+
+const ourPartnersLogoModules = import.meta.glob(
+  "@/assets/OurPartners/*.{png,jpg,jpeg,webp,svg}",
+  {
+    eager: true,
+    import: "default",
+  },
+) as Record<string, string>;
+
+const clientsFolderLogoModules = import.meta.glob(
   "@/assets/Clients/*.{png,jpg,jpeg,webp,svg}",
   {
     eager: true,
     import: "default",
   },
 ) as Record<string, string>;
+
+const clientLogoModules = {
+  ...ourPartnersLogoModules,
+  ...clientsFolderLogoModules,
+};
 
 const clients = Object.entries(clientLogoModules)
   .sort(([a], [b]) => a.localeCompare(b))
@@ -210,7 +241,7 @@ const storySlides = [
     alt: "Team",
     title: "Founder’s Message",
     intro:
-      "Welcome to Droga Pharma, where our journey began with a simple yet profound vision: to make healthcare accessible, sustainable, and reliable for everyone. As the founder of this organization, my mission has always been to bridge the gap between professional care and the communities we serve, ensuring quality healthcare is within everyone's reach.",
+      "Welcome to Droga Pharma, where our journey began with a simple yet profound vision: to make healthcare accessible, sustainable, and reliable for everyone",
     highlight:
       "The Heart of Droga Pharma lies in our unwavering commitment to making healthcare accessible.",
     outro:
@@ -237,6 +268,7 @@ import OurTeam from "@/components/OurTeam";
 import JourneyStepper from "@/components/JourneyStepper";
 import Certifications from "@/components/Certifications";
 import MarqueeClients from "@/components/MarqueeClients";
+import qualityPolicyImg from "@/assets/Droga-Quality-Policy.jpg";
 
 const About = () => {
   const [storyCurrent, setStoryCurrent] = useState(0);
@@ -308,43 +340,55 @@ const About = () => {
                 }))}
                 className="min-h-[450px] lg:min-h-full h-full"
                 onSlideChange={setStoryCurrent}
+                effect="slide-rtl"
               />
             </div>
             <div className="flex items-center p-10 md:p-10 lg:p-16 bg-[#fffdfd] ">
-              <ScrollReveal direction="right" key={activeStory.title}>
-                <div className="px-8  md:px-12 md:py-14 max-w-[620px] text-center">
-                  <h2 className="font-display text-4xl md:text-5xl font-semibold text-black mb-10">
-                    {activeStory.title}
-                  </h2>
+              <ScrollReveal direction="right">
+                <div className="relative w-full overflow-hidden">
+                  <AnimatePresence initial={false}>
+                    <motion.div
+                      key={activeStory.title}
+                      initial={{ opacity: 0, x: 36 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -36 }}
+                      transition={{ duration: 0.65, ease: [0.45, 0, 0.55, 1] }}
+                      className="px-8  md:px-12 md:py-14 max-w-[620px] text-center"
+                    >
+                      <h2 className="font-display text-3xl md:text-4xl font-bold text-black mb-10">
+                        {activeStory.title}
+                      </h2>
 
-                  <p className="text-[#414040] leading-relaxed text-sm md:text-base">
-                    {activeStory.intro}
-                  </p>
+                      <p className="text-[#414040] leading-relaxed text-sm md:text-base">
+                        {activeStory.intro}
+                      </p>
 
-                  <div className="relative my-8 px-5">
-                    <span className="absolute -left-1 -top-2 text-primary text-4xl leading-none font-semibold">
-                      "
-                    </span>
-                    <p className="text-black font-semibold leading-snug text-lg">
-                      {activeStory.highlight}
-                    </p>
-                    <span className="absolute -right-1 -bottom-4 text-primary text-4xl leading-none font-semibold">
-                      "
-                    </span>
-                  </div>
+                      <div className="relative my-8 px-5">
+                        <span className="absolute -left-1 -top-2 text-primary text-4xl leading-none font-semibold">
+                          "
+                        </span>
+                        <p className="text-black font-semibold leading-snug text-lg">
+                          {activeStory.highlight}
+                        </p>
+                        <span className="absolute -right-1 -bottom-4 text-primary text-4xl leading-none font-semibold">
+                          "
+                        </span>
+                      </div>
 
-                  <p className="text-[#414040] leading-relaxed text-sm md:text-base">
-                    {activeStory.outro}
-                  </p>
+                      <p className="text-[#414040] leading-relaxed text-sm md:text-base">
+                        {activeStory.outro}
+                      </p>
 
-                  <div className="mt-12 text-left">
-                    <p className="text-black font-bold text-lg">
-                      {activeStory.signatureName}
-                    </p>
-                    <p className="text-black/65 text-sm mt-1">
-                      {activeStory.signatureRole}
-                    </p>
-                  </div>
+                      <div className="mt-12 text-left">
+                        <p className="text-black font-bold text-lg">
+                          {activeStory.signatureName}
+                        </p>
+                        <p className="text-black/65 text-sm mt-1">
+                          {activeStory.signatureRole}
+                        </p>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
               </ScrollReveal>
             </div>
@@ -462,22 +506,18 @@ const About = () => {
                 </div>
               </div>
             </ScrollReveal>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 auto-rows-[250px] md:auto-rows-[300px]">
-              {coreValues.map((value, index) => {
-                // Bento layout spans
-                let spanClass = "col-span-1 row-span-1";
-                if (index === 0) spanClass = "lg:col-span-2 lg:row-span-2"; // Large 1
-                if (index === 1) spanClass = "lg:col-span-2 lg:row-span-1"; // Wide 1
-                if (index === 4) spanClass = "lg:col-span-2 lg:row-span-2"; // Large 2
-                if (index === 5) spanClass = "lg:col-span-2 lg:row-span-1"; // Wide 2
-                if (index === 8)
-                  spanClass = "sm:col-span-2 lg:col-span-4 lg:row-span-1"; // Full width bottom
+            <div className="grid grid-cols-1 lg:grid-cols-3 lg:grid-rows-2 gap-4 md:gap-6 auto-rows-[260px] md:auto-rows-[300px]">
+              {coreValueGroups.map((group, index) => {
+                const layoutClass =
+                  index === 0
+                    ? "lg:col-span-2 lg:row-span-2"
+                    : "lg:col-start-3";
 
                 return (
                   <ScrollReveal
-                    key={value.title}
+                    key={group.category}
                     delay={index * 0.05}
-                    className={spanClass}
+                    className={layoutClass}
                   >
                     <motion.div
                       whileHover={{ scale: 1.02 }}
@@ -487,8 +527,8 @@ const About = () => {
                       {/* Background Image */}
                       <div className="absolute inset-0 z-0">
                         <img
-                          src={value.image}
-                          alt={value.title}
+                          src={group.image}
+                          alt={group.category}
                           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
@@ -497,20 +537,21 @@ const About = () => {
                       {/* Content */}
                       <div className="relative z-10 h-full p-6 md:p-8 flex flex-col justify-between">
                         <div>
-                          <span className="text-white text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em]  backdrop-blur-md px-3 py-1 rounded-md inline-block border border-white/10">
-                            {value.category}
-                          </span>
+                          <p className="text-white text-2xl md:text-3xl font-bold leading-snug">
+                            {group.category}
+                          </p>
                         </div>
 
-                        <h3
-                          className={`font-display font-bold text-white transition-all duration-300 group-hover:translate-x-1 ${
-                            index === 0 || index === 4 || index === 8
-                              ? "text-2xl md:text-3xl max-w-sm"
-                              : "text-lg md:text-xl"
-                          }`}
-                        >
-                          {value.title}
-                        </h3>
+                        <div className="space-y-2.5">
+                          {group.titles.map((title) => (
+                            <span
+                              key={title}
+                              className="text-white/95 text-[10px] md:text-xs font-semibold uppercase tracking-[0.1em] backdrop-blur-md px-2.5 py-1 rounded-md inline-block border border-white/10 mr-2"
+                            >
+                              {title}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </motion.div>
                   </ScrollReveal>
@@ -569,8 +610,37 @@ const About = () => {
 
         <Certifications />
 
+        <section className="bg-[#ebebeb] py-12 md:py-16">
+          <div className="container-narrow">
+            <ScrollReveal>
+              <div className="text-center mb-8">
+                <span className="section-label block mb-3 text-black/60">
+                  Quality Policy
+                </span>
+                <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-900 mt-2">
+                  Droga Quality Policy
+                </h2>
+              </div>
+            </ScrollReveal>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl shadow-[0_18px_60px_rgba(15,23,42,0.16)]"
+            >
+              <img
+                src={qualityPolicyImg}
+                alt="Droga Quality Policy"
+                className="block w-full h-auto object-cover"
+              />
+            </motion.div>
+          </div>
+        </section>
+
         {/* Group Companies */}
-        <section className="relative section-padding bg-[radial-gradient(circle_at_top,_#ffffff_0%,_#f4f6fb_55%,_#eef2f7_100%)] overflow-hidden">
+        {/* <section className="relative section-padding bg-[radial-gradient(circle_at_top,_#ffffff_0%,_#f4f6fb_55%,_#eef2f7_100%)] overflow-hidden">
           <div className="pointer-events-none absolute -top-24 -left-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
           <div className="mx-auto w-full max-w-[1400px] px-6 md:px-10">
@@ -618,26 +688,30 @@ const About = () => {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
-        {/* { Trusted Partners / Clients } */}
-        <section className="bg-[#f5f5f5] section-padding ">
+        {/* Clients */}
+        <section className="bg-[#fffdfd] section-padding border-t border-primary-foreground/10">
           <div className="container-narrow mb-12">
             <ScrollReveal>
               <div className="text-center">
-                <span className="text-xs font-semibold tracking-[0.2em] uppercase text-primary-foreground/60 block mb-4">
-                  Trusted Partners
+                <span className="text-md font-semibold tracking-[0.2em] uppercase text-primary-foreground/60 block mb-4">
+                  Our Partners
                 </span>
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-primary-foreground">
-                  Our Clients
-                </h2>
-                <p className="text-primary-foreground/60 mt-3 max-w-md mx-auto">
+
+                <p className="text-black mt-3  mx-auto text-2xl">
                   Serving leading healthcare organizations across Ethiopia
                 </p>
               </div>
             </ScrollReveal>
           </div>
-          <MarqueeClients clients={clients} />
+          <div className="max-w-5xl mx-auto">
+            <MarqueeClients
+              clients={clients}
+              variant="vertical-3"
+              additionalSlides={2}
+            />
+          </div>
         </section>
       </div>
     </PageTransition>

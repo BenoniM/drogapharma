@@ -79,26 +79,38 @@ const whyDrogaItems = [
   {
     image: medicinesImg,
     label: "WHO-Approved Medicines",
+    description:
+      "Work with globally trusted products and contribute to safer treatment outcomes for patients. Build deep product knowledge while supporting essential healthcare access across Ethiopia.",
   },
   {
     image: medDevicesImg,
     label: "Medical Devices Portfolio",
+    description:
+      "Build expertise with advanced devices while supporting modern diagnostics and care delivery. Grow your technical capability through practical exposure to diverse technologies.",
   },
   {
     image: supplyImg,
     label: "End-to-End Supply Chain",
+    description:
+      "Gain hands-on experience across sourcing, planning, and delivery in a high-impact network. Learn how integrated operations drive reliability at national scale.",
   },
   {
     image: warehouseImg,
     label: "Cold-Chain Distribution",
+    description:
+      "Join a quality-driven logistics environment that protects product integrity at every stage. Strengthen your logistics and process-control skills in real operations.",
   },
   {
     image: labImg,
     label: "Quality Assurance & Compliance",
+    description:
+      "Grow your career with strong standards, continuous improvement, and professional accountability. Develop a disciplined quality mindset valued across healthcare industries.",
   },
   {
     image: healthcareTeamImg,
     label: "Healthcare Partner Network",
+    description:
+      "Collaborate with leading institutions and expand your impact through meaningful partnerships. Work with multidisciplinary teams and build a strong professional network.",
   },
 ];
 

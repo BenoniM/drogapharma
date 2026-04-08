@@ -7,6 +7,7 @@ import {
   Stethoscope,
   Bone,
   Award,
+  BadgeCheck,
   Globe,
   Users,
   TrendingUp,
@@ -25,10 +26,11 @@ import productsImg from "@/assets/products.jpg";
 import teamImg from "@/assets/CertificateofRecognitionFromMinistryofHealthEthiopia.jpg";
 
 import labImg from "@/assets/DrogaResearchGrant2023Winnerjpg.jpg";
+import medecialImg from "@/assets/medicaldevice.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 import heroBgMain from "@/assets/herobg/IMG_2004.jpg";
 import heroBgSecondary from "@/assets/herobg/5.jpg";
-import Headquarters from "@/assets/building.jpg";
+import Headquarters from "@/assets/building.png";
 import medicinesImg from "@/assets/medicines.jpg";
 import healthcareTeamImg from "@/assets/CertificateofAppreciationFromTheMinistryofHealth.jpg";
 import medDevicesImg from "@/assets/medical-devices.jpg";
@@ -77,7 +79,7 @@ const categories = [
     icon: Stethoscope,
     title: "Medical Devices",
     desc: "Disposable medical devices and diagnostic equipment",
-    img: labImg,
+    img: medecialImg,
     count: "150+",
   },
   {
@@ -114,13 +116,26 @@ const clients = [
 ];
 
 const Home = () => {
-  const clientLogoModules = import.meta.glob(
+  const ourPartnersLogoModules = import.meta.glob(
     "@/assets/OurPartners/*.{png,jpg,jpeg,webp,svg}",
     {
       eager: true,
       import: "default",
     },
   ) as Record<string, string>;
+
+  const clientsFolderLogoModules = import.meta.glob(
+    "@/assets/Clients/*.{png,jpg,jpeg,webp,svg}",
+    {
+      eager: true,
+      import: "default",
+    },
+  ) as Record<string, string>;
+
+  const clientLogoModules = {
+    ...ourPartnersLogoModules,
+    ...clientsFolderLogoModules,
+  };
 
   const clients = Object.entries(clientLogoModules)
     .sort(([a], [b]) => a.localeCompare(b))
@@ -187,31 +202,40 @@ const Home = () => {
         <section className="bg-white section-padding-lg">
           <div className="container-narrow">
             <ScrollReveal>
-              <div className="max-w-4xl">
-                <span className="section-label block mb-6 text-black ">
-                  About Droga Pharma
-                </span>
-                <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-black leading-[1.15] mb-8">
-                  Established in 2015, we are working in the pharmaceuticals
-                  import, wholesale and retail business, targeting the public as
-                  well as the private health sector of Ethiopia.
-                </h2>
-                <p className="text-[#5c5858] text-lg leading-relaxed max-w-2xl">
-                  Our team is made up of highly experienced pharmacists and
-                  manufacturing industry professionals who utilize their unique
-                  knowledge to create and implement cutting-edge management
-                  systems.
-                </p>
-                <Link
-                  to="/about"
-                  className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-black border-b-2 border-background/20 pb-1 hover:border-[#7a7979] hover:text-[#7a7979] transition-all duration-300 group"
-                >
-                  Learn more about our company
-                  <ArrowRight
-                    size={14}
-                    className="group-hover:translate-x-1 transition-transform duration-300"
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+                <div className="max-w-4xl">
+                  <span className="section-label block mb-6 text-black ">
+                    About Droga Pharma
+                  </span>
+                  <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-black leading-[1.15] mb-8">
+                    Established in 2015, we are working in the pharmaceuticals
+                    import, wholesale and retail business, targeting the public
+                    as well as the private health sector of Ethiopia.
+                  </h2>
+                  <p className="text-[#5c5858] text-lg leading-relaxed max-w-2xl">
+                    Our team is made up of highly experienced pharmacists and
+                    manufacturing industry professionals who utilize their
+                    unique knowledge to create and implement cutting-edge
+                    management systems.
+                  </p>
+                  <Link
+                    to="/about"
+                    className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-black border-b-2 border-background/20 pb-1 hover:border-[#7a7979] hover:text-[#7a7979] transition-all duration-300 group"
+                  >
+                    Learn more about our company
+                    <ArrowRight
+                      size={14}
+                      className="group-hover:translate-x-1 transition-transform duration-300"
+                    />
+                  </Link>
+                </div>
+                <div className="relative overflow-hidden bg-[#f5f5f5] min-h-[300px] md:min-h-[420px] h-full flex items-center justify-center p-4 md:p-6">
+                  <img
+                    src={Headquarters}
+                    alt="Droga Pharma headquarters"
+                    className="w-full h-full object-contain"
                   />
-                </Link>
+                </div>
               </div>
             </ScrollReveal>
           </div>
@@ -263,7 +287,7 @@ const Home = () => {
         </section>
 
         {/* Split — HQ */}
-        <section className="bg-white">
+        {/* <section className="bg-white">
           <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[650px] ">
             <div className="relative overflow-hidden bg-[#f5f5f5] min-h-[450px] lg:min-h-full h-full flex items-center justify-center p-4 md:p-6">
               <img
@@ -295,7 +319,7 @@ const Home = () => {
               </ScrollReveal>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Products — Yellow hover cards */}
         <section className="bg-[#f5f5f5] section-padding-lg">
@@ -437,17 +461,19 @@ const Home = () => {
                   cutting-edge management systems.
                 </p>
                 <div className="flex flex-wrap gap-3 mb-8">
-                  {["WHO Approved", "ISO Certified", "GMP Compliant"].map(
-                    (badge) => (
-                      <span
-                        key={badge}
-                        className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-xs font-semibold px-4 py-2"
-                      >
-                        <Award size={12} />
-                        {badge}
-                      </span>
-                    ),
-                  )}
+                  {[
+                    { label: "WHO Approved", icon: Award },
+                    { label: "ISO Certified", icon: BadgeCheck },
+                    { label: "GMP Compliant", icon: Award },
+                  ].map((badge) => (
+                    <span
+                      key={badge.label}
+                      className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-xs font-semibold px-4 py-2"
+                    >
+                      <badge.icon size={12} />
+                      {badge.label}
+                    </span>
+                  ))}
                 </div>
                 <Link
                   to="/about"
@@ -551,19 +577,23 @@ const Home = () => {
           <div className="container-narrow mb-12">
             <ScrollReveal>
               <div className="text-center">
-                <span className="text-xs font-semibold tracking-[0.2em] uppercase text-primary-foreground/60 block mb-4">
-                  Trusted Partners
+                <span className="text-md font-semibold tracking-[0.2em] uppercase text-primary-foreground/60 block mb-4">
+                  Our Partners
                 </span>
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-primary-foreground">
-                  Our Clients
-                </h2>
-                <p className="text-primary-foreground/60 mt-3 max-w-md mx-auto">
+
+                <p className="text-black mt-3  mx-auto text-2xl">
                   Serving leading healthcare organizations across Ethiopia
                 </p>
               </div>
             </ScrollReveal>
           </div>
-          <MarqueeClients clients={clients} />
+          <div className="max-w-5xl mx-auto">
+            <MarqueeClients
+              clients={clients}
+              variant="vertical-3"
+              additionalSlides={2}
+            />
+          </div>
         </section>
 
         <CMSBanner />

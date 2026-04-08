@@ -22,41 +22,39 @@ const Certifications = () => {
         {/* Title */}
         <div className="text-center mb-16">
           <h2 className="font-display text-5xl font-bold text-black tracking-tight">
-            Our Certifications
+            ISO Certificates
           </h2>
         </div>
 
-        {/* Certificates Overlapping Layout */}
-        <div className="relative flex justify-center items-center h-[500px] md:h-[700px]">
-          {/* Certificate 2 (Wholesale) - Behind */}
+        {/* Certificates Left/Right Layout */}
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-stretch">
+          {/* Left Certificate (ISO/Import) */}
           <motion.div
-            initial={{ opacity: 0, x: 50, rotate: 5 }}
-            whileInView={{ opacity: 1, x: 80, rotate: 8 }}
-            whileHover={{ scale: 1.1, x: 80, rotate: 0, zIndex: 50 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            className="absolute z-10 w-[280px] md:w-[550px] overflow-hidden cursor-zoom-in "
-          >
-            <img
-              src={wholesaleCert}
-              alt="Droga Wholesale Certificate"
-              className="w-full h-auto"
-            />
-          </motion.div>
-
-          {/* Certificate 1 (ISO/Import) - Front */}
-          <motion.div
-            initial={{ opacity: 0, x: -50, rotate: -5 }}
-            whileInView={{ opacity: 1, x: -80, rotate: -8 }}
-            whileHover={{ scale: 1.1, x: -80, rotate: 0, zIndex: 50 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="absolute z-20 w-[280px] md:w-[550px] overflow-hidden cursor-zoom-in "
+            className="w-full max-w-[560px] mx-auto overflow-hidden cursor-zoom-in self-stretch"
           >
             <img
               src={isoCert}
               alt="ISO Certification"
-              className="w-full h-auto"
+              className="block w-full h-auto object-contain transform-none"
+            />
+          </motion.div>
+
+          {/* Right Certificate (Wholesale) */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+            className="w-full max-w-[560px] mx-auto overflow-hidden cursor-zoom-in self-stretch"
+          >
+            <img
+              src={wholesaleCert}
+              alt="Droga Wholesale Certificate"
+              className="block w-full h-auto object-contain transform-none"
             />
           </motion.div>
         </div>

@@ -20,6 +20,7 @@ type TeamCardProps = {
   image: string;
   isActive?: boolean;
   isFeatured?: boolean;
+  showActionButton?: boolean;
   onOpen: () => void;
 };
 
@@ -208,6 +209,7 @@ const TeamCard = ({
   image,
   isActive = true,
   isFeatured = false,
+  showActionButton = true,
   onOpen,
 }: TeamCardProps) => {
   return (
@@ -230,7 +232,7 @@ const TeamCard = ({
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent hover:from-black/85 hover:via-black/20 hover:to-transparent pt-32 px-6 pb-8 flex flex-col justify-end transition-colors duration-300">
-          <div className="pr-16">
+          <div className={showActionButton ? "pr-16" : "pr-0"}>
             <h3
               className={`font-display font-bold text-white leading-tight ${
                 isFeatured ? "text-4xl" : "text-3xl"
@@ -249,29 +251,33 @@ const TeamCard = ({
         </div>
 
         {/* The Notch Cutout */}
-        <div className="absolute bottom-0 right-0 w-20 h-20 bg-white rounded-tl-[2rem] z-10">
-          {/* Top concave round */}
-          <div className="absolute -top-[24px] right-0 w-[24px] h-[24px] bg-white">
-            <div className="w-full h-full bg-[#fff200] rounded-br-[24px]" />
+        {showActionButton && (
+          <div className="absolute bottom-0 right-0 w-20 h-20 bg-white rounded-tl-[2rem] z-10">
+            {/* Top concave round */}
+            <div className="absolute -top-[24px] right-0 w-[24px] h-[24px] bg-white">
+              <div className="w-full h-full bg-[#fff200] rounded-br-[24px]" />
+            </div>
+            {/* Left concave round */}
+            <div className="absolute bottom-0 -left-[24px] w-[24px] h-[24px] bg-white">
+              <div className="w-full h-full bg-[#fff200]/40 rounded-br-[24px]" />
+            </div>
           </div>
-          {/* Left concave round */}
-          <div className="absolute bottom-0 -left-[24px] w-[24px] h-[24px] bg-white">
-            <div className="w-full h-full bg-[#fff200]/40 rounded-br-[24px]" />
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Floating Plus Button in the Notch */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onOpen();
-        }}
-        className={`absolute bottom-2 right-2 flex items-center justify-center bg-[#fff200] text-black shadow-xl z-20 transition-all duration-300 hover:scale-110 hover:rotate-6 active:scale-95
+      {showActionButton && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpen();
+          }}
+          className={`absolute bottom-2 right-2 flex items-center justify-center bg-[#fff200] text-black shadow-xl z-20 transition-all duration-300 hover:scale-110 hover:rotate-6 active:scale-95
           ${isFeatured ? "w-16 h-16 rounded-[1.5rem]" : "w-12 h-12 rounded-[1.2rem]"}`}
-      >
-        <Plus size={isFeatured ? 28 : 22} strokeWidth={2.5} />
-      </button>
+        >
+          <Plus size={isFeatured ? 28 : 22} strokeWidth={2.5} />
+        </button>
+      )}
     </motion.div>
   );
 };
@@ -336,7 +342,7 @@ const OurTeam = () => {
           <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-white to-transparent pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-white to-transparent pointer-events-none" />
 
-          <div className="flex animate-marquee-fast">
+          <div className="flex w-max animate-marquee-fast">
             {marqueeItems.map((member, index) => (
               <div
                 key={`${member.name}-${index}`}
@@ -347,6 +353,7 @@ const OurTeam = () => {
                     name={member.name}
                     role={member.role}
                     image={member.image}
+                    showActionButton={false}
                     onOpen={() => setSelectedMember(member)}
                   />
                 </div>

@@ -206,21 +206,16 @@ const Contact = () => {
                     <label className="text-xs font-medium text-black block mb-2">
                       Subject *
                     </label>
-                    <select
+                    <input
                       required
+                      type="text"
                       value={form.subject}
                       onChange={(e) =>
                         setForm({ ...form, subject: e.target.value })
                       }
-                      className="w-full px-4 py-3 border border-background/20 bg-white text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all duration-300 hover:border-primary/30"
-                    >
-                      <option value="">Select a subject</option>
-                      <option>Complaint and Feedback</option>
-                      <option>Service Queries</option>
-                      <option>Product Information</option>
-                      <option>Technical Support</option>
-                      <option>Others</option>
-                    </select>
+                      placeholder="Enter subject"
+                      className="w-full px-4 py-3 border border-background/20 bg-white text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all duration-300 hover:border-primary/30 placeholder:text-background/20"
+                    />
                   </div>
                   <div>
                     <label className="text-xs font-medium text-black block mb-2">

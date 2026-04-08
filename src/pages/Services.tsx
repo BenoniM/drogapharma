@@ -10,6 +10,7 @@ import {
   Thermometer,
   Package,
   FileCheck,
+  FlaskConical,
   ArrowRight,
 } from "lucide-react";
 import warehouseImg from "@/assets/warehouse.jpg";
@@ -69,6 +70,12 @@ const services = [
       "Shelf-life tracking",
       "Anti-counterfeit measures",
     ],
+  },
+  {
+    icon: FlaskConical,
+    title: "Research & Development",
+    desc: "Innovative R&D initiatives to develop cutting-edge pharmaceutical solutions.",
+    features: ["Clinical trials", "Product development", "Scientific research"],
   },
 ];
 
