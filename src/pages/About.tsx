@@ -364,7 +364,7 @@ const About = () => {
         <section className="bg-foreground">
           <div className="relative overflow-hidden min-h-[650px]">
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] min-h-[650px]">
-              <div className="relative overflow-hidden min-w-0 min-h-[450px] lg:min-h-full">
+              <div className="order-2 lg:order-1 relative overflow-hidden min-w-0 min-h-[450px] lg:min-h-full">
                 <AnimatePresence initial={false} mode="sync">
                   <motion.img
                     key={activeStory.image}
@@ -380,7 +380,7 @@ const About = () => {
               </div>
 
               {/* { info of the image} */}
-              <div className="flex items-center p-10 md:p-10 lg:p-16 bg-[#fffdfd] min-w-0">
+              <div className="order-1 lg:order-2 flex items-center p-10 md:p-10 lg:p-16 bg-[#fffdfd] min-w-0">
                 <ScrollReveal direction="right">
                   <div className="relative w-full overflow-hidden">
                     <div className="px-8  md:px-12 md:py-14 max-w-[620px] text-center">
