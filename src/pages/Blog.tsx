@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
@@ -190,47 +191,52 @@ const Blog = () => {
               </span>
             </ScrollReveal>
             <ScrollReveal>
-              <motion.div
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="group grid grid-cols-1 lg:grid-cols-2 gap-0 bg-[#f5f5f5] overflow-hidden border border-black/8 cursor-pointer"
+              <Link
+                to={`/blog/${featuredPost.id}`}
+                state={{ post: featuredPost }}
               >
-                <div className="relative aspect-[4/3] lg:aspect-auto overflow-hidden">
-                  <motion.img
-                    src={featuredPost.img}
-                    alt={featuredPost.title}
-                    className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.04 }}
-                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-foreground/20 group-hover:to-foreground/30 transition-all duration-500" />
-                  <span className="absolute top-5 left-5 inline-block bg-primary text-black text-xs font-bold uppercase tracking-widest px-4 py-1.5">
-                    {featuredPost.category}
-                  </span>
-                </div>
-
-                <div className="flex flex-col justify-center p-10 md:p-14 lg:p-16">
-                  <div className="flex items-center gap-5 text-[#5c5858] text-xs mb-6">
-                    <span className="flex items-center gap-1.5">
-                      <Calendar size={12} />
-                      {featuredPost.date}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Clock size={12} />
-                      {featuredPost.readTime}
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="group grid grid-cols-1 lg:grid-cols-2 gap-0 bg-[#f5f5f5] overflow-hidden border border-black/8 cursor-pointer"
+                >
+                  <div className="relative aspect-[4/3] lg:aspect-auto overflow-hidden">
+                    <motion.img
+                      src={featuredPost.img}
+                      alt={featuredPost.title}
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.04 }}
+                      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-foreground/20 group-hover:to-foreground/30 transition-all duration-500" />
+                    <span className="absolute top-5 left-5 inline-block bg-primary text-black text-xs font-bold uppercase tracking-widest px-4 py-1.5">
+                      {featuredPost.category}
                     </span>
                   </div>
-                  <h2 className="font-display text-2xl md:text-3xl font-bold text-black leading-tight mb-5 group-hover:text-black/80 transition-colors duration-300">
-                    {featuredPost.title}
-                  </h2>
-                  <p className="text-[#5c5858] leading-relaxed mb-8 text-base">
-                    {featuredPost.excerpt}
-                  </p>
-                  <button className="btn-primary self-start text-sm">
-                    Read Story <ArrowRight size={14} />
-                  </button>
-                </div>
-              </motion.div>
+
+                  <div className="flex flex-col justify-center p-10 md:p-14 lg:p-16">
+                    <div className="flex items-center gap-5 text-[#5c5858] text-xs mb-6">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar size={12} />
+                        {featuredPost.date}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <Clock size={12} />
+                        {featuredPost.readTime}
+                      </span>
+                    </div>
+                    <h2 className="font-display text-2xl md:text-3xl font-bold text-black leading-tight mb-5 group-hover:text-black/80 transition-colors duration-300">
+                      {featuredPost.title}
+                    </h2>
+                    <p className="text-[#5c5858] leading-relaxed mb-8 text-base">
+                      {featuredPost.excerpt}
+                    </p>
+                    <span className="btn-primary self-start text-sm inline-flex items-center gap-2">
+                      Read Story <ArrowRight size={14} />
+                    </span>
+                  </div>
+                </motion.div>
+              </Link>
             </ScrollReveal>
           </div>
         </section>
@@ -317,62 +323,67 @@ const Blog = () => {
                 >
                   {filtered.map((post) => (
                     <motion.div key={post.id} variants={staggerItem}>
-                      <motion.div
-                        whileHover={{ y: -6 }}
-                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                        className="group overflow-hidden bg-white border border-black/8 h-full flex flex-col cursor-pointer hover:bg-primary transition-colors duration-400"
-                        style={{
-                          boxShadow: "0 2px 12px -4px rgba(0,0,0,0.08)",
-                        }}
-                      >
-                        {/* Image */}
-                        <div className="relative aspect-[16/10] overflow-hidden">
-                          <motion.img
-                            src={post.img}
-                            alt={post.title}
-                            className="w-full h-full object-cover"
-                            whileHover={{ scale: 1.05 }}
-                            transition={{
-                              duration: 0.6,
-                              ease: [0.22, 1, 0.36, 1],
-                            }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-foreground/55 via-foreground/10 to-transparent group-hover:from-foreground/70 transition-all duration-500" />
-                          <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest px-3 py-1 bg-background/15 text-background backdrop-blur-sm">
-                            <Tag size={10} />
-                            {post.category}
-                          </span>
-                        </div>
-
-                        {/* Body */}
-                        <div className="p-6 flex flex-col flex-1">
-                          <div className="flex items-center gap-4 text-[#5c5858] text-xs mb-4 group-hover:text-primary-foreground/60 transition-colors duration-300">
-                            <span className="flex items-center gap-1.5">
-                              <Calendar size={11} />
-                              {post.date}
-                            </span>
-                            <span className="flex items-center gap-1.5">
-                              <Clock size={11} />
-                              {post.readTime}
+                      <Link to={`/blog/${post.id}`} state={{ post }}>
+                        <motion.div
+                          whileHover={{ y: -6 }}
+                          transition={{
+                            duration: 0.3,
+                            ease: [0.22, 1, 0.36, 1],
+                          }}
+                          className="group overflow-hidden bg-white border border-black/8 h-full flex flex-col cursor-pointer hover:bg-primary transition-colors duration-400"
+                          style={{
+                            boxShadow: "0 2px 12px -4px rgba(0,0,0,0.08)",
+                          }}
+                        >
+                          {/* Image */}
+                          <div className="relative aspect-[16/10] overflow-hidden">
+                            <motion.img
+                              src={post.img}
+                              alt={post.title}
+                              className="w-full h-full object-cover"
+                              whileHover={{ scale: 1.05 }}
+                              transition={{
+                                duration: 0.6,
+                                ease: [0.22, 1, 0.36, 1],
+                              }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-foreground/55 via-foreground/10 to-transparent group-hover:from-foreground/70 transition-all duration-500" />
+                            <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest px-3 py-1 bg-background/15 text-background backdrop-blur-sm">
+                              <Tag size={10} />
+                              {post.category}
                             </span>
                           </div>
 
-                          <h3 className="font-display font-semibold text-base leading-snug text-black group-hover:text-primary-foreground mb-3 transition-colors duration-300">
-                            {post.title}
-                          </h3>
-                          <p className="text-sm leading-relaxed text-black/70 group-hover:text-primary-foreground/70 mb-5 flex-1 transition-colors duration-300 line-clamp-3">
-                            {post.excerpt}
-                          </p>
+                          {/* Body */}
+                          <div className="p-6 flex flex-col flex-1">
+                            <div className="flex items-center gap-4 text-[#5c5858] text-xs mb-4 group-hover:text-primary-foreground/60 transition-colors duration-300">
+                              <span className="flex items-center gap-1.5">
+                                <Calendar size={11} />
+                                {post.date}
+                              </span>
+                              <span className="flex items-center gap-1.5">
+                                <Clock size={11} />
+                                {post.readTime}
+                              </span>
+                            </div>
 
-                          <button className="self-start inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-black group-hover:text-primary-foreground transition-colors duration-300 border-b-2 border-transparent group-hover:border-primary-foreground/30 pb-0.5">
-                            Read more
-                            <ChevronRight
-                              size={12}
-                              className="group-hover:translate-x-1 transition-transform duration-300"
-                            />
-                          </button>
-                        </div>
-                      </motion.div>
+                            <h3 className="font-display font-semibold text-base leading-snug text-black group-hover:text-primary-foreground mb-3 transition-colors duration-300">
+                              {post.title}
+                            </h3>
+                            <p className="text-sm leading-relaxed text-black/70 group-hover:text-primary-foreground/70 mb-5 flex-1 transition-colors duration-300 line-clamp-3">
+                              {post.excerpt}
+                            </p>
+
+                            <span className="self-start inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-black group-hover:text-primary-foreground transition-colors duration-300 border-b-2 border-transparent group-hover:border-primary-foreground/30 pb-0.5">
+                              Read more
+                              <ChevronRight
+                                size={12}
+                                className="group-hover:translate-x-1 transition-transform duration-300"
+                              />
+                            </span>
+                          </div>
+                        </motion.div>
+                      </Link>
                     </motion.div>
                   ))}
                 </motion.div>

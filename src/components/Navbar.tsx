@@ -10,12 +10,7 @@ import {
   ArrowUpRight,
   Mail,
 } from "lucide-react";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValueEvent,
-  useScroll,
-} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/logo.jpg";
 
 type NavChild = {
@@ -137,6 +132,7 @@ const navLinks: NavItem[] = [
     ],
   },
   { label: "Careers", path: "/careers" },
+  { label: "CRS", path: "/crs" },
 ];
 
 /* ─── Mega Dropdown ─── */
@@ -327,23 +323,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const location = useLocation();
-  const { scrollY } = useScroll();
-  const [scrollState, setScrollState] = useState<"top" | "scrolled" | "hidden">(
-    "top",
-  );
-  const lastY = useRef(0);
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const prev = lastY.current;
-    if (latest < 30) {
-      setScrollState("top");
-    } else if (latest > prev + 5 && latest > 300) {
-      setScrollState("hidden");
-    } else if (latest < prev - 5 || latest <= 300) {
-      setScrollState("scrolled");
-    }
-    lastY.current = latest;
-  });
 
   useEffect(() => {
     setIsOpen(false);
@@ -351,8 +330,7 @@ const Navbar = () => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  const isHome = location.pathname === "/";
-  const showWhiteNav = scrollState !== "top" || !isHome;
+  const showWhiteNav = true;
 
   const isActive = (item: NavItem) => {
     if (item.path === "/" && location.pathname === "/") return true;
@@ -372,9 +350,7 @@ const Navbar = () => {
       {/* Utility Bar */}
       <motion.div
         initial={false}
-        animate={{ y: scrollState === "hidden" ? -36 : 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed top-0 left-0 right-0 z-50 bg-primary h-9 hidden lg:flex items-center"
+        className="sticky top-0 left-0 right-0 z-50 bg-primary h-9 hidden lg:flex items-center"
       >
         <div className="container-narrow flex items-center justify-between w-full">
           <div className="flex items-center gap-5">
@@ -418,19 +394,11 @@ const Navbar = () => {
       {/* Main Navbar */}
       <motion.nav
         initial={false}
-        animate={{
-          y: scrollState === "hidden" ? -120 : 0,
-        }}
-        transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
-        className={`fixed left-0 right-0 z-40 lg:top-9 top-0 transition-all duration-500 ${
-          showWhiteNav
-            ? "bg-background/70 backdrop-blur-2xl shadow-[0_1px_3px_rgba(92, 92, 92, 0.04),0_4px_12px_rgba(0,0,0,0.03)]"
-            : "bg-transparent"
-        }`}
+        className={`sticky left-0 right-0 z-40 lg:top-9 top-0 transition-all duration-500 ${"bg-background/80 backdrop-blur-2xl shadow-[0_1px_3px_rgba(92, 92, 92, 0.04),0_4px_12px_rgba(0,0,0,0.03)]"}`}
       >
         {/* Subtle bottom border that appears on scroll */}
         <div
-          className={`absolute bottom-0 left-0 right-0 h-px transition-opacity duration-500 ${showWhiteNav ? "opacity-100" : "opacity-0"}`}
+          className="absolute bottom-0 left-0 right-0 h-px transition-opacity duration-500 opacity-100"
           style={{
             background:
               "linear-gradient(90deg, transparent, hsl(var(--border)), transparent)",

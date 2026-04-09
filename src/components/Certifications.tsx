@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import isoCert from "../assets/ISO-Certificate.png";
-import wholesaleCert from "../assets/DrogaWholesaleCertificate.png";
+import isoCert from "../assets/ISO-Certificate.jpg";
+import wholesaleCert from "../assets/DrogaWholesaleCertificate.jpg";
 
 const Certifications = () => {
   return (

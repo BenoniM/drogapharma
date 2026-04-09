@@ -56,7 +56,7 @@ const HeroSlider = ({ slides, autoPlayInterval = 6000 }: HeroSliderProps) => {
   return (
     <section className="relative h-screen min-h-[700px] overflow-hidden bg-foreground">
       {/* Loading skeleton */}
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {!imagesLoaded && (
           <motion.div
             exit={{ opacity: 0 }}
@@ -72,7 +72,7 @@ const HeroSlider = ({ slides, autoPlayInterval = 6000 }: HeroSliderProps) => {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence> */}
 
       {/* Background media with crossfade */}
       {slides.map((s, i) => (

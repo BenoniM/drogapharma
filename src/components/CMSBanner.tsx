@@ -48,11 +48,11 @@ const CMSBanner = () => {
           {/* Right: QR Code */}
           <motion.div
             variants={staggerItem}
-            className="bg-white p-4 md:p-6 shadow-xl"
+            className=" p-4 md:p-1 "
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300, damping: 15 }}
           >
-            <div className="w-32 h-32 md:w-40 md:h-40 bg-white flex items-center justify-center">
+            <div className="w-32 h-32 md:w-52 md:h-52 bg-white flex items-center justify-center">
               <img
                 src={cmsQrImage}
                 alt="CMS QR code"

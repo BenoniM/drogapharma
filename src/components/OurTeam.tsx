@@ -57,6 +57,7 @@ const formatNameMapping: Record<string, string> = {
   yemeserachmolla: "Yemeserach Molla",
   yohannestamerat: "Yohannes Tamerat",
   yosanchari: "Yosan Chari",
+  berhanassefa: "Berhan Assefa",
 };
 
 const roleNameMapping: Record<string, string> = {
@@ -87,6 +88,7 @@ const roleNameMapping: Record<string, string> = {
   yemeserachmolla: "Finance Director",
   yohannestamerat: "Marketing Director",
   yosanchari: "Human Resource Director",
+  berhanassefa: "CTO-Droga Consulting",
 };
 
 const teamMembers = Object.entries(teamImages).map(([path, src]) => {
@@ -284,7 +286,22 @@ const TeamCard = ({
 
 const OurTeam = () => {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
-  const marqueeItems = [...teamMembers, ...teamMembers];
+
+  const getRolePriority = (role: string) => {
+    const normalizedRole = role.toLowerCase();
+
+    if (normalizedRole.includes("chief")) return 0;
+    if (normalizedRole.includes("director")) return 1;
+    if (normalizedRole.includes("manager")) return 2;
+
+    return 1;
+  };
+
+  const orderedTeamMembers = [...teamMembers].sort((a, b) => {
+    return getRolePriority(a.role) - getRolePriority(b.role);
+  });
+
+  const marqueeItems = [...orderedTeamMembers, ...orderedTeamMembers];
 
   return (
     <section className="bg-white py-24 overflow-hidden">
@@ -311,8 +328,8 @@ const OurTeam = () => {
                 name: "Henok Teka",
                 role: "Group CEO",
                 image: henokImg,
-                email: "henok.teka@drogapharma.com",
-                phone: "+251 112 734 554",
+                email: "md@drogapharma.com",
+                phone: "+251 913 667 537",
                 bio: "Strategic leader and Founder of Droga Pharma, driving innovation in Ethiopia's healthcare sector.",
                 startDate: "01/10/2012",
               })
@@ -328,8 +345,8 @@ const OurTeam = () => {
                 name: "Dr. Abdi Ermolo",
                 role: "Deputy CEO",
                 image: abdiImg,
-                email: "abdi.ermolo@drogapharma.com",
-                phone: "+251 112 734 554",
+                email: "abdi@drogapharma.com",
+                phone: "+251 929 908 566",
                 bio: "Expert healthcare administrator overseeing group-wide medical and operations strategies.",
                 startDate: "05/15/2014",
               })

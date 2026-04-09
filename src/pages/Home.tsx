@@ -27,7 +27,7 @@ import teamImg from "@/assets/CertificateofRecognitionFromMinistryofHealthEthiop
 
 import labImg from "@/assets/DrogaResearchGrant2023Winnerjpg.jpg";
 import medecialImg from "@/assets/medicaldevice.jpg";
-import supplyImg from "@/assets/supply-chain.jpg";
+import supplyImg from "@/assets/ourexpert.jpg";
 import heroBgMain from "@/assets/herobg/IMG_2004.jpg";
 import heroBgSecondary from "@/assets/herobg/5.jpg";
 import Headquarters from "@/assets/building.png";
@@ -587,7 +587,7 @@ const Home = () => {
               </div>
             </ScrollReveal>
           </div>
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <MarqueeClients
               clients={clients}
               variant="vertical-3"

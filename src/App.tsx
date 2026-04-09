@@ -16,7 +16,9 @@ import Gallery from "./pages/Gallery";
 import Certifications from "./pages/Certifications";
 import Contact from "./pages/Contact";
 import Careers from "./pages/Careers";
+import CRS from "./pages/CRS.tsx";
 import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,7 +35,9 @@ const AnimatedRoutes = () => {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/certifications" element={<Certifications />} />
         <Route path="/careers" element={<Careers />} />
+        <Route path="/crs" element={<CRS />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

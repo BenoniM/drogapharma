@@ -63,19 +63,19 @@ const coreValues = [
     category: "Care",
     title: "Care For Us (Employee & Terms)",
     image:
-      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80",
   },
   {
     category: "Care",
     title: "Care For Community",
     image:
-      "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80",
   },
   {
     category: "Care",
     title: "Care For The Planet",
     image:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
@@ -189,38 +189,38 @@ const timeline = [
   },
 ];
 
-const groupCompanies = [
-  {
-    name: "Trust Pharma",
-    desc: "Pharmaceutical manufacturing partner",
-    url: "https://www.trustethiopharma.com/",
-    logo: trust,
-  },
-  {
-    name: "EMA Ethiopia",
-    desc: "Healthcare solutions provider",
-    url: "https://www.emaethiopia.com/",
-    logo: ema,
-  },
-  {
-    name: "Droga Pharmacy",
-    desc: "Pharmaceutical solutions provider",
-    url: "https://drogapharma.com/",
-    logo: DrogaPh,
-  },
-  {
-    name: "Droga Physiotherapy ",
-    desc: "Physiotherapy services provider",
-    url: "https://drogapharma.com/",
-    logo: drogalab,
-  },
-  {
-    name: "Droga consulting",
-    desc: "Distribution and supply chain services",
-    url: "https://drogaconsulting.com",
-    logo: Drogaconsult,
-  },
-];
+// const groupCompanies = [
+//   {
+//     name: "Trust Pharma",
+//     desc: "Pharmaceutical manufacturing partner",
+//     url: "https://www.trustethiopharma.com/",
+//     logo: trust,
+//   },
+//   {
+//     name: "EMA Ethiopia",
+//     desc: "Healthcare solutions provider",
+//     url: "https://www.emaethiopia.com/",
+//     logo: ema,
+//   },
+//   {
+//     name: "Droga Pharmacy",
+//     desc: "Pharmaceutical solutions provider",
+//     url: "https://drogapharma.com/",
+//     logo: DrogaPh,
+//   },
+//   {
+//     name: "Droga Physiotherapy ",
+//     desc: "Physiotherapy services provider",
+//     url: "https://drogapharma.com/",
+//     logo: drogalab,
+//   },
+//   {
+//     name: "Droga consulting",
+//     desc: "Distribution and supply chain services",
+//     url: "https://drogaconsulting.com",
+//     logo: Drogaconsult,
+//   },
+// ];
 
 const missionVisionSlides = [
   {
@@ -331,8 +331,8 @@ const About = () => {
 
         {/* Story split */}
         <section className="bg-foreground">
-          <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[650px]">
-            <div className="relative overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] min-h-[650px]">
+            <div className="relative overflow-hidden min-w-0">
               <ImageSlider
                 images={storySlides.map((slide) => ({
                   src: slide.image,
@@ -340,19 +340,20 @@ const About = () => {
                 }))}
                 className="min-h-[450px] lg:min-h-full h-full"
                 onSlideChange={setStoryCurrent}
-                effect="slide-rtl"
+                effect="fade"
+                interval={8500}
               />
             </div>
-            <div className="flex items-center p-10 md:p-10 lg:p-16 bg-[#fffdfd] ">
+            <div className="flex items-center p-10 md:p-10 lg:p-16 bg-[#fffdfd] min-w-0">
               <ScrollReveal direction="right">
                 <div className="relative w-full overflow-hidden">
                   <AnimatePresence initial={false}>
                     <motion.div
                       key={activeStory.title}
-                      initial={{ opacity: 0, x: 36 }}
+                      initial={{ opacity: 0, x: 28 }}
                       animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -36 }}
-                      transition={{ duration: 0.65, ease: [0.45, 0, 0.55, 1] }}
+                      exit={{ opacity: 0, x: -28 }}
+                      transition={{ duration: 0.95, ease: [0.25, 1, 0.5, 1] }}
                       className="px-8  md:px-12 md:py-14 max-w-[620px] text-center"
                     >
                       <h2 className="font-display text-3xl md:text-4xl font-bold text-black mb-10">
@@ -705,7 +706,7 @@ const About = () => {
               </div>
             </ScrollReveal>
           </div>
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <MarqueeClients
               clients={clients}
               variant="vertical-3"

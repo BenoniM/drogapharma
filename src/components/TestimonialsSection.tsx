@@ -100,7 +100,7 @@ const TestimonialsSection = () => {
   const realIndex = currentIndex % N;
 
   return (
-    <section className="bg-primary py-16 md:py-16 overflow-hidden">
+    <section className="bg-primary py-16 md:py-10 overflow-hidden">
       <div className="container-narrow mb-16">
         <h2 className="font-display text-3xl md:text-5xl font-medium text-center text-black mb-4">
           Experiences Droga Group
