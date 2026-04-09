@@ -5,9 +5,9 @@ import { Eye, Target } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
-import AnimatedCounter from "@/components/AnimatedCounter";
+// import AnimatedCounter from "@/components/AnimatedCounter";
 import teamImg from "@/assets/abdi.jpg";
-import team from "@/assets/healthcare-team.jpg";
+// import team from "@/assets/healthcare-team.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
 import heroImg from "@/assets/hero-pharma.jpg";
 import labImg from "@/assets/lab-research.jpg";
@@ -16,11 +16,11 @@ import heroBgTwo from "@/assets/herobg/4.jpg";
 import heroBgThree from "@/assets/herobg/5.jpg";
 import healthcareTeamImg from "@/assets/henoknew.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
-import Drogaconsult from "@/assets/drogacon.png";
-import DrogaPh from "@/assets/drogapha.png";
-import drogalab from "@/assets/drogalab.png";
-import ema from "@/assets/ema.png";
-import trust from "@/assets/trust.png";
+// import Drogaconsult from "@/assets/drogacon.png";
+// import DrogaPh from "@/assets/drogapha.png";
+// import drogalab from "@/assets/drogalab.png";
+// import ema from "@/assets/ema.png";
+// import trust from "@/assets/trust.png";
 
 const coreValues = [
   {
@@ -306,6 +306,14 @@ const About = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
+      setStoryCurrent((prev) => (prev + 1) % storySlides.length);
+    }, 8500);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
       setMissionCurrent((prev) => (prev + 1) % missionVisionSlides.length);
     }, 6000);
 
@@ -354,31 +362,28 @@ const About = () => {
 
         {/* Story split */}
         <section className="bg-foreground">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] min-h-[650px]">
-            <div className="relative overflow-hidden min-w-0">
-              <ImageSlider
-                images={storySlides.map((slide) => ({
-                  src: slide.image,
-                  alt: slide.alt,
-                }))}
-                className="min-h-[450px] lg:min-h-full h-full"
-                onSlideChange={setStoryCurrent}
-                effect="fade"
-                interval={8500}
-              />
-            </div>
-            <div className="flex items-center p-10 md:p-10 lg:p-16 bg-[#fffdfd] min-w-0">
-              <ScrollReveal direction="right">
-                <div className="relative w-full overflow-hidden">
-                  <AnimatePresence initial={false}>
-                    <motion.div
-                      key={activeStory.title}
-                      initial={{ opacity: 0, x: 28 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -28 }}
-                      transition={{ duration: 0.95, ease: [0.25, 1, 0.5, 1] }}
-                      className="px-8  md:px-12 md:py-14 max-w-[620px] text-center"
-                    >
+          <div className="relative overflow-hidden min-h-[650px]">
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] min-h-[650px]">
+              <div className="relative overflow-hidden min-w-0 min-h-[450px] lg:min-h-full">
+                <AnimatePresence initial={false} mode="sync">
+                  <motion.img
+                    key={activeStory.image}
+                    src={activeStory.image}
+                    alt={activeStory.alt}
+                    initial={{ x: "100%", scale: 1.01 }}
+                    animate={{ x: "0%", scale: 1 }}
+                    exit={{ x: "-100%", scale: 1.01 }}
+                    transition={{ duration: 0.95, ease: [0.25, 1, 0.5, 1] }}
+                    className="absolute inset-0 h-full w-full object-cover object-center"
+                  />
+                </AnimatePresence>
+              </div>
+
+              {/* { info of the image} */}
+              <div className="flex items-center p-10 md:p-10 lg:p-16 bg-[#fffdfd] min-w-0">
+                <ScrollReveal direction="right">
+                  <div className="relative w-full overflow-hidden">
+                    <div className="px-8  md:px-12 md:py-14 max-w-[620px] text-center">
                       <h2 className="font-display text-3xl md:text-4xl font-bold text-black mb-10">
                         {activeStory.title}
                       </h2>
@@ -411,10 +416,10 @@ const About = () => {
                           {activeStory.signatureRole}
                         </p>
                       </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              </ScrollReveal>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              </div>
             </div>
           </div>
         </section>
