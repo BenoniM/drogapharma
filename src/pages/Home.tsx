@@ -185,7 +185,7 @@ const Home = () => {
                     size={16}
                     className="opacity-40 group-hover:opacity-100 transition-opacity duration-300 text-black"
                   />
-                  <span className="hidden md:inline text-black ">
+                  <span className=" md:inline text-black text-xs md:text-md">
                     {item.label}
                   </span>
                   <ArrowRight
