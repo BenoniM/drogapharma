@@ -129,17 +129,39 @@ const clients = Object.entries(clientLogoModules)
     };
   });
 
+const ourJourneyImageModules = import.meta.glob(
+  "@/assets/OurJourney/*.{png,jpg,jpeg,webp,svg}",
+  {
+    eager: true,
+    import: "default",
+  },
+) as Record<string, string>;
+
+const ourJourneyImages = Object.entries(ourJourneyImageModules).reduce<
+  Record<string, string>
+>((acc, [path, src]) => {
+  const filename = path.split("/").pop() ?? "";
+  const normalizedName = filename.replace(/\.[^.]+$/, "").toLowerCase();
+  acc[normalizedName] = src;
+  return acc;
+}, {});
+
+const getJourneyImage = (name: string, fallback: string) => {
+  const normalizedName = name.replace(/\s+/g, "").toLowerCase();
+  return ourJourneyImages[normalizedName] ?? fallback;
+};
+
 const timeline = [
   {
     year: "2015",
     title: "BEGINNING",
-    image: teamImg,
+    image: getJourneyImage("BEGINNING", teamImg),
     event: "Establishment of Droga Pharma PLC (Whole Sale Division)",
   },
   {
     year: "2016",
     title: "SISTER COMPANY",
-    image: labImg,
+    image: getJourneyImage("SISTER COMPANY", labImg),
     event: "Establishment of Droga Physiotherapy Clinic",
   },
   {
@@ -158,19 +180,20 @@ const timeline = [
   {
     year: "2019",
     title: "GROWING",
-    image: teamImg,
+    image:
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=80",
     event: "Establishment of EMA Private Limited Company",
   },
   {
     year: "2020",
     title: "NEW FACTORY",
-    image: heroImg,
+    image: getJourneyImage("NEW FACTORY", heroImg),
     event: "Establishment of Trust Pharmaceuticals Manufacturing PLC",
   },
   {
     year: "2021",
     title: "NEW HEADQUARTER",
-    image: healthcareTeamImg,
+    image: getJourneyImage("NEW HEADQUARTER", healthcareTeamImg),
     event:
       "Establishment of R & D Unit, and 4Killo Branch Physiotherapy Clinic",
   },

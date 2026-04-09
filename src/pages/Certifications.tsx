@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
-import { Award, ArrowRight, ChevronDown } from "lucide-react";
+import { Award, ArrowRight, ChevronDown, Search } from "lucide-react";
 import heroImg from "@/assets/hero-pharma.jpg";
 import labImg from "@/assets/lab-research.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
@@ -100,8 +100,11 @@ const years = ["All", "2015-2018", "2019-2021", "2022+"];
 const Certifications = () => {
   const [selectedType, setSelectedType] = useState("All");
   const [selectedYear, setSelectedYear] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filtered = certifications.filter((cert) => {
+    const query = searchQuery.trim().toLowerCase();
+
     if (selectedType !== "All" && cert.type !== selectedType) return false;
     if (selectedYear !== "All") {
       if (
@@ -116,8 +119,22 @@ const Certifications = () => {
         return false;
       if (selectedYear === "2022+" && cert.year < 2022) return false;
     }
+
+    if (query) {
+      const haystack =
+        `${cert.title} ${cert.full} ${cert.desc} ${cert.type} ${cert.year}`.toLowerCase();
+      if (!haystack.includes(query)) return false;
+    }
+
     return true;
   });
+
+  const visibleCertifications =
+    selectedType === "All" &&
+    selectedYear === "All" &&
+    searchQuery.trim() === ""
+      ? certifications
+      : filtered;
 
   return (
     <PageTransition>
@@ -171,7 +188,7 @@ const Certifications = () => {
               </ScrollReveal>
 
               {/* Filters */}
-              <div className="w-full md:w-auto lg:shrink-0 rounded-xl border border-black/10 bg-white/90 backdrop-blur-sm p-3 md:p-4 shadow-[0_8px_24px_rgba(15,23,42,0.08)]">
+              <div className="w-full md:w-auto lg:shrink-0 p-3 md:p-4 ">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                   <label className="block">
                     <span className="text-[10px] font-semibold text-black/65 uppercase tracking-[0.12em] block mb-1.5">
@@ -218,18 +235,37 @@ const Certifications = () => {
                       />
                     </div>
                   </label>
+
+                  <label className="block sm:col-span-2">
+                    <span className="text-[10px] font-semibold text-black/65 uppercase tracking-[0.12em] block mb-1.5">
+                      Search
+                    </span>
+                    <div className="relative">
+                      <Search
+                        size={14}
+                        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/55"
+                      />
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search title, type, description..."
+                        className="w-full h-10 pl-9 pr-3 rounded-lg bg-[#f7f7f7] border border-black/10 text-xs font-medium text-black outline-none transition-all duration-200 hover:border-black/30 focus:border-primary focus:bg-white"
+                      />
+                    </div>
+                  </label>
                 </div>
               </div>
             </div>
 
             <motion.div
+              key={`${selectedType}-${selectedYear}-${searchQuery.trim()}`}
               variants={staggerContainer}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
+              animate="visible"
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {filtered.map((cert, i) => (
+              {visibleCertifications.map((cert, i) => (
                 <motion.div key={`${cert.title}-${i}`} variants={staggerItem}>
                   <motion.div
                     initial="rest"
@@ -277,7 +313,7 @@ const Certifications = () => {
               ))}
             </motion.div>
 
-            {filtered.length === 0 && (
+            {visibleCertifications.length === 0 && (
               <div className="text-center py-20">
                 <p className="text-background/50 text-lg">
                   No certifications found matching your filters.
