@@ -145,7 +145,6 @@ const Blog = () => {
   return (
     <PageTransition>
       <div className="min-h-screen bg-background">
-        {/* ── Hero ── */}
         <section className="relative h-[70vh] min-h-[560px] flex items-end pb-20 bg-foreground overflow-hidden">
           <ImageSlider
             images={[
