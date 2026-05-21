@@ -385,7 +385,7 @@ const Navbar = () => {
               className="flex items-center gap-1.5 text-black text-xs hover:text-black transition-colors"
             >
               <Phone size={11} className="text-black" />
-              +25111 273 4554
+              +251112306771
             </a>
           </div>
         </div>

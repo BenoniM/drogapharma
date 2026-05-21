@@ -20,7 +20,7 @@ const Footer = () => {
     {
       title: "Headquarter (Ethiopia)",
       contacts: [
-        { icon: Phone, text: "+25111 273 4554", href: "tel:+251112734554" },
+        { icon: Phone, text: "+251112306771", href: "tel:+251112306771" },
         {
           icon: Smartphone,
           text: "+251 91 366 7537",
