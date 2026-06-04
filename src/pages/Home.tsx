@@ -1,5 +1,6 @@
+import { useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useAnimationFrame } from "framer-motion";
 import {
   ArrowRight,
   Pill,
@@ -10,15 +11,18 @@ import {
   BadgeCheck,
   Globe,
   Users,
+  ArrowUpRight,
   TrendingUp,
 } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
-import HeroSlider from "@/components/HeroSlider";
+import ScrollHero from "@/components/ScrollHero";
 import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
+import NewsMosaic from "@/components/NewsMosaic";
 import AnimatedCounter from "@/components/AnimatedCounter";
-import MarqueeClients from "@/components/MarqueeClients";
+import SlidingPartners from "@/components/SlidingPartners";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import MarqueeClients from "@/components/MarqueeClients";
 import CMSBanner from "@/components/CMSBanner";
 import heroImg from "@/assets/hero-pharma.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
@@ -28,65 +32,174 @@ import teamImg from "@/assets/CertificateofRecognitionFromMinistryofHealthEthiop
 import labImg from "@/assets/DrogaResearchGrant2023Winnerjpg.jpg";
 import medecialImg from "@/assets/medicaldevice.jpg";
 import supplyImg from "@/assets/ourexpert.jpg";
-import heroBgMain from "@/assets/herobg/IMG_2004.jpg";
-import heroBgSecondary from "@/assets/herobg/5.jpg";
+import expertsImg from "@/assets/herobg/2.jpg";
+
 import Headquarters from "@/assets/building.png";
 import medicinesImg from "@/assets/medicines.jpg";
 import healthcareTeamImg from "@/assets/CertificateofAppreciationFromTheMinistryofHealth.jpg";
 import medDevicesImg from "@/assets/medical-devices.jpg";
+import pharmacyNewImg from "@/assets/ProductSection/pharmacy.png";
+import orthopedicNewImg from "@/assets/ProductSection/orthopedic.png";
+import medicalDeviceNewImg from "@/assets/ProductSection/medical device.png";
+import sutureNewImg from "@/assets/ProductSection/suture.png";
 import { staggerContainer, staggerItem, cardHover } from "@/lib/variants";
 
-const heroSlides = [
-  {
-    image: heroBgMain,
-    title: "Serving The People!",
-    subtitle:
-      "Droga Pharma Pvt.Ltd Co. is a private limited company based in Addis Ababa, Ethiopia, aiming on sustainable supply of quality medicines, sutures, orthopedic implants and medical devices.",
-    cta: { label: "More about us", to: "/about" },
-  },
-  {
-    image: heroBgSecondary,
-    title: "Quality You Can Trust",
-    subtitle:
-      "WHO-approved products from globally certified manufacturers ensuring the highest standards.",
-    cta: { label: "Our Products", to: "/products" },
-  },
-  {
-    image: supplyImg,
-    title: "Our Experts",
-    subtitle:
-      "Highly experienced pharmacists and manufacturing industry professionals that drive our partners' success.",
-    cta: { label: "Our Team", to: "/about" },
-  },
+// ── Wave Stats ──────────────────────────────────────────────────────────────
+const WAVE_STATS = [
+  { value: "400+", label: "Employees", icon: Users, delayFraction: 0 },
+  { value: "1,000+", label: "Products In Stock", icon: Pill, delayFraction: 0.25 },
+  { value: "$25M+", label: "Annual Sales", icon: TrendingUp, delayFraction: 0.5 },
+  { value: "$60M+", label: "Government Tenders Won", icon: Award, delayFraction: 0.75 },
 ];
+
+const WAVE_CFG = [
+  { waveLength: 580, amplitude: 28 },
+  { waveLength: 580, amplitude: 22 },
+  { waveLength: 580, amplitude: 28 },
+  { waveLength: 580, amplitude: 22 },
+];
+
+// Read the computed primary colour once at module level (avoids CSS var inside canvas)
+const getPrimaryColor = () => {
+  const raw = getComputedStyle(document.documentElement)
+    .getPropertyValue("--primary")
+    .trim();
+  if (raw.startsWith("#")) return raw;
+  return `hsl(${raw})`;
+};
+
+const WaveStatRow = ({
+  stat,
+  index,
+}: {
+  stat: (typeof WAVE_STATS)[number];
+  index: number;
+}) => {
+  const textRef = useRef<HTMLDivElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  // Width cached by ResizeObserver — NEVER read in RAF to avoid layout thrashing
+  const wRef = useRef(0);
+
+  const { waveLength, amplitude } = WAVE_CFG[index];
+  const speed = 0.09; // px per ms
+
+  const pathData = useMemo(() => {
+    let d = `M -${waveLength * 2} 0`;
+    for (let x = -waveLength * 2; x <= 5000; x += 8) {
+      const y = amplitude * Math.sin((x * 2 * Math.PI) / waveLength);
+      d += ` L ${x} ${y}`;
+    }
+    return d;
+  }, [waveLength, amplitude]);
+
+  useAnimationFrame((t) => {
+    if (!textRef.current || !pathRef.current || wRef.current === 0) return;
+    const W = wRef.current;
+    const loop = W + 600;
+    const raw = ((t * speed) + stat.delayFraction * loop) % loop;
+    const textX = raw - 300;
+    const wavePhase = t * 0.03;
+    const textY = amplitude * Math.sin(((textX - wavePhase) * 2 * Math.PI) / waveLength);
+
+    // GPU-composited: no layout reads, completely jank-free
+    textRef.current.style.transform = `translate3d(${textX}px, ${textY}px, 0)`;
+    pathRef.current.style.transform = `translate3d(${wavePhase % waveLength}px, 0, 0)`;
+  });
+
+  return (
+    <div
+      ref={(el) => {
+        if (!el) return;
+        const ro = new ResizeObserver(() => { wRef.current = el.offsetWidth; });
+        ro.observe(el);
+        wRef.current = el.offsetWidth;
+      }}
+      className="relative w-full h-[110px] overflow-hidden"
+    >
+      {/* Wave line — rendered inside the container via a centred <g> */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{ overflow: "visible" }}
+      >
+        <g transform="translate(0, 55)">
+          <path
+            ref={pathRef}
+            d={pathData}
+            fill="none"
+            stroke="hsl(var(--primary))"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            opacity="0.65"
+            style={{ willChange: "transform" }}
+          />
+        </g>
+      </svg>
+
+      {/*
+        top:50% centres the anchor vertically.
+        marginTop pulls it up by half its own height so the content is centred.
+        The JS translate3d then moves it along X (travel) and Y (wave).
+        NO Tailwind translate classes — those would conflict with JS transforms.
+      */}
+      <div
+        ref={textRef}
+        className="absolute flex items-center gap-4 whitespace-nowrap z-10"
+        style={{
+          left: 0,
+          top: "50%",
+          marginTop: "-20px",          // ~half of label height; keeps text vertically centred
+          transform: "translate3d(-500px, 0, 0)", // hidden until first RAF tick
+          willChange: "transform",
+        }}
+      >
+        <stat.icon size={26} className="text-primary shrink-0" />
+        <span className="font-display text-3xl md:text-4xl font-bold text-black leading-none">
+          {stat.value}
+        </span>
+        <span className="text-xs font-semibold uppercase tracking-widest text-black/45">
+          {stat.label}
+        </span>
+      </div>
+    </div>
+  );
+};
+// ────────────────────────────────────────────────────────────────────────────
+
+
+
+
 
 const categories = [
   {
     icon: Pill,
     title: "Pharmaceuticals",
     desc: "Quality medicines from WHO-approved global manufacturers",
-    img: medicinesImg,
+    primaryImg: pharmacyNewImg,
+    localImg: medicinesImg,
     count: "500+",
   },
   {
     icon: Bone,
     title: "Orthopedic Implants",
     desc: "High-quality orthopedic implants and surgical instruments",
-    img: medDevicesImg,
+    primaryImg: orthopedicNewImg,
+    localImg: medDevicesImg,
     count: "200+",
   },
   {
     icon: Stethoscope,
     title: "Medical Devices",
     desc: "Disposable medical devices and diagnostic equipment",
-    img: medecialImg,
+    primaryImg: medicalDeviceNewImg,
+    localImg: medecialImg,
     count: "150+",
   },
   {
     icon: FlaskConical,
     title: "Sutures & Supplies",
     desc: "Surgical sutures and essential medical supplies",
-    img: productsImg,
+    primaryImg: sutureNewImg,
+    localImg: productsImg,
     count: "100+",
   },
 ];
@@ -151,10 +264,10 @@ const Home = () => {
   return (
     <PageTransition>
       <div>
-        <HeroSlider slides={heroSlides} />
+        <ScrollHero />
 
         {/* Quick nav strip */}
-        <section className="bg-[#eeeaea] border-b border-background/10">
+        <section className="hidden bg-[#eeeaea] border-b border-background/10">
           <div className="container grid grid-cols-2 md:grid-cols-5">
             {[
               { label: "Medical", icon: Pill, to: "/products" },
@@ -199,41 +312,72 @@ const Home = () => {
         </section>
 
         {/* Intro */}
-        <section className="bg-white section-padding-lg">
-          <div className="container-narrow">
+        <section className="relative pt-10 md:pt-16 lg:pt-20 pb-0 overflow-hidden">
+          {/* Video Background */}
+          <div className="absolute inset-0 z-0">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute w-full h-[120%] object-cover -top-[0%]"
+            >
+              <source src="https://www.pexels.com/download/video/35347660/" type="video/mp4" />
+            </video>
+            {/* Dark overlay to ensure white text readability */}
+            <div className="absolute inset-0 bg-black/5" />
+          </div>
+
+          <div className="relative z-10 w-full px-4 md:px-8 lg:px-12 xl:px-16">
             <ScrollReveal>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-                <div className="max-w-4xl">
-                  <span className="section-label block mb-6 text-black ">
-                    About Droga Pharma
-                  </span>
-                  <h2 className="font-display text-3xl md:text-[2.75rem] font-bold text-black leading-[1.15] mb-8">
-                    Established in 2015, we are working in the pharmaceuticals
-                    import, wholesale and retail business, targeting the public
-                    as well as the private health sector of Ethiopia.
-                  </h2>
-                  <p className="text-[#5c5858] text-lg leading-relaxed max-w-2xl">
-                    Our team is made up of highly experienced pharmacists and
-                    manufacturing industry professionals who utilize their
-                    unique knowledge to create and implement cutting-edge
-                    management systems.
-                  </p>
-                  <Link
-                    to="/about"
-                    className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-black border-b-2 border-background/20 pb-1 hover:border-[#7a7979] hover:text-[#7a7979] transition-all duration-300 group"
-                  >
-                    Learn more about our company
-                    <ArrowRight
-                      size={14}
-                      className="group-hover:translate-x-1 transition-transform duration-300"
-                    />
-                  </Link>
+              <div className="flex flex-col lg:flex-row justify-between items-end gap-10 lg:gap-16">
+                <div className="relative bottom-48 flex items-start gap-4 md:gap-8 lg:w-[45%] xl:w-[40%] pb-16 lg:pb-32">
+                  <div className="w-16 md:w-20 flex-shrink-0 pt-1">
+                    <span className="text-sm font-medium text-white/80">
+                      About Us
+                    </span>
+                  </div>
+                  <div className="flex-1 flex flex-col gap-4 max-w-[480px]">
+                    <p className="text-base md:text-lg lg:text-xl leading-relaxed text-white font-normal">
+                      Established in 2015, we are working in the pharmaceuticals
+                      import, wholesale and retail business, targeting the public
+                      as well as the private health sector of Ethiopia.
+                    </p>
+                    <p className="text-base md:text-lg lg:text-xl leading-relaxed text-white font-normal">
+                      Our team is made up of highly experienced pharmacists and
+                      manufacturing industry professionals who utilize their
+                      unique knowledge to create and implement cutting-edge
+                      management systems.
+                    </p>
+                    <Link
+                      to="/about"
+                      className="mt-4 relative self-start inline-flex items-center text-base lg:text-lg text-white group"
+                    >
+                      {/* Left Arrow (sliding in from left) */}
+                      <div className="flex items-center justify-end overflow-hidden w-0 group-hover:w-[28px] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
+                        <ArrowRight size={20} className="mr-2 shrink-0" />
+                      </div>
+
+                      {/* Text */}
+                      <span className="relative whitespace-nowrap font-bold">
+                        More About Droga Pharma
+                        <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-primary transform scale-x-0 origin-left transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100" />
+                      </span>
+
+                      {/* Right Arrow (sliding out to right) */}
+                      <div className="flex items-center justify-start overflow-hidden w-[28px] group-hover:w-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
+                        <ArrowRight size={20} className="ml-2 shrink-0" />
+                      </div>
+                    </Link>
+                  </div>
                 </div>
-                <div className="relative overflow-hidden bg-[#f5f5f5] min-h-[300px] md:min-h-[420px] h-full flex items-center justify-center p-4 md:p-6">
+
+                {/* Headquarters Image - placed flush at very bottom, increased size */}
+                <div className="w-full lg:w-[55%] xl:w-[60%] flex justify-end">
                   <img
                     src={Headquarters}
                     alt="Droga Pharma headquarters"
-                    className="w-full h-full object-contain"
+                    className="w-[125%] max-w-[500px] lg:max-w-[900px] xl:max-w-[1200px] h-auto object-contain rounded-t-lg drop-shadow-2xl translate-y-[180px] translate-x-[400px] brightness-[90%] scale-[1.35] origin-bottom-right"
                   />
                 </div>
               </div>
@@ -241,48 +385,57 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Stats — Yellow background */}
-        <section className="bg-primary overflow-hidden">
-          <div className="container-narrow py-20 md:py-24">
-            <ScrollReveal>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8">
-                {[
-                  { value: "400+", label: "Employees", icon: Users },
-                  { value: "1000+", label: "Products In Stock", icon: Pill },
-                  { value: "$25M+", label: "Annual Sales", icon: TrendingUp },
-                  {
-                    value: "$60M+",
-                    label: "Government Tenders Won",
-                    icon: Award,
-                  },
-                ].map((stat, i) => (
-                  <motion.div
-                    key={stat.label}
-                    className="text-center"
-                    initial={{ opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      delay: i * 0.1,
-                      duration: 0.5,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  >
-                    <stat.icon
-                      size={18}
-                      className="text-primary-foreground/50 mx-auto mb-4"
-                    />
-                    <AnimatedCounter
-                      value={stat.value}
-                      className="font-display text-4xl md:text-5xl font-bold text-primary-foreground"
-                    />
-                    <div className="text-primary-foreground/60 text-sm mt-3 font-medium">
-                      {stat.label}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </ScrollReveal>
+        {/* Reverse split (Our Experts) moved here as requested */}
+        <section className="bg-white border-y-[2px] border-black">
+          <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[550px]">
+            <div className="flex items-center p-10 md:p-16 lg:p-20 order-2 lg:order-1">
+              <ScrollReveal
+                direction="left"
+                className="w-full flex flex-col"
+              >
+                <div className="flex items-center gap-4">
+                  <span className="section-label text-[#5c5858] m-0">
+                    Our Experts
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground text-[10px] uppercase tracking-wider font-bold px-2.5 py-1">
+                    <BadgeCheck size={14} />
+                    ISO Certified
+                  </span>
+                </div>
+                <h2 className="font-display text-3xl md:text-4xl font-bold text-black mt-4 mb-6 leading-tight">
+                  Industry Leaders
+                </h2>
+                <p className="text-[#5c5858] leading-relaxed mb-8">
+                  Our team is made up of highly experienced and renowned
+                  pharmacists and manufacturing industry professionals that
+                  utilize their unique knowledge to create and implement
+                  cutting-edge management systems.
+                </p>
+                <Link
+                  to="/about"
+                  className="bg-black text-white px-8 py-4 self-start hover:bg-primary hover:text-black transition-colors duration-300 inline-flex items-center gap-2 text-sm font-semibold"
+                >
+                  Learn more
+                </Link>
+              </ScrollReveal>
+            </div>
+            <div className="relative overflow-hidden order-1 lg:order-2">
+              <ImageSlider
+                images={[
+                  { src: expertsImg, alt: "Supply chain" },
+                ]}
+                className="min-h-[450px] lg:min-h-full h-full"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Stats — Wave animation */}
+        <section className="bg-white py-12">
+          <div className="w-full">
+            {WAVE_STATS.map((stat, i) => (
+              <WaveStatRow key={stat.label} stat={stat} index={i} />
+            ))}
           </div>
         </section>
 
@@ -321,29 +474,14 @@ const Home = () => {
           </div>
         </section> */}
 
-        {/* Products — Yellow hover cards */}
-        <section className="bg-[#f5f5f5] section-padding-lg">
-          <div className="container-narrow">
+        {/* Products — Image Hover Cards */}
+        <section className="bg-white py-16 md:py-24">
+          <div className="w-full px-4 md:px-8 lg:px-12 xl:px-16">
             <ScrollReveal>
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-                <div className="max-w-2xl">
-                  <span className="section-label block mb-4 text-[#5c5858]">
-                    What We Offer
-                  </span>
-                  <h2 className="font-display text-3xl md:text-4xl font-bold text-black leading-tight">
-                    Products
-                  </h2>
-                  <p className="text-[#5c5858] mt-4 text-lg leading-relaxed">
-                    Quality pharmaceutical products, medical devices, and
-                    surgical supplies from trusted international manufacturers.
-                  </p>
-                </div>
-                <Link
-                  to="/products"
-                  className=" text-sm flex-shrink-0 bg-primary text-black px-6 py-3 inline-flex items-center gap-2 transition-all duration-300 hover:bg-primary/90"
-                >
-                  View all products <ArrowRight size={14} />
-                </Link>
+              <div className="text-center mb-12">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-black uppercase tracking-wide">
+                  Product Categories
+                </h2>
               </div>
             </ScrollReveal>
 
@@ -352,53 +490,58 @@ const Home = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
             >
               {categories.map((cat) => (
                 <motion.div key={cat.title} variants={staggerItem}>
-                  <Link to="/products" className="group block">
-                    <motion.div
-                      initial="rest"
-                      whileHover="hover"
-                      variants={cardHover}
-                      className="overflow-hidden bg-white border border-background/10 group-hover:bg-primary transition-colors duration-400"
-                    >
-                      <div className="relative aspect-[4/3] overflow-hidden">
-                        <motion.img
-                          src={cat.img}
-                          alt={cat.title}
-                          className="w-full h-full object-cover"
-                          whileHover={{ scale: 1.06 }}
-                          transition={{
-                            duration: 0.7,
-                            ease: [0.22, 1, 0.36, 1],
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/10 to-transparent group-hover:from-foreground/70 transition-all duration-500" />
-                        <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
-                          <cat.icon size={22} className="text-background" />
-                          <span className="text-background/50 text-xs font-display font-semibold">
-                            {cat.count} items
-                          </span>
+                  <Link to="/products" className="relative group overflow-hidden aspect-[2/3] block bg-white">
+                    <img
+                      src={cat.primaryImg}
+                      alt={cat.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0"
+                    />
+                    <img
+                      src={cat.localImg}
+                      alt={`${cat.title} alternate`}
+                      className="absolute inset-0 w-full h-full object-cover opacity-0 scale-110 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-100 group-hover:scale-100"
+                    />
+
+                    {/* Subtle overlay to make text readable if image is bright */}
+                    <div className="absolute inset-0 bg-black/5 transition-opacity duration-500 group-hover:opacity-0 z-10 pointer-events-none" />
+
+                    {/* White info box overlay on hover */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-[20px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] z-20">
+                      <div className="flex flex-col shadow-lg">
+                        <div className="bg-primary p-5">
+                          <h3 className="font-display font-bold text-lg text-black uppercase tracking-wider">{cat.title}</h3>
+                          <p className="text-sm text-black/70 mt-2 line-clamp-2">{cat.desc}</p>
+                        </div>
+                        <div className="bg-white px-5 py-4 flex items-center justify-between">
+                          <span className="font-bold text-black text-sm">{cat.count} items</span>
+                          <ArrowRight size={18} className="text-black transform transition-transform group-hover:translate-x-1" />
                         </div>
                       </div>
-                      <div className="px-5 py-4">
-                        <h3 className="font-display font-semibold text-lg text-black group-hover:text-primary-foreground transition-colors duration-300">
-                          {cat.title}
-                        </h3>
-                        <p className="text-sm mt-1.5 leading-relaxed text-black group-hover:text-primary-foreground/70 transition-colors duration-300">
-                          {cat.desc}
-                        </p>
-                      </div>
-                    </motion.div>
+                    </div>
                   </Link>
                 </motion.div>
               ))}
             </motion.div>
+
+            <ScrollReveal>
+              <div className="mt-16 text-center">
+                <Link
+                  to="/products"
+                  className="inline-flex items-center gap-2 border border-black px-8 py-3 text-xs font-bold uppercase tracking-widest text-black hover:bg-primary hover:text-black hover:border-primary transition-colors duration-300"
+                >
+                  View all products <ArrowRight size={14} />
+                </Link>
+              </div>
+            </ScrollReveal>
           </div>
         </section>
 
         {/* Full-width CTA banner */}
+        {/* 
         <section className="relative h-[500px]">
           <ImageSlider
             images={[
@@ -439,136 +582,10 @@ const Home = () => {
             </ScrollReveal>
           </div>
         </section>
+        */}
 
-        {/* Reverse split */}
-        <section className="bg-white">
-          <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[550px]">
-            <div className="flex p-10 md:p-16 lg:p-20 order-2 lg:order-1">
-              <ScrollReveal
-                direction="left"
-                className="h-full w-full flex flex-col"
-              >
-                <span className="section-label text-[#5c5858]">
-                  Our Experts
-                </span>
-                <h2 className="font-display text-3xl md:text-4xl font-bold text-black mt-4 mb-6 leading-tight">
-                  Industry Leaders
-                </h2>
-                <p className="text-[#5c5858] leading-relaxed mb-8">
-                  Our team is made up of highly experienced and renowned
-                  pharmacists and manufacturing industry professionals that
-                  utilize their unique knowledge to create and implement
-                  cutting-edge management systems.
-                </p>
-                <div className="flex flex-wrap gap-3 mb-8">
-                  {[
-                    { label: "WHO Approved", icon: Award },
-                    { label: "ISO Certified", icon: BadgeCheck },
-                    { label: "GMP Compliant", icon: Award },
-                  ].map((badge) => (
-                    <span
-                      key={badge.label}
-                      className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-xs font-semibold px-4 py-2"
-                    >
-                      <badge.icon size={12} />
-                      {badge.label}
-                    </span>
-                  ))}
-                </div>
-                <Link
-                  to="/about"
-                  className="bg-[#eae6e6] p-2 mt-auto self-start hover:bg-[#d1caca] transition-colors duration-300 inline-flex items-center gap-2 text-sm font-semibold"
-                >
-                  Learn more
-                </Link>
-              </ScrollReveal>
-            </div>
-            <div className="relative overflow-hidden order-1 lg:order-2">
-              <ImageSlider
-                images={[
-                  { src: warehouseImg, alt: "Distribution" },
-                  { src: supplyImg, alt: "Supply chain" },
-                ]}
-                className="min-h-[450px] lg:min-h-full h-full"
-              />
-            </div>
-          </div>
-        </section>
 
-        {/* News — yellow hover cards */}
-        <section id="news" className="bg-[#f5f5f5] section-padding-lg">
-          <div className="container-narrow">
-            <ScrollReveal>
-              <div className="mb-16">
-                <span className="section-label block mb-4 text-[#5c5858]">
-                  Latest Updates
-                </span>
-                <h2 className="font-display text-3xl md:text-4xl font-bold text-black leading-tight">
-                  News & Achievements
-                </h2>
-              </div>
-            </ScrollReveal>
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            >
-              {[
-                {
-                  title:
-                    "Certificate of Appreciation From The Ministry of Health",
-                  desc: "Recognized for our outstanding contribution to Ethiopia's healthcare sector by the Ministry of Health.",
-                  img: healthcareTeamImg,
-                  tag: "Award",
-                },
-                {
-                  title: "Certificate of Recognition From Ministry of Health",
-                  desc: "In recognition of our financial support in realizing the 2024 safe motherhood month commemoration.",
-                  img: teamImg,
-                  tag: "Recognition",
-                },
-                {
-                  title: "Droga Research Grant 2023 Winner",
-                  desc: "Droga research grant is organized annually to encourage & support research in healthcare.",
-                  img: labImg,
-                  tag: "Research",
-                },
-              ].map((news) => (
-                <motion.div key={news.title} variants={staggerItem}>
-                  <motion.div
-                    initial="rest"
-                    whileHover="hover"
-                    variants={cardHover}
-                    className="overflow-hidden border border-background/10 h-full group bg-white hover:bg-primary transition-colors duration-400"
-                  >
-                    <div className="aspect-[16/9] overflow-hidden">
-                      <motion.img
-                        src={news.img}
-                        alt={news.title}
-                        className="w-full h-full object-cover"
-                        whileHover={{ scale: 1.04 }}
-                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                      />
-                    </div>
-                    <div className="p-7">
-                      <span className="inline-block text-xs font-semibold uppercase tracking-wider px-3 py-1 bg-background/10 text-black group-hover:bg-primary-foreground/10 group-hover:text-primary-foreground transition-colors duration-400">
-                        {news.tag}
-                      </span>
-                      <h3 className="font-display text-lg font-semibold mt-4 mb-3 leading-snug text-black group-hover:text-primary-foreground transition-colors duration-300">
-                        {news.title}
-                      </h3>
-                      <p className="text-sm leading-relaxed text-black group-hover:text-primary-foreground/70 transition-colors duration-300">
-                        {news.desc}
-                      </p>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+        <NewsMosaic />
 
         <TestimonialsSection />
 
@@ -587,7 +604,8 @@ const Home = () => {
               </div>
             </ScrollReveal>
           </div>
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto w-full">
+            {/* <SlidingPartners clients={clients} /> */}
             <MarqueeClients
               clients={clients}
               variant="vertical-3"

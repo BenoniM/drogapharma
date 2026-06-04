@@ -12,7 +12,7 @@ import medDevicesImg from "@/assets/medical-devices.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
 import labImg from "@/assets/lab-research.jpg";
-import { Briefcase, MapPin, Clock, ArrowRight } from "lucide-react";
+import { Briefcase, MapPin, Clock, ArrowRight, ArrowUpRight } from "lucide-react";
 import TickerBanner from "@/components/TickerBanner";
 import CyclingWave from "@/components/CyclingWave";
 import TextPressure from "@/components/TextPressure";
@@ -173,81 +173,92 @@ const CareersPage = () => {
       </section>
 
       {/* Open positions */}
-      <section id="openings" className="section-padding bg-[#f5f5f5]">
-        <div className="container-narrow">
+      <section id="openings" className="bg-[#fcfcfc] pt-16 pb-0 border-t border-black/10">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-display text-3xl md:text-4xl font-bold tracking-tight text-center mb-12 text-black"
+            className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-black leading-tight tracking-tight"
           >
-            Open positions
+            Open Positions
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {openings.map((job, i) => (
-              <motion.div
-                key={job.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                variants={cardHover}
-                // initial="rest"
-                whileHover="hover"
-                className="overflow-hidden border border-background/10 h-full group bg-white hover:bg-primary transition-colors duration-400"
-              >
-                <div className="aspect-[16/9] overflow-hidden relative">
-                  <motion.img
-                    src={job.image}
-                    alt={job.title}
-                    className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.04 }}
-                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/10 to-transparent group-hover:from-foreground/70 transition-all duration-500" />
-                  <span className="absolute top-4 left-4 inline-block text-xs font-semibold uppercase tracking-wider px-3 py-1 bg-background/15 text-background backdrop-blur-sm">
-                    {job.type}
-                  </span>
-                </div>
+        </div>
 
-                <div className="p-7 flex flex-col">
-                  <h3 className="font-display text-lg font-semibold mb-3 leading-snug text-black group-hover:text-primary-foreground transition-colors duration-300">
-                    {job.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-3 text-xs text-black/70 group-hover:text-primary-foreground/80 transition-colors duration-300">
-                    <span className="flex items-center gap-1">
-                      <Briefcase size={11} />
-                      {job.department}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <MapPin size={11} />
-                      {job.location}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock size={11} />
+        <div className="flex flex-col w-full border-t border-black/10">
+          {openings.map((job, idx) => (
+            <motion.div
+              key={job.title}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: idx * 0.1 } }
+              }}
+              className="w-full border-b border-black/10 group hover:bg-primary transition-colors duration-400 cursor-pointer"
+            >
+              <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row w-full px-4 sm:px-6 lg:px-8">
+                {/* Left: Image */}
+                <div className="w-full md:w-[30%] lg:w-[25%] py-4 shrink-0 pr-0 md:pr-6">
+                  <div className="aspect-[16/9] w-full overflow-hidden relative">
+                    <motion.img
+                      src={job.image}
+                      alt={job.title}
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                    <span className="absolute top-4 left-4 inline-block text-[10px] font-semibold uppercase tracking-wider px-2 py-1 bg-black/60 text-white backdrop-blur-sm">
                       {job.type}
                     </span>
                   </div>
-                  <p className="text-sm leading-relaxed text-black/80 mt-3 flex-1 group-hover:text-primary-foreground/70 transition-colors duration-300">
-                    {job.description}
-                  </p>
-                  <motion.a
-                    href={`mailto:info@drogapharma.com?subject=Application for ${job.title}`}
-                    className="mt-6 inline-flex items-center gap-2 text-sm font-semibold bg-primary text-black px-5 py-2.5 self-start shadow-[0_4px_14px_rgba(0,0,0,0.18)] hover:bg-white  group-hover:text-black transition-all duration-300"
-                    whileHover={{ y: -1 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Apply
-                    <ArrowRight
-                      size={13}
-                      className="transition-transform duration-300"
-                    />
-                  </motion.a>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+
+                {/* Right: Content */}
+                <div className="w-full md:w-[70%] lg:w-[75%] py-4 pl-0 md:pl-6 flex flex-col justify-center relative">
+                  <div className="flex flex-col justify-start mb-2">
+                    <h3 className="font-display text-xl md:text-2xl lg:text-3xl leading-tight text-black group-hover:text-primary-foreground transition-colors duration-400 pr-4 max-w-[85%]">
+                      {job.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-3 text-xs text-[#888] group-hover:text-primary-foreground/70 transition-colors duration-300 mt-2">
+                      <span className="flex items-center gap-1">
+                        <Briefcase size={11} />
+                        {job.department}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <MapPin size={11} />
+                        {job.location}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="pr-12 md:pr-16 lg:pr-24">
+                    <p className="text-sm md:text-base leading-relaxed text-black/70 group-hover:text-primary-foreground/80 transition-colors duration-400">
+                      {job.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-5">
+                    <motion.a
+                      href={`mailto:info@drogapharma.com?subject=Application for ${job.title}`}
+                      className="inline-flex items-center gap-2 text-xs font-semibold bg-black text-white px-5 py-2.5 shadow-sm group-hover:bg-white group-hover:text-black transition-all duration-300"
+                      whileHover={{ y: -1 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Apply Now
+                      <ArrowRight
+                        size={13}
+                        className="transition-transform duration-300"
+                      />
+                    </motion.a>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
+        <div className="pb-16"></div>
       </section>
     </div>
   );
