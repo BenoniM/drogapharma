@@ -2,9 +2,9 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import healthcareTeamImg from "@/assets/CertificateofAppreciationFromTheMinistryofHealth.jpg";
-import teamImg from "@/assets/CertificateofRecognitionFromMinistryofHealthEthiopia.jpg";
-import labImg from "@/assets/DrogaResearchGrant2023Winnerjpg.jpg";
+import healthcareTeamImg from "@/assets/certificateofappreciationfromtheministryofhealth.jpg";
+import teamImg from "@/assets/certificateofrecognitionfromministryofhealthethiopia.jpg";
+import labImg from "@/assets/drogaresearchgrant2023winnerjpg.jpg";
 
 const items = [
   {

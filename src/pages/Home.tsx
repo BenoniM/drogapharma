@@ -27,16 +27,16 @@ import CMSBanner from "@/components/CMSBanner";
 import heroImg from "@/assets/hero-pharma.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
 import productsImg from "@/assets/products.jpg";
-import teamImg from "@/assets/CertificateofRecognitionFromMinistryofHealthEthiopia.jpg";
+import teamImg from "@/assets/certificateofrecognitionfromministryofhealthethiopia.jpg";
 
-import labImg from "@/assets/DrogaResearchGrant2023Winnerjpg.jpg";
+import labImg from "@/assets/drogaresearchgrant2023winnerjpg.jpg";
 import medecialImg from "@/assets/medicaldevice.jpg";
 import supplyImg from "@/assets/ourexpert.jpg";
 import expertsImg from "@/assets/herobg/2.jpg";
 
 import Headquarters from "@/assets/building.png";
 import medicinesImg from "@/assets/medicines.jpg";
-import healthcareTeamImg from "@/assets/CertificateofAppreciationFromTheMinistryofHealth.jpg";
+import healthcareTeamImg from "@/assets/certificateofappreciationfromtheministryofhealth.jpg";
 import medDevicesImg from "@/assets/medical-devices.jpg";
 import pharmacyNewImg from "@/assets/ProductSection/pharmacy.png";
 import orthopedicNewImg from "@/assets/ProductSection/orthopedic.png";

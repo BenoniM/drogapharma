@@ -12,9 +12,9 @@ import medicinesImg from "@/assets/medicines.jpg";
 import heroBgOne from "@/assets/herobg/2.jpg";
 import heroBgTwo from "@/assets/herobg/4.jpg";
 import heroBgThree from "@/assets/herobg/5.jpg";
-import certificateRecognitionImg from "@/assets/CertificateofRecognitionFromMinistryofHealthEthiopia.jpg";
-import researchGrant2023Img from "@/assets/DrogaResearchGrant2023Winnerjpg.jpg";
-import researchGrant2026Img from "@/assets/DROGARESEARCHGRANT2026.png";
+import certificateRecognitionImg from "@/assets/certificateofrecognitionfromministryofhealthethiopia.jpg";
+import researchGrant2023Img from "@/assets/drogaresearchgrant2023winnerjpg.jpg";
+import researchGrant2026Img from "@/assets/drogaresearchgrant2026.png";
 import { staggerContainer, staggerItem, cardHover } from "@/lib/variants";
 
 const certificationCardImages = [

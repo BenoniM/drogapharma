@@ -2,28 +2,28 @@
 
 @font-face {
   font-family: "Graphik";
-  src: url("./assets/Fonts/Graphik Family/Graphik-Regular-Trial.otf") format("opentype");
+  src: url("./assets/Fonts/Graphik Family/graphik-regular-trial.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Graphik";
-  src: url("./assets/Fonts/Graphik Family/Graphik-Medium-Trial.otf") format("opentype");
+  src: url("./assets/Fonts/Graphik Family/graphik-medium-trial.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Graphik";
-  src: url("./assets/Fonts/Graphik Family/Graphik-Semibold-Trial.otf") format("opentype");
+  src: url("./assets/Fonts/Graphik Family/graphik-semibold-trial.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Graphik";
-  src: url("./assets/Fonts/Graphik Family/Graphik-Bold-Trial.otf") format("opentype");
+  src: url("./assets/Fonts/Graphik Family/graphik-bold-trial.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
 }

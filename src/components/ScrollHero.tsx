@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import supplyImg from "@/assets/ourexpert.jpg";
 import grp1  from "@/assets/HeroGroups/2.jpg";
 import grp2  from "@/assets/HeroGroups/photo_2026-06-04_09-09-38.jpg";
-import grp3  from "@/assets/HeroGroups/IMG_2004.jpg";
-import grp4  from "@/assets/HeroGroups/IMG_3097.jpg";
-import grp5  from "@/assets/HeroGroups/IMG_3136.jpg";
-import grp6  from "@/assets/HeroGroups/IMG_3458.jpg";
+import grp3  from "@/assets/HeroGroups/img_2004.jpg";
+import grp4  from "@/assets/HeroGroups/img_3097.jpg";
+import grp5  from "@/assets/HeroGroups/img_3136.jpg";
+import grp6  from "@/assets/HeroGroups/img_3458.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 

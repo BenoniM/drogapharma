@@ -291,7 +291,7 @@ import OurTeam from "@/components/OurTeam";
 import JourneyStepper from "@/components/JourneyStepper";
 import Certifications from "@/components/Certifications";
 import MarqueeClients from "@/components/MarqueeClients";
-import qualityPolicyImg from "@/assets/Droga-Quality-Policy.jpg";
+import qualityPolicyImg from "@/assets/droga-quality-policy.jpg";
 
 const About = () => {
   const [storyCurrent, setStoryCurrent] = useState(0);
