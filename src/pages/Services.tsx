@@ -1,83 +1,241 @@
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
 import {
-  Truck,
-  Search,
-  Shield,
-  Thermometer,
-  Package,
-  FileCheck,
-  FlaskConical,
-  ArrowRight,
+  Truck, Search, Shield, Thermometer, Package, FileCheck, FlaskConical,
 } from "lucide-react";
-import warehouseImg from "@/assets/warehouse.jpg";
-import supplyImg from "@/assets/supply-chain.jpg";
-import labImg from "@/assets/lab-research.jpg";
-import healthcareTeamImg from "@/assets/healthcare-team.jpg";
 import heroBgOne from "@/assets/herobg/2.jpg";
 import heroBgTwo from "@/assets/herobg/4.jpg";
 import heroBgThree from "@/assets/herobg/5.jpg";
-import { staggerContainer, staggerItem, cardHover } from "@/lib/variants";
+import warehouseImg from "@/assets/warehouse.jpg";
+import supplyImg from "@/assets/supply-chain.jpg";
 
 const services = [
   {
     icon: Truck,
+    tag: "Import",
     title: "Pharmaceutical Import",
-    desc: "End-to-end pharmaceutical importation from source countries to Ethiopia.",
-    features: ["Global sourcing", "Customs clearance", "Door-to-door delivery"],
+    desc: "End-to-end pharmaceutical importation from source countries to Ethiopia, handling every customs and logistics touchpoint.",
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1400&q=80",
   },
   {
     icon: Search,
+    tag: "Sourcing",
     title: "Supplier Sourcing",
-    desc: "Strategic identification and vetting of WHO-approved pharmaceutical manufacturers.",
-    features: [
-      "Manufacturer audits",
-      "Quality verification",
-      "Price negotiation",
-    ],
+    desc: "Strategic identification and vetting of WHO-approved pharmaceutical manufacturers worldwide.",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1400&q=80",
   },
   {
     icon: Shield,
+    tag: "Compliance",
     title: "Regulatory Compliance",
-    desc: "Complete regulatory support for EFDA product registration and licensing.",
-    features: [
-      "EFDA registration",
-      "License management",
-      "Compliance monitoring",
-    ],
+    desc: "Complete regulatory support for EFDA product registration, licensing, and ongoing compliance monitoring.",
+    image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1400&q=80",
   },
   {
     icon: Thermometer,
+    tag: "Cold Chain",
     title: "Cold Chain Logistics",
-    desc: "Temperature-controlled supply chain for heat-sensitive pharmaceuticals.",
-    features: ["2-8°C storage", "Temperature monitoring", "GDP compliance"],
+    desc: "Temperature-controlled supply chain maintaining 2–8°C integrity for heat-sensitive pharmaceuticals end to end.",
+    image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1400&q=80",
   },
   {
     icon: Package,
+    tag: "Distribution",
     title: "Wholesale Distribution",
-    desc: "Nationwide wholesale distribution serving hospitals, pharmacies and clinics.",
-    features: ["National coverage", "Flexible ordering", "Reliable delivery"],
+    desc: "Nationwide wholesale distribution serving hospitals, pharmacies, and clinics with reliable, flexible ordering.",
+    image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1400&q=80",
   },
   {
     icon: FileCheck,
+    tag: "Quality",
     title: "Quality Assurance",
-    desc: "Rigorous quality control including batch verification and shelf-life management.",
-    features: [
-      "Batch testing",
-      "Shelf-life tracking",
-      "Anti-counterfeit measures",
-    ],
+    desc: "Rigorous quality control including batch verification, shelf-life management, and anti-counterfeit measures.",
+    image: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1400&q=80",
   },
   {
     icon: FlaskConical,
+    tag: "R&D",
     title: "Research & Development",
-    desc: "Innovative R&D initiatives to develop cutting-edge pharmaceutical solutions.",
-    features: ["Clinical trials", "Product development", "Scientific research"],
+    desc: "Innovative R&D initiatives developing cutting-edge pharmaceutical solutions through clinical trials and scientific research.",
+    image: "https://images.unsplash.com/photo-1581093577421-f561a654a353?w=1400&q=80",
   },
 ];
+
+const PANEL_HEIGHT = 100; // vh per service step
+
+function ServicesScroll() {
+  const sectionRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Total scroll height = one viewport per service
+  const totalVh = services.length * PANEL_HEIGHT;
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Which service is active based on scroll position
+  useEffect(() => {
+    const unsub = scrollYProgress.on("change", (v) => {
+      const idx = Math.min(
+        services.length - 1,
+        Math.floor(v * services.length)
+      );
+      setActiveIndex(idx);
+    });
+    return unsub;
+  }, [scrollYProgress]);
+
+  // Image stack: each image's vertical position within the clip window
+  // goes from 100% (below) to 0% (fully revealed) as its turn comes
+  const service = services[activeIndex];
+  const Icon = service.icon;
+
+  return (
+    <div
+      ref={sectionRef}
+      style={{ height: `${totalVh}vh`, position: "relative" }}
+    >
+      {/* Sticky viewport */}
+      <div
+        style={{
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          display: "grid",
+          gridTemplateColumns: "1fr 44% 1fr",
+          background: "#f5f5f5",
+          overflow: "hidden",
+        }}
+      >
+        {/* LEFT: tag + icon + title */}
+        <div
+          style={{
+            padding: "3.5rem 2rem 3.5rem 3.5rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            paddingTop: "calc(50vh - 7rem)",
+          }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex + "-left"}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <span
+                style={{
+                  display: "block",
+                  fontSize: "0.65rem",
+                  fontWeight: 600,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "rgba(0,0,0,0.35)",
+                  marginBottom: "1.25rem",
+                }}
+              >
+                {service.tag}
+              </span>
+
+              <div
+                style={{
+                  width: 40,
+                  height: 40,
+                  border: "1px solid rgba(0,0,0,0.18)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "1.25rem",
+                }}
+              >
+                <Icon size={17} color="black" />
+              </div>
+
+              <h2
+                className="font-display font-bold text-black"
+                style={{
+                  fontSize: "clamp(1.5rem, 2.2vw, 2.2rem)",
+                  lineHeight: 1.15,
+                  maxWidth: "14rem",
+                }}
+              >
+                {service.title}
+              </h2>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* CENTER: image clip window — images slide up from bottom */}
+        <div
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            margin: "3rem 0",
+          }}
+        >
+          {services.map((s, i) => (
+            <motion.img
+              key={i}
+              src={s.image}
+              alt={s.title}
+              loading={i === 0 ? "eager" : "lazy"}
+              animate={{
+                y: i < activeIndex ? "-100%" : i === activeIndex ? "0%" : "100%",
+              }}
+              transition={{
+                duration: 0.75,
+                ease: [0.76, 0, 0.24, 1],
+              }}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* RIGHT: description */}
+        <div
+          style={{
+            padding: "3.5rem 3.5rem 3.5rem 2rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            paddingBottom: "calc(50vh - 4rem)",
+          }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={activeIndex + "-right"}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+              style={{
+                fontSize: "0.95rem",
+                lineHeight: 1.75,
+                color: "rgba(0,0,0,0.52)",
+                maxWidth: "18rem",
+              }}
+            >
+              {service.desc}
+            </motion.p>
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const Services = () => {
   return (
@@ -106,75 +264,36 @@ const Services = () => {
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="section-label text-primary block mb-4">
-                What We Do
-              </span>
+              <span className="section-label text-primary block mb-4">What We Do</span>
               <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-background tracking-tight">
                 Services
               </h1>
               <p className="text-background/55 text-lg md:text-xl mt-4 max-w-xl leading-relaxed">
-                Complete pharmaceutical supply chain solutions for the Ethiopian
-                market.
+                Complete pharmaceutical supply chain solutions for the Ethiopian market.
               </p>
             </motion.div>
           </div>
         </section>
 
-        {/* Services Grid */}
-        <section className="bg-[#f5f5f5] section-padding-lg">
+        {/* Intro line */}
+        <section
+          className="bg-[#f5f5f5] py-16"
+          style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}
+        >
           <div className="container-narrow">
             <ScrollReveal>
-              <p className="text-black text-xl md:text-2xl font-light leading-relaxed max-w-3xl mb-16">
+              <p className="text-black text-xl md:text-2xl font-light leading-relaxed max-w-3xl">
                 From international sourcing to last-mile delivery, we provide
                 comprehensive pharmaceutical supply chain solutions.
               </p>
             </ScrollReveal>
-
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {services.map((service) => (
-                <motion.div key={service.title} variants={staggerItem}>
-                  <motion.div
-                    initial="rest"
-                    whileHover="hover"
-                    variants={cardHover}
-                    className="group h-full p-8 border border-background/10 bg-white hover:bg-primary transition-colors duration-400"
-                  >
-                    <div className="w-12 h-12 bg-[#f5f5f5] flex items-center justify-center mb-6  transition-colors duration-400">
-                      <service.icon
-                        size={22}
-                        className="text-black  group-hover:text-primary-foreground transition-colors duration-400"
-                      />
-                    </div>
-                    <h3 className="font-display text-xl font-bold text-black group-hover:text-primary-foreground mb-3 transition-colors duration-400">
-                      {service.title}
-                    </h3>
-                    <p className="text-black text-sm leading-relaxed mb-6 group-hover:text-primary-foreground/70 transition-colors duration-400">
-                      {service.desc}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {service.features.map((f) => (
-                        <span
-                          key={f}
-                          className="bg-[#f5f5f5] text-black text-xs font-medium px-3 py-1.5 group-hover:bg-primary-foreground/10 group-hover:text-primary-foreground/70 transition-colors duration-400"
-                        >
-                          {f}
-                        </span>
-                      ))}
-                    </div>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </motion.div>
           </div>
         </section>
 
-        {/* Image */}
+        {/* Scroll-driven services */}
+        <ServicesScroll />
+
+        {/* End banner */}
         <section className="relative h-[450px]">
           <ImageSlider
             images={[
@@ -212,54 +331,37 @@ const Services = () => {
               </div>
             </ScrollReveal>
             <motion.div
-              variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
+              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12 } } }}
               className="grid grid-cols-1 md:grid-cols-4 gap-8"
             >
               {[
-                {
-                  step: "01",
-                  title: "Sourcing",
-                  desc: "Identify WHO-approved manufacturers",
-                },
-                {
-                  step: "02",
-                  title: "Procurement",
-                  desc: "Negotiate terms and place orders",
-                },
-                {
-                  step: "03",
-                  title: "Import & Clearance",
-                  desc: "Handle shipping and customs",
-                },
-                {
-                  step: "04",
-                  title: "Distribution",
-                  desc: "Deliver to healthcare providers",
-                },
+                { step: "01", title: "Sourcing", desc: "Identify WHO-approved manufacturers" },
+                { step: "02", title: "Procurement", desc: "Negotiate terms and place orders" },
+                { step: "03", title: "Import & Clearance", desc: "Handle shipping and customs" },
+                { step: "04", title: "Distribution", desc: "Deliver to healthcare providers" },
               ].map((item) => (
-                <motion.div key={item.step} variants={staggerItem}>
+                <motion.div
+                  key={item.step}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+                  }}
+                >
                   <motion.div
                     whileHover={{ y: -4 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     className="text-center"
                   >
-                    <motion.div
-                      className="font-display text-5xl font-bold text-primary-foreground/25 mb-4"
-                      whileInView={{ opacity: [0, 1], scale: [0.8, 1] }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5 }}
-                    >
+                    <div className="font-display text-5xl font-bold text-primary-foreground/25 mb-4">
                       {item.step}
-                    </motion.div>
+                    </div>
                     <h3 className="font-display text-lg font-semibold text-primary-foreground mb-2">
                       {item.title}
                     </h3>
-                    <p className="text-primary-foreground/60 text-sm">
-                      {item.desc}
-                    </p>
+                    <p className="text-primary-foreground/60 text-sm">{item.desc}</p>
                   </motion.div>
                 </motion.div>
               ))}
