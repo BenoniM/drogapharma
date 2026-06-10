@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
@@ -16,138 +16,87 @@ import heroBgThree from "@/assets/herobg/5.jpg";
 import { staggerContainer, staggerItem, cardHover } from "@/lib/variants";
 
 const allProducts = [
-  {
-    name: "Amoxicillin 500mg",
-    category: "Medical",
-    manufacturer: "Cipla",
-    origin: "India",
-    desc: "Broad-spectrum antibiotic capsules for bacterial infections",
-  },
-  {
-    name: "Metformin 850mg",
-    category: "Medical",
-    manufacturer: "Denk Pharma",
-    origin: "Germany",
-    desc: "Oral hypoglycemic agent for type 2 diabetes",
-  },
-  {
-    name: "Amlodipine 10mg",
-    category: "Medical",
-    manufacturer: "Sun Pharma",
-    origin: "India",
-    desc: "Calcium channel blocker for hypertension",
-  },
-  {
-    name: "Omeprazole 20mg",
-    category: "Medical",
-    manufacturer: "Julphar",
-    origin: "UAE",
-    desc: "Proton pump inhibitor for acid reflux",
-  },
-  {
-    name: "Ciprofloxacin 500mg",
-    category: "Medical",
-    manufacturer: "Stada",
-    origin: "Germany",
-    desc: "Fluoroquinolone antibiotic for infections",
-  },
-  {
-    name: "Losartan 50mg",
-    category: "Medical",
-    manufacturer: "Hikma",
-    origin: "Jordan",
-    desc: "Angiotensin II receptor blocker",
-  },
-  {
-    name: "Surgical Sutures (Polyglactin)",
-    category: "Medical Equipment",
-    manufacturer: "Partner Manufacturer",
-    origin: "India",
-    desc: "Absorbable braided surgical sutures",
-  },
-  {
-    name: "Silk Sutures",
-    category: "Medical Equipment",
-    manufacturer: "Partner Manufacturer",
-    origin: "India",
-    desc: "Non-absorbable surgical sutures for wound closure",
-  },
-  {
-    name: "Hip Replacement Implant",
-    category: "Orthopedics and Surgical Instrument",
-    manufacturer: "Partner Manufacturer",
-    origin: "Germany",
-    desc: "Total hip replacement prosthesis system",
-  },
-  {
-    name: "Bone Plates & Screws",
-    category: "Orthopedics and Surgical Instrument",
-    manufacturer: "Partner Manufacturer",
-    origin: "Germany",
-    desc: "Titanium fixation systems for fracture repair",
-  },
-  {
-    name: "Disposable Syringes",
-    category: "Medical Devices",
-    manufacturer: "Partner Manufacturer",
-    origin: "China",
-    desc: "Sterile disposable syringes in various sizes",
-  },
-  {
-    name: "Diagnostic Equipment",
-    category: "Laboratory",
-    manufacturer: "Partner Manufacturer",
-    origin: "Germany",
-    desc: "Advanced diagnostic and monitoring equipment",
-  },
-  {
-    name: "Paracetamol 500mg",
-    category: "Medical",
-    manufacturer: "Sun Pharma",
-    origin: "India",
-    desc: "Analgesic and antipyretic",
-  },
-  {
-    name: "Ceftriaxone 1g",
-    category: "Medical",
-    manufacturer: "Julphar",
-    origin: "UAE",
-    desc: "Third-generation cephalosporin injection",
-  },
-  {
-    name: "Intramedullary Nails",
-    category: "Orthopedics and Surgical Instrument",
-    manufacturer: "Partner Manufacturer",
-    origin: "India",
-    desc: "Intramedullary fixation for long bone fractures",
-  },
-  {
-    name: "Patient Monitors",
-    category: "Medical Devices",
-    manufacturer: "Partner Manufacturer",
-    origin: "China",
-    desc: "Multi-parameter patient monitoring systems",
-  },
+  // Medicine
+  { name: "Cefdia 400mg Film Coated Tablet", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Cefixime - Anti-Infection" },
+  { name: "20mg FCT", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Tadalafil - Urology & Sexual" },
+  { name: "Prilam Dr. 10mg/10mg", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Doxylamine Succinate/ Pyridoxine Hydrochloride - OBGYN" },
+  { name: "Aspicam-15mg Tab", category: "Medicine", manufacturer: "BIOFARM", origin: "Poland", desc: "Meloxicamum - Rheumatology, Orthopedics & Pain Management" },
+  { name: "Alrinast 5mg 2*10 Tab", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Desloratidine - Anti Allergy" },
+  { name: "Panocer 40mg ECT of 14", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Pantoprazole - Gastroenterology" },
+  { name: "Panocer 40mg ECT of 28", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Pantoprazole - Gastroenterology" },
+  { name: "Hyorth Injection", category: "Medicine", manufacturer: "Virchow", origin: "India", desc: "Sodium Hyaluronate Sterile Solution 10mg/ml - Rheumatology & Orthopedics" },
+  { name: "Hyorth XL Injection", category: "Medicine", manufacturer: "Virchow", origin: "India", desc: "Sodium Hyaluronate Sterile Solution 8mg/ml - Rheumatology & Orthopedics" },
+  { name: "Atrox 10mg 2*15 Tab", category: "Medicine", manufacturer: "BIOFARM", origin: "Poland", desc: "Atorvastatin - Cardiovascular" },
+  { name: "Atrox 20mg 2*15 Tab", category: "Medicine", manufacturer: "BIOFARM", origin: "Poland", desc: "Atorvastatin - Cardiovascular" },
+  { name: "Atrox 40mg 2*15 Tab", category: "Medicine", manufacturer: "BIOFARM", origin: "Poland", desc: "Atorvastatin - Cardiovascular" },
+  { name: "Betablok SDK 25 mg CR FCT of 20", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Metoprolol Succinate - Cardiovascular" },
+  { name: "Betablok SDK 25 mg CR FCT of 30", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Metoprolol Succinate - Cardiovascular" },
+  { name: "Betablok SDK 50 mg CR FCT of 20", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Metoprolol Succinate - Cardiovascular" },
+  { name: "Betablok SDK 50 mg CR FCT of 30", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Metoprolol Succinate - Cardiovascular" },
+  { name: "Livercol 10mg FCT", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Rosuvastatin - Cardiovascular" },
+  { name: "Livercol 20mg FCT", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Rosuvastatin - Cardiovascular" },
+  { name: "Valcodin 5mg/160mg FCT", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Amlodipine+Valsartan - Cardiovascular" },
+  { name: "Valcodin 10mg/160mg FCT", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Amlodipine+Valsartan - Cardiovascular" },
+  { name: "Valcor Plus 80mg/12.5mg FCT", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Valsartan+Hydrochlorothiazide - Cardiovascular" },
+  { name: "Valcor Plus 160mg/12.5mg FCT", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Valsartan+Hydrochlorothiazide - Cardiovascular" },
+  { name: "Vildabet Met 50/850mg", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Vildagliptin - Endocrinology & Metabolism" },
+  { name: "Vildabet Met 50/1000mg", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Vildagliptin - Endocrinology & Metabolism" },
+  { name: "Dorzy-T", category: "Medicine", manufacturer: "Indiana Ophthalmics", origin: "India", desc: "Dorzolamide 2% + Timolol 0.5% - Ophthalmic (Anti-Glaucoma)" },
+  { name: "Optifresh-Plus", category: "Medicine", manufacturer: "Indiana Ophthalmics", origin: "India", desc: "Sodium Carboxymethylcellulose 0.5% + Glycerin 0.5% - Ophthalmic (Dry Eye)" },
+  { name: "Visomer Eye Drop", category: "Medicine", manufacturer: "Indiana Ophthalmics", origin: "India", desc: "Dexamethasone Sodium Phosphate (0.2%W/V) + Chloramphenicol (1%W/V) - Ophthalmic (Anti-Eye Infection)" },
+  { name: "Visomer-P Eye Ointment", category: "Medicine", manufacturer: "Indiana Ophthalmics", origin: "India", desc: "Polymyxin B. Sulfate (5000LU) + Chloramphenicol (10mg) + Dexamethasone Sodium Phosphate (1mg) - Ophthalmic (Anti-Eye Infection)" },
+
+  // Diagnostics
+  { name: "Precisa Blood Glucose Test Kit", category: "Diagnostics", manufacturer: "Fia BioMed", origin: "Germany", desc: "Diagnostic Equipment" },
+  { name: "Getein 1160 Immunofluorescence Quantitative Analyzer", category: "Diagnostics", manufacturer: "Getein Biotech Inc.", origin: "China", desc: "Diagnostic Equipment" },
+  { name: "Boso Medicus X with AC Adapter & Battery Operated", category: "Diagnostics", manufacturer: "BOSCH+SOHN", origin: "Germany", desc: "Diagnostic Equipment" },
+  { name: "Boso Clinicus I, Blue 60mm with Adult Cuff", category: "Diagnostics", manufacturer: "BOSCH+SOHN", origin: "Germany", desc: "Diagnostic Equipment" },
+  { name: "Boso Clinicus I, Blue 60mm with Pediatric & Adult Cuff", category: "Diagnostics", manufacturer: "BOSCH+SOHN", origin: "Germany", desc: "Diagnostic Equipment" },
+  { name: "Boso Clinicus I, Blue 60mm with Neonatal, Pediatric & Adult (Medium, Large & Extra Large) Cuff", category: "Diagnostics", manufacturer: "BOSCH+SOHN", origin: "Germany", desc: "Diagnostic Equipment" },
+  { name: "Sthethoscope for Adult & Children (Luxascope Sonus SX)", category: "Diagnostics", manufacturer: "Luxamed", origin: "Germany", desc: "Diagnostic Equipment" },
+  { name: "Sthetoscope Cardio (Luxascope Sonus CX)", category: "Diagnostics", manufacturer: "Luxamed", origin: "Germany", desc: "Diagnostic Equipment" },
+
+  // Surgical
+  { name: "Surgicell (Absorbable Haemostat Oxidised Regenerated Cellulose)", category: "Surgical", manufacturer: "AEGIS", origin: "India", desc: "Surgical Supplies" },
+  { name: "Bone Wax", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Daclon Nylon 9/0 & 10/0", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Polypropylene Surgical Mesh 7.5x15cm of 5", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Polypropylen Surgical Mesh 10x15cm of 5", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Polypropylen Surgical Mesh 15x15cm of 5", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Polypropylene Blue 0,2/0,3/0,4/0,5/0,6/0,7/0,8/0 2 Needles Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Silk 2 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Silk 1 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Silk 0 Cutting", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Silk 2/0 Cutting", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Silk 3/0 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Silk 4/0 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Silk 5/0 Cutting", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Silk 6/0 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Surgicryl PGA 2 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Surgicryl PGA 1 Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Surgicryl PGA 0 Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Surgicryl PGA 2/0 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Surgicryl PGA 3/0 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Surgicryl PGA 4/0 Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Surgicryl PGA 5/0 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+  { name: "Surgicryl PGA 6/0 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
 ];
 
 const categoryImages: Record<string, string> = {
-  Medical: medicinesImg,
-  "Medical Devices": medDevicesImg,
-  Laboratory: labImg,
-  "Medical Equipment": productsImg,
-  "Orthopedics and Surgical Instrument": medDevicesImg,
+  Medicine: medicinesImg,
+  Diagnostics: labImg,
+  Surgical: productsImg,
 };
 
 const categories = [
   "All",
-  "Medical",
-  "Medical Devices",
-  "Laboratory",
-  "Medical Equipment",
-  "Orthopedics and Surgical Instrument",
+  "Medicine",
+  "Diagnostics",
+  "Surgical",
 ];
 
 const Products = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [letter, setLetter] = useState("All");
@@ -155,6 +104,24 @@ const Products = () => {
     null,
   );
   const { addItem, hasItem } = useInquiryStore();
+
+  useEffect(() => {
+    const urlCategory = searchParams.get("category");
+    if (urlCategory && categories.includes(urlCategory)) {
+      setCategory(urlCategory);
+    } else {
+      setCategory("All");
+    }
+  }, [searchParams]);
+
+  const handleCategoryChange = (c: string) => {
+    setCategory(c);
+    if (c === "All") {
+      setSearchParams({});
+    } else {
+      setSearchParams({ category: c });
+    }
+  };
 
   const filtered = allProducts.filter((p) => {
     if (category !== "All" && p.category !== category) return false;
@@ -230,7 +197,7 @@ const Products = () => {
         <section className="bg-[#f5f5f5] section-padding">
           <div className="container-narrow">
             <ScrollReveal>
-              <p className="text-black text-xl font-light leading-relaxed max-w-3xl mb-16 md:text-lg">
+              <p className="text-black text-xl font-light leading-relaxed max-w-3xl mx-auto text-center mb-16 md:text-lg">
                 Our product range includes premium quality pharmaceuticals,
                 sutures, orthopedic implants, disposable medical devices and
                 diagnostic equipment.
@@ -238,7 +205,7 @@ const Products = () => {
             </ScrollReveal>
 
             {/* Search & Categories */}
-            <div className="flex flex-col md:flex-row gap-4 mb-10">
+            <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-10">
               <div className="relative flex-1 max-w-sm">
                 <Search
                   size={16}
@@ -256,7 +223,7 @@ const Products = () => {
                 {categories.map((c) => (
                   <button
                     key={c}
-                    onClick={() => setCategory(c)}
+                    onClick={() => handleCategoryChange(c)}
                     className={`px-4 py-2 text-sm text-black font-medium transition-all duration-300 ${category === c ? "bg-primary text-black" : "bg-white text-background/70 hover:bg-background/20"}`}
                   >
                     {c}
@@ -266,7 +233,7 @@ const Products = () => {
             </div>
 
             {/* Alphabetical Filter */}
-            <div className="mb-16">
+            {/* <div className="mb-16">
               <div className="flex flex-wrap gap-x-6 gap-y-4 justify-center max-w-2xl mx-auto">
                 <button
                   onClick={() => setLetter("All")}
@@ -295,7 +262,7 @@ const Products = () => {
                   );
                 })}
               </div>
-            </div>
+            </div> */}
 
             {/* Grid */}
             <motion.div

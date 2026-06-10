@@ -172,35 +172,27 @@ const WaveStatRow = ({
 const categories = [
   {
     icon: Pill,
-    title: "Pharmaceuticals",
+    title: "Medicine",
     desc: "Quality medicines from WHO-approved global manufacturers",
     primaryImg: pharmacyNewImg,
     localImg: medicinesImg,
-    count: "500+",
-  },
-  {
-    icon: Bone,
-    title: "Orthopedic Implants",
-    desc: "High-quality orthopedic implants and surgical instruments",
-    primaryImg: orthopedicNewImg,
-    localImg: medDevicesImg,
-    count: "200+",
+    count: "28",
   },
   {
     icon: Stethoscope,
-    title: "Medical Devices",
+    title: "Diagnostics",
     desc: "Disposable medical devices and diagnostic equipment",
     primaryImg: medicalDeviceNewImg,
     localImg: medecialImg,
-    count: "150+",
+    count: "8",
   },
   {
     icon: FlaskConical,
-    title: "Sutures & Supplies",
+    title: "Surgical",
     desc: "Surgical sutures and essential medical supplies",
     primaryImg: sutureNewImg,
     localImg: productsImg,
-    count: "100+",
+    count: "23",
   },
 ];
 
@@ -268,17 +260,11 @@ const Home = () => {
 
         {/* Quick nav strip */}
         <section className="hidden bg-[#eeeaea] border-b border-background/10">
-          <div className="container grid grid-cols-2 md:grid-cols-5">
+          <div className="container grid grid-cols-1 md:grid-cols-3">
             {[
-              { label: "Medical", icon: Pill, to: "/products" },
-              { label: "Medical Devices", icon: Stethoscope, to: "/products" },
-              { label: "Laboratory", icon: FlaskConical, to: "/products" },
-              { label: "Medical Equipment", icon: TrendingUp, to: "/products" },
-              {
-                label: "Orthopedics and Surgical Instruments and Implants",
-                icon: Bone,
-                to: "/products",
-              },
+              { label: "Medicine", icon: Pill, to: "/products" },
+              { label: "Diagnostics", icon: Stethoscope, to: "/products" },
+              { label: "Surgical", icon: FlaskConical, to: "/products" },
             ].map((item, i) => (
               <motion.div
                 key={item.label}
@@ -490,7 +476,7 @@ const Home = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
             >
               {categories.map((cat) => (
                 <motion.div key={cat.title} variants={staggerItem}>
