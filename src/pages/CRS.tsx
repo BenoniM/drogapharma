@@ -140,129 +140,30 @@ export default function CRS() {
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ delay: index * 0.07, duration: 0.5 }}
                 onClick={() => setSelected(item)}
-                style={{
-                  background: "#ffffff",
-                  borderRadius: 4,
-                  overflow: "hidden",
-                  cursor: "pointer",
-                  boxShadow: "0 2px 16px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.07)",
-                  padding: "12px 12px 0 12px",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
+                className="relative bg-black/5 p-6 cursor-pointer group hover:bg-black hover:text-white transition-colors duration-300 flex flex-col h-full border-2 border-transparent hover:border-black"
               >
-                {/* Image with overlay badge */}
-                <div
-                  style={{
-                    width: "100%",
-                    aspectRatio: "4/3",
-                    overflow: "hidden",
-                    background: "#000000",
-                    position: "relative",
-                    borderRadius: 2,
-                  }}
-                >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      display: "block",
-                      transition: "transform 0.4s ease",
-                    }}
-                    onMouseEnter={(e) =>
-                      ((e.target as HTMLImageElement).style.transform = "scale(1.03)")
-                    }
-                    onMouseLeave={(e) =>
-                      ((e.target as HTMLImageElement).style.transform = "scale(1)")
-                    }
-                  />
-                  {/* Title overlay badge */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 12,
-                      left: 12,
-                      background: "#ffffff",
-                      color: "#000000",
-                      fontSize: "0.78rem",
-                      fontWeight: 600,
-                      padding: "5px 12px",
-                      borderRadius: 2,
-                      letterSpacing: "0.01em",
-                      textTransform: "capitalize",
-                      whiteSpace: "nowrap",
-                      maxWidth: "calc(100% - 24px)",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {item.title}
+                <div className="flex justify-between items-start mb-6 gap-4">
+                  <h3 className="font-bold text-[16px] leading-snug w-3/4 group-hover:text-white transition-colors capitalize">{item.title}</h3>
+                  <div className="flex items-center justify-center gap-1.5 text-[9px] font-bold text-black bg-white px-2 py-1.5 uppercase tracking-widest border border-black/10 group-hover:border-transparent group-hover:text-black shrink-0">
+                    {item.category}
                   </div>
                 </div>
 
-                {/* Polaroid bottom: title + arrow */}
-                <div
-                  style={{
-                    padding: "18px 4px 16px",
-                    display: "flex",
-                    alignItems: "flex-end",
-                    justifyContent: "space-between",
-                    minHeight: 80,
-                  }}
-                >
-                  <h2
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: 600,
-                      color: "#000000",
-                      margin: 0,
-                      letterSpacing: "-0.01em",
-                      textTransform: "capitalize",
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    {item.title}
-                  </h2>
-                  <div
-                    style={{
-                      flexShrink: 0,
-                      marginLeft: 12,
-                      color: "#000000",
-                      fontSize: "1.1rem",
-                      lineHeight: 1,
-                    }}
-                  >
-                    →
+                <div className="w-full relative flex items-center justify-center mb-8 overflow-hidden bg-white aspect-[4/3] border border-black/5 group-hover:border-white/20 p-2 md:p-4">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
+                  />
+                </div>
+
+                <div className="mt-auto pt-5 border-t-2 border-black/10 group-hover:border-white/20 flex justify-between items-end">
+                  <div className="text-right text-black group-hover:text-white">
+                    <ArrowRight size={20} />
                   </div>
                 </div>
               </motion.article>
             ))}
-          </div>
-
-          {/* More News button */}
-          <div style={{ textAlign: "center", marginTop: 48 }}>
-            <button
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "12px 28px",
-                border: "1.5px solid #000000",
-                borderRadius: 32,
-                background: "transparent",
-                fontSize: "0.8rem",
-                fontWeight: 700,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "#000000",
-                cursor: "pointer",
-              }}
-            >
-              More News <ArrowRight size={14} />
-            </button>
           </div>
         </div>
       </section>

@@ -1,11 +1,16 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, Target } from "lucide-react";
+import { Eye, Target, Scale, Heart } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
-import { MissionVisionValues } from "@/components/Missionvisionvalues";
+import MissionVisionValues from "@/components/Missionvisionvalues";
 import teamImg from "@/assets/abdi.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
 import heroImg from "@/assets/hero-pharma.jpg";
@@ -149,26 +154,103 @@ const storySlides = [
   },
 ];
 
-const STORY_LEFT_BG = "https://images.pexels.com/photos/15571631/pexels-photo-15571631.jpeg";
-const STORY_RIGHT_BG = "https://images.pexels.com/photos/5407246/pexels-photo-5407246.jpeg";
+const BalanceScale = () => (
+  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#FFF200" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    {/* Stand */}
+    <path d="M20 35 L20 8" />
+    <path d="M12 35 L28 35" />
+    <path d="M18 8 L22 8" />
+    
+    {/* Beam (tilting) */}
+    <motion.g animate={{ rotate: [-15, 15, -15] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} style={{ transformOrigin: '20px 10px' }}>
+      <path d="M6 10 L34 10" />
+      {/* Left Pan */}
+      <motion.g animate={{ rotate: [15, -15, 15] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} style={{ transformOrigin: '6px 10px' }}>
+        <path d="M6 10 L2 20 L10 20 Z" />
+      </motion.g>
+      {/* Right Pan */}
+      <motion.g animate={{ rotate: [15, -15, 15] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} style={{ transformOrigin: '34px 10px' }}>
+        <path d="M34 10 L30 20 L38 20 Z" />
+      </motion.g>
+    </motion.g>
+  </svg>
+);
 
-function StoryContent({ slide }: { slide: typeof storySlides[0] }) {
-  return (
-    <div className="max-w-sm text-center px-4">
-      <div className="mx-auto mb-5 h-[3px] w-8 rounded-full bg-[#FFF200]" />
-      <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-5">
-        {slide.title}
-      </h2>
-      <p className="text-sm leading-relaxed text-white/65 mb-6">{slide.intro}</p>
-      <p className="text-base font-semibold leading-snug mb-6 text-[#FFF200]">
-        "{slide.highlight}"
-      </p>
-      <p className="text-sm leading-relaxed text-white/65 mb-8">{slide.outro}</p>
-      <div className="inline-block text-left">
-        <p className="font-bold text-sm text-white">{slide.signatureName}</p>
-        <p className="text-xs mt-0.5 text-white/50">{slide.signatureRole}</p>
-      </div>
+const RippleTarget = () => (
+  <>
+    <style>{`
+      @keyframes ripple {
+        0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+        100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+      }
+      .ripple-ring {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 14px; height: 14px;
+        border-radius: 50%;
+        border: 2px solid #FFF200;
+        animation: ripple 2.4s ease-out infinite;
+        will-change: transform, opacity;
+      }
+    `}</style>
+    <div style={{ position: 'relative', width: 40, height: 40, overflow: 'visible' }}>
+      <div className="ripple-ring" style={{ animationDelay: '0s' }} />
+      <div className="ripple-ring" style={{ animationDelay: '0.8s' }} />
+      <div className="ripple-ring" style={{ animationDelay: '1.6s' }} />
     </div>
+  </>
+);
+
+
+const coreValuesCards = [
+  {
+    category: "Integrity",
+    titles: ["Do The Right Thing", "Walk The Talk", "Foster Sound Decisions"],
+    icon: <BalanceScale />,
+    animation: {}
+  },
+  {
+    category: "Customer Centric",
+    titles: ["Listen First", "Go The Extra Mile", "Innovate To Add Value"],
+    icon: <RippleTarget />,
+    animation: {}
+  },
+  {
+    category: "Care",
+    titles: ["Care For Us (Employee & Terms)", "Care For Community", "Care For The Planet"],
+    icon: <Heart className="w-10 h-10 text-[#FFF200]" strokeWidth={2.5} />,
+    animation: { scale: [1, 1.2, 1], transition: { duration: 1.2, repeat: Infinity, ease: "easeInOut" } }
+  }
+];
+
+function CoreValuesSection() {
+  return (
+    <section className="py-20 bg-white">
+      <div className="container-wide">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
+          {coreValuesCards.map((cv, i) => (
+            <div key={i} className="bg-white p-8 md:p-10 border border-slate-200 rounded-xl hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300">
+              <motion.div 
+                className="mb-10 inline-flex"
+                animate={cv.animation as any}
+              >
+                {cv.icon}
+              </motion.div>
+              <h3 className="font-display text-2xl font-bold text-slate-900 mb-6">
+                {cv.category}
+              </h3>
+              <ul className="space-y-3">
+                {cv.titles.map((t, idx) => (
+                  <li key={idx} className="text-slate-600 text-base leading-relaxed">
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -178,45 +260,101 @@ import Certifications from "@/components/Certifications";
 import MarqueeClients from "@/components/MarqueeClients";
 
 const About = () => {
-  const [missionCurrent, setMissionCurrent] = useState(0);
+  const storyRef = useRef<HTMLDivElement>(null);
 
-  // Story drag-reveal state
-  const storyContainerRef = useRef<HTMLDivElement>(null);
-  const [dividerPct, setDividerPct] = useState(50);
-  const [dragging, setDragging] = useState(false);
+  useGSAP(() => {
+    const cards = gsap.utils.toArray<HTMLElement>('.story-card');
+    cards.forEach((card, index) => {
+      const content = card.querySelector('.parallax-content');
+      const bg = card.querySelector('.hover-bg');
+      if (!content || !bg) return;
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setMissionCurrent((prev) => (prev + 1) % missionVisionSlides.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, []);
+      const isLeft = index === 0;
 
-  const getDividerPct = useCallback((clientX: number) => {
-    const rect = storyContainerRef.current?.getBoundingClientRect();
-    if (!rect) return 50;
-    return Math.min(95, Math.max(5, ((clientX - rect.left) / rect.width) * 100));
-  }, []);
+      gsap.set(bg, {
+        clipPath: isLeft ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)",
+        opacity: 1,
+      });
 
-  const onMouseDown = () => setDragging(true);
-  const onMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (!dragging) return;
-      setDividerPct(getDividerPct(e.clientX));
-    },
-    [dragging, getDividerPct],
-  );
-  const onMouseUp = () => setDragging(false);
+      // For the right card, collect all text/border elements to animate with GSAP
+      const isRight = index === 1;
+      const rightTextEls = isRight ? card.querySelectorAll<HTMLElement>('.gsap-text') : null;
+      const rightBorderEls = isRight ? card.querySelectorAll<HTMLElement>('.gsap-border') : null;
 
-  const onTouchStart = () => setDragging(true);
-  const onTouchMove = useCallback(
-    (e: React.TouchEvent) => {
-      if (!dragging) return;
-      setDividerPct(getDividerPct(e.touches[0].clientX));
-    },
-    [dragging, getDividerPct],
-  );
-  const onTouchEnd = () => setDragging(false);
+      card.addEventListener('mouseenter', () => {
+        // Sweep the background in
+        gsap.to(bg, { clipPath: "inset(0 0% 0 0%)", duration: 0.8, ease: "power3.inOut" });
+
+        if (isRight && rightTextEls && rightBorderEls) {
+          // Stagger text color change to follow the sweep (bg takes 0.8s from right→left)
+          // Elements higher up in DOM get a shorter delay so the color wave follows the bg
+          rightTextEls.forEach((el, i) => {
+            const delay = 0.35 + i * 0.06;
+            gsap.to(el, {
+              color: el.dataset.hoverColor ?? '#ffffff',
+              duration: 0.35,
+              delay,
+              ease: "power2.out",
+            });
+          });
+          rightBorderEls.forEach((el) => {
+            gsap.to(el, {
+              borderColor: el.dataset.hoverBorder ?? 'rgba(255,255,255,0.2)',
+              duration: 0.35,
+              delay: 0.5,
+              ease: "power2.out",
+            });
+          });
+        }
+      });
+
+      card.addEventListener('mouseleave', () => {
+        gsap.to(bg, {
+          clipPath: isLeft ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)",
+          duration: 0.6,
+          ease: "power3.inOut",
+        });
+        gsap.to(content, { x: 0, y: 0, rotateX: 0, rotateY: 0, duration: 1, ease: "elastic.out(1, 0.3)" });
+
+        if (isRight && rightTextEls && rightBorderEls) {
+          rightTextEls.forEach((el, i) => {
+            gsap.to(el, {
+              color: el.dataset.baseColor ?? '',
+              duration: 0.3,
+              delay: i * 0.03,
+              ease: "power2.in",
+            });
+          });
+          rightBorderEls.forEach((el) => {
+            gsap.to(el, {
+              borderColor: el.dataset.baseBorder ?? '',
+              duration: 0.3,
+              ease: "power2.in",
+            });
+          });
+        }
+      });
+
+      card.addEventListener('mousemove', (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        gsap.to(content, {
+          x: x * 30,
+          y: y * 30,
+          rotateX: -y * 10,
+          rotateY: x * 10,
+          duration: 0.6,
+          ease: "power2.out",
+          transformPerspective: 1000,
+        });
+      });
+    });
+
+    gsap.fromTo(".story-divider", { scaleY: 0 }, {
+      scaleY: 1, duration: 1.5, ease: "power4.inOut", scrollTrigger: { trigger: storyRef.current, start: "top 70%" }
+    });
+  }, { scope: storyRef });
 
   return (
     <PageTransition>
@@ -321,91 +459,119 @@ const About = () => {
           </div>
         </section>
 
-        {/* Story split — drag reveal */}
-        <section
-          ref={storyContainerRef}
-          className="relative overflow-hidden"
-          style={{
-            height: "min(720px, 92vh)",
-            cursor: dragging ? "col-resize" : "default",
-            userSelect: "none",
-          }}
-          onMouseMove={onMouseMove}
-          onMouseUp={onMouseUp}
-          onMouseLeave={onMouseUp}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-        >
-          {/* ── RIGHT panel: bg + Group CEO Text (Clipped to the right) ── */}
-          <div
-            className="absolute inset-0"
-            style={{ clipPath: `inset(0 0 0 ${dividerPct}%)` }}
-          >
-            <div
-              className="absolute inset-0 brightness-50"
-              style={{
-                backgroundImage: `url(${STORY_RIGHT_BG})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            />
-            <div className="absolute inset-0 bg-black/78" />
-            
-            {/* Kept at absolute inset-0 so text stays dead-centered while clipPath cuts over it */}
-            <div className="absolute inset-0 flex items-center justify-center px-10 py-16 pointer-events-none">
-              <StoryContent slide={storySlides[1]} />
-            </div>
-          </div>
+        {/* Story section */}
+        <section ref={storyRef} className="bg-white py-16 md:py-24 relative overflow-hidden border-t border-slate-100">
+          <div className="container-wide relative px-6 md:px-12 z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0 relative">
 
-          {/* ── LEFT panel: bg + Founder Text (Clipped to the left) ── */}
-          <div
-            className="absolute inset-0"
-            style={{ clipPath: `inset(0 ${100 - dividerPct}% 0 0)` }}
-          >
-            <div
-              className="absolute inset-0 brightness-50"
-              style={{
-                backgroundImage: `url(${STORY_LEFT_BG})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            />
-            <div className="absolute inset-0 bg-black/78" />
-            
-            {/* Kept at absolute inset-0 so text stays dead-centered while clipPath cuts over it */}
-            <div className="absolute inset-0 flex items-center justify-center px-10 py-16 pointer-events-none">
-              <StoryContent slide={storySlides[0]} />
-            </div>
-          </div>
+              {/* CEO 1 — yellow hover */}
+              <div className="lg:col-span-5 story-card group relative py-4 transition-colors duration-500 cursor-pointer">
+                {/* Sliding Yellow Background */}
+                <div className="hover-bg absolute top-0 bottom-0 bg-[#FFF200] z-0"
+                  style={{ left: '-100vw', right: '-20%' }} />
 
-          {/* ── Divider line + draggable handle ── */}
-          <div
-            className="absolute top-0 bottom-0 z-20 flex items-center justify-center"
-            style={{
-              left: `${dividerPct}%`,
-              transform: "translateX(-50%)",
-              width: "2px",
-              background: "rgba(255,242,0,0.5)",
-            }}
-            onMouseDown={onMouseDown}
-            onTouchStart={onTouchStart}
-          >
-            <motion.div
-              animate={{ scale: dragging ? 1.15 : 1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="absolute flex items-center justify-center rounded-full shadow-xl"
-              style={{ width: 48, height: 48, cursor: "col-resize", background: "#FFF200" }}
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <rect x="2" y="3" width="2" height="12" rx="1" fill="#1a1a1a" />
-                <rect x="8" y="3" width="2" height="12" rx="1" fill="#1a1a1a" />
-                <rect x="14" y="3" width="2" height="12" rx="1" fill="#1a1a1a" />
-              </svg>
-            </motion.div>
+                <div className="parallax-content relative z-10">
+                  <ScrollReveal>
+                    <div className="px-6 md:px-8 py-4 h-full flex flex-col">
+                      <div className="mb-8 h-[3px] w-12 bg-[#FFF200] group-hover:bg-black transition-colors duration-500" />
+                      <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-900 mb-6 group-hover:text-black transition-colors">
+                        {storySlides[0].title}
+                      </h2>
+                      <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-8 transition-colors">{storySlides[0].intro}</p>
+                      <p className="text-lg md:text-xl font-semibold leading-snug mb-8 text-slate-900 border-l-4 border-[#FFF200] group-hover:border-black group-hover:text-black pl-6 italic transition-colors">
+                        "{storySlides[0].highlight}"
+                      </p>
+                      <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-10 transition-colors">{storySlides[0].outro}</p>
+                      <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200 group-hover:border-black/20 transition-colors">
+                        <p className="font-bold text-base text-slate-900 group-hover:text-black transition-colors">{storySlides[0].signatureName}</p>
+                        <p className="text-sm mt-1 text-slate-500 group-hover:text-black/70 transition-colors">{storySlides[0].signatureRole}</p>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                </div>
+              </div>
+
+              {/* Divider on large screens */}
+              <div className="hidden lg:block lg:col-span-2 relative h-full">
+                <div className="absolute left-1/2 top-0 bottom-0 w-px bg-slate-200 origin-top story-divider scale-y-100" />
+              </div>
+
+              {/* CEO 2 — black hover, GSAP-driven text sync */}
+              <div className="lg:col-span-5 story-card group relative py-4 cursor-pointer">
+                {/* Sliding Black Background */}
+                <div className="hover-bg absolute top-0 bottom-0 bg-black z-0"
+                  style={{ left: '-20%', right: '-100vw' }} />
+
+                <div className="parallax-content relative z-10 h-full">
+                  <ScrollReveal delay={0.2}>
+                    <div className="px-6 md:px-8 py-4 h-full flex flex-col">
+                      <div className="mb-8 h-[3px] w-12 bg-[#FFF200]" />
+                      <h2
+                        className="gsap-text font-display text-3xl md:text-4xl font-bold mb-6"
+                        data-base-color="#0f172a"
+                        data-hover-color="#ffffff"
+                        style={{ color: '#0f172a' }}
+                      >
+                        {storySlides[1].title}
+                      </h2>
+                      <p
+                        className="gsap-text text-base leading-relaxed mb-8"
+                        data-base-color="#475569"
+                        data-hover-color="rgba(255,255,255,0.8)"
+                        style={{ color: '#475569' }}
+                      >
+                        {storySlides[1].intro}
+                      </p>
+                      <p
+                        className="gsap-text text-lg md:text-xl font-semibold leading-snug mb-8 border-l-4 border-[#FFF200] pl-6 italic"
+                        data-base-color="#0f172a"
+                        data-hover-color="#ffffff"
+                        style={{ color: '#0f172a' }}
+                      >
+                        "{storySlides[1].highlight}"
+                      </p>
+                      <p
+                        className="gsap-text text-base leading-relaxed mb-10"
+                        data-base-color="#475569"
+                        data-hover-color="rgba(255,255,255,0.8)"
+                        style={{ color: '#475569' }}
+                      >
+                        {storySlides[1].outro}
+                      </p>
+                      <div
+                        className="gsap-border inline-block text-left mt-auto pt-6 border-t"
+                        data-base-border="#e2e8f0"
+                        data-hover-border="rgba(255,255,255,0.2)"
+                        style={{ borderColor: '#e2e8f0' }}
+                      >
+                        <p
+                          className="gsap-text font-bold text-base"
+                          data-base-color="#0f172a"
+                          data-hover-color="#ffffff"
+                          style={{ color: '#0f172a' }}
+                        >
+                          {storySlides[1].signatureName}
+                        </p>
+                        <p
+                          className="gsap-text text-sm mt-1"
+                          data-base-color="#64748b"
+                          data-hover-color="rgba(255,255,255,0.6)"
+                          style={{ color: '#64748b' }}
+                        >
+                          {storySlides[1].signatureRole}
+                        </p>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                </div>
+              </div>
+
+            </div>
           </div>
         </section>
 
         <MissionVisionValues />
+        <CoreValuesSection />
 
         {/* Timeline / Journey */}
         <section className="pt-10 border-y border-slate-100">
