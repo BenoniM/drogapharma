@@ -1,24 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import ScrollReveal from "@/components/ScrollReveal";
-import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
-import { Mail, Phone, MapPin, Send, Clock, Globe } from "lucide-react";
-
-const contactHeroImages = [
-  {
-    src: "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=1920&q=80",
-    alt: "Contact us",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1516387938699-a93567ec168e?auto=format&fit=crop&w=1920&q=80",
-    alt: "Communication",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1920&q=80",
-    alt: "Office location",
-  },
-];
+import { Mail, Phone, MapPin, Clock, ArrowRight } from "lucide-react";
+import logo from "@/assets/logo.jpg";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 const Contact = () => {
   const [form, setForm] = useState({
@@ -26,8 +13,8 @@ const Contact = () => {
     email: "",
     phone: "",
     company: "",
-    subject: "",
     message: "",
+    newsletter: false,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,13 +25,13 @@ const Contact = () => {
       email: "",
       phone: "",
       company: "",
-      subject: "",
       message: "",
+      newsletter: false,
     });
   };
 
   const contactInfo = [
-    { icon: MapPin, title: "Address", lines: ["Addis Ababa, Ethiopia"] },
+    { icon: MapPin, title: "Address", lines: ["Gulele Subcity, Woreda 09, House No. New/Droga Building, Addis Ababa, Ethiopia."] },
     { icon: Phone, title: "Phone", lines: ["+251-112-73-45-54"] },
     { icon: Mail, title: "Email", lines: ["info@drogapharma.com"] },
     {
@@ -52,196 +39,234 @@ const Contact = () => {
       title: "Working Hours",
       lines: ["Mon - Fri: 8:00 AM - 5:30 PM", "Sat: 8:00 AM - 12:30 PM"],
     },
-    { icon: Globe, title: "Website", lines: ["www.drogapharma.com"] },
   ];
+
+  const customIcon = new L.Icon({
+    iconUrl: logo,
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+    className: "rounded-md border-2 border-primary shadow-lg bg-white p-[2px]"
+  });
 
   return (
     <PageTransition>
-      <div>
-        {/* Hero */}
-        <section className="relative h-[70vh] min-h-[500px] flex items-end pb-20 bg-foreground">
-          <ImageSlider
-            images={contactHeroImages}
-            className="absolute inset-0 z-0"
-          />
-          <div
-            className="absolute inset-0 z-[5]"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0.75) 100%)",
-            }}
-          />
-          <div className="container-narrow relative z-[6] w-full">
-            <motion.div
-              initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      <div className="bg-background min-h-screen pb-10">
+        {/* Dark Hero Section */}
+        <section className="relative bg-[#111317] pt-40 pb-48 overflow-hidden">
+          {/* Subtle curved lines background element (matching image) */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+            <style>
+              {`
+                .anim-bg-text {
+                  fill: rgba(0, 0, 0, 0);
+                  stroke: #FFF200;
+                  stroke-width: 2px;
+
+                  /* Long visible line + long gap */
+                  stroke-dasharray: 3000 1000;
+
+                  /* Smooth infinite movement */
+                  animation: strokeDashBg 20s linear infinite;
+
+                  opacity: 0.55;
+
+                  filter:
+                    drop-shadow(0 0 6px rgba(255,242,0,0.7))
+                    drop-shadow(0 0 16px rgba(255,242,0,0.4));
+                }
+
+                @keyframes strokeDashBg {
+                  from {
+                    stroke-dashoffset: 0;
+                  }
+                  to {
+                    /* -(3000 + 1000) */
+                    stroke-dashoffset: -4000;
+                  }
+                }
+              `}
+            </style>
+
+            <svg
+              className="absolute w-full h-full"
+              viewBox="0 0 1600 300"
+              preserveAspectRatio="xMidYMid meet"
             >
-              <span className="section-label text-primary block mb-4">
-                Get in Touch
-              </span>
-              <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-background tracking-tight">
-                Contact
-              </h1>
-              <p className="text-background/55 text-lg md:text-xl mt-4 max-w-xl leading-relaxed">
-                We'd love to hear from you. Get in touch with our team.
-              </p>
-            </motion.div>
+              <text
+                x="200%"
+                y="-50%"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className="anim-bg-text uppercase"
+                style={{
+                  fontSize: "90rem",
+                  fontWeight: 900,
+                  letterSpacing: "-0.04em",
+                }}
+              >
+                CONTACT US
+              </text>
+            </svg>
+          </div>
+
+          <div className="container-wide relative z-10 px-6 lg:px-12">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-white text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+              >
+                Contact Us
+              </motion.h1>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="max-w-sm"
+              >
+              </motion.div>
+            </div>
           </div>
         </section>
 
-        {/* Content */}
-        <section className="bg-[#f5f5f5] section-padding-lg">
-          <div className="container-narrow grid grid-cols-1 lg:grid-cols-5 gap-20">
-            {/* Info */}
-            <div className="lg:col-span-2">
-              <ScrollReveal direction="left">
-                <span className="section-label block mb-3 text-[#aca8a8]">
-                  Contact Information
-                </span>
-                <h2 className="font-display text-2xl font-bold text-black mt-2 mb-10">
-                  Get in Touch
-                </h2>
-                <div className="flex flex-col gap-7">
-                  {contactInfo.map((info, i) => (
-                    <motion.div
-                      key={info.title}
-                      initial={{ opacity: 0, x: -16 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{
-                        delay: i * 0.08,
-                        duration: 0.45,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
-                      className="flex items-start gap-4"
-                    >
-                      <div className="w-11 h-11 bg-background/10 flex items-center justify-center flex-shrink-0 hover:bg-primary transition-colors duration-300 group">
-                        <info.icon
-                          size={17}
-                          className="text-black group-hover:text-primary-foreground transition-colors duration-300"
-                        />
-                      </div>
-                      <div>
-                        <h4 className="font-display font-semibold text-black mb-1">
-                          {info.title}
-                        </h4>
-                        {info.lines.map((line) => (
-                          <p key={line} className="text-black text-sm">
-                            {line}
-                          </p>
-                        ))}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-                <div className="mt-10 overflow-hidden border border-background/10">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126766.39498919858!2d38.6520668!3d9.0107934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85cef5ab402d%3A0x8467b6b037a24d49!2sAddis%20Ababa%2C%20Ethiopia!5e0!3m2!1sen!2sus!4v1"
-                    width="100%"
-                    height="220"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    title="Droga Pharma Location"
+        {/* Map and Form Container (Overlapping Hero) */}
+        <section className="relative z-20 px-4 md:px-8 -mt-24 mb-16 max-w-[1400px] mx-auto">
+          <div className="bg-white flex flex-col lg:flex-row w-full shadow-2xl rounded-sm overflow-hidden">
+
+            {/* Map Side */}
+            <div className="w-full lg:w-[45%] h-[500px] lg:h-auto relative bg-gray-100 z-0">
+              <div className="absolute inset-0">
+                <MapContainer 
+                  center={[9.0494, 38.7454]} 
+                  zoom={15} 
+                  scrollWheelZoom={false}
+                  style={{ height: "100%", width: "100%", zIndex: 0 }}
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
                   />
-                </div>
-              </ScrollReveal>
+                  <Marker position={[9.0494, 38.7454]} icon={customIcon} />
+                </MapContainer>
+              </div>
             </div>
 
-            {/* Form */}
-            <div className="lg:col-span-3">
-              <ScrollReveal direction="right">
-                <span className="section-label block mb-3 text-[#aca8a8]">
-                  Send us a message
-                </span>
-                <h2 className="font-display text-2xl font-bold text-black mt-2 mb-10">
-                  Import Inquiry Form
-                </h2>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {[
-                      {
-                        label: "Full Name *",
-                        key: "name",
-                        type: "text",
-                        required: true,
-                      },
-                      {
-                        label: "Email *",
-                        key: "email",
-                        type: "email",
-                        required: true,
-                      },
-                      {
-                        label: "Phone",
-                        key: "phone",
-                        type: "tel",
-                        required: false,
-                      },
-                      {
-                        label: "Company",
-                        key: "company",
-                        type: "text",
-                        required: false,
-                      },
-                    ].map((field) => (
-                      <div key={field.key}>
-                        <label className="text-xs font-medium text-black block mb-2">
-                          {field.label}
-                        </label>
-                        <input
-                          required={field.required}
-                          type={field.type}
-                          value={form[field.key as keyof typeof form]}
-                          onChange={(e) =>
-                            setForm({ ...form, [field.key]: e.target.value })
-                          }
-                          className="w-full px-4 py-3 border border-background/20 bg-white text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all duration-300 hover:border-primary/30 placeholder:text-background/20"
-                        />
-                      </div>
-                    ))}
+            {/* Form Side */}
+            <div className="w-full lg:w-[55%] p-10 lg:p-16 xl:p-24 bg-white">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-10 max-w-lg mx-auto lg:mx-0">
+
+                {/* Full Name */}
+                <div className="relative">
+                  <input
+                    required
+                    type="text"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    placeholder="Full Name"
+                    className="w-full pb-3 border-b border-gray-200 bg-transparent text-black text-[15px] transition-colors placeholder:text-gray-400 font-medium focus:border-primary !outline-none !ring-0"
+                    style={{ boxShadow: "none" }}
+                  />
+                </div>
+
+                {/* Email */}
+                <div className="relative">
+                  <input
+                    required
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    placeholder="Email"
+                    className="w-full pb-3 border-b border-gray-200 bg-transparent text-black text-[15px] transition-colors placeholder:text-gray-400 font-medium focus:border-primary !outline-none !ring-0"
+                    style={{ boxShadow: "none" }}
+                  />
+                </div>
+
+                {/* Phone */}
+                <div className="relative flex items-end">
+                  <div className="flex items-center gap-2 border-b border-gray-200 pb-3 pr-4">
+                    <span className="text-xl leading-none">🇪🇹</span>
+                    <span className="text-black text-[15px] font-medium leading-none mb-[2px]">+251</span>
                   </div>
-                  <div>
-                    <label className="text-xs font-medium text-black block mb-2">
-                      Subject *
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      value={form.subject}
-                      onChange={(e) =>
-                        setForm({ ...form, subject: e.target.value })
-                      }
-                      placeholder="Enter subject"
-                      className="w-full px-4 py-3 border border-background/20 bg-white text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all duration-300 hover:border-primary/30 placeholder:text-background/20"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium text-black block mb-2">
-                      Message *
-                    </label>
-                    <textarea
-                      required
-                      rows={5}
-                      value={form.message}
-                      onChange={(e) =>
-                        setForm({ ...form, message: e.target.value })
-                      }
-                      className="w-full px-4 py-3 border border-background/20 bg-white text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none transition-all duration-300 hover:border-primary/30"
-                    />
-                  </div>
-                  <motion.button
+                  <input
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    placeholder="Phone number"
+                    className="w-full pb-3 border-b border-gray-200 bg-transparent text-black text-[15px] transition-colors pl-4 placeholder:text-gray-400 font-medium focus:border-primary !outline-none !ring-0"
+                    style={{ boxShadow: "none" }}
+                  />
+                </div>
+
+                {/* Company Name */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={form.company}
+                    onChange={(e) => setForm({ ...form, company: e.target.value })}
+                    placeholder="Company name"
+                    className="w-full pb-3 border-b border-gray-200 bg-transparent text-black text-[15px] transition-colors placeholder:text-gray-400 font-medium focus:border-primary !outline-none !ring-0"
+                    style={{ boxShadow: "none" }}
+                  />
+                </div>
+
+                {/* Query */}
+                <div className="relative mt-2">
+                  <textarea
+                    required
+                    rows={4}
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    placeholder="Write your query here"
+                    className="w-full pb-3 border-b border-gray-200 bg-transparent text-black text-[15px] transition-colors resize-none placeholder:text-gray-400 font-medium focus:border-primary !outline-none !ring-0"
+                    style={{ boxShadow: "none" }}
+                  />
+                </div>
+
+                {/* Submit Row */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mt-4">
+                  <button
                     type="submit"
-                    whileHover={{ scale: 1.02, y: -1 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="btn-primary self-start"
+                    className="bg-black text-white rounded-full px-8 py-3.5 font-medium text-[15px] inline-flex items-center justify-center gap-2 transition-all duration-200 flex-shrink-0 hover:bg-primary hover:text-black"
                   >
-                    <Send size={16} /> Send Inquiry
-                  </motion.button>
-                </form>
-              </ScrollReveal>
+                    Send <ArrowRight size={18} />
+                  </button>
+                  <p className="text-[12px] text-gray-500 leading-relaxed max-w-[250px]">
+                    By clicking the Send button you agree to personal data processing as stated in our <a href="#" className="font-bold hover:underline underline-offset-2">Privacy Policy</a>.
+                  </p>
+                </div>
+
+              </form>
             </div>
+          </div>
+        </section>
+
+        {/* Kept Content: Additional Contact Info */}
+        <section className="container-wide pb-10">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 pt-8">
+            {contactInfo.map((info, i) => (
+              <motion.div
+                key={info.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="flex flex-col gap-3"
+              >
+                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-[#111317]">
+                  <info.icon size={18} />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-black mb-2 text-sm">{info.title}</h4>
+                  {info.lines.map((line) => (
+                    <p key={line} className="text-gray-500 text-[13px] mb-1 font-medium">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </div>
         </section>
       </div>

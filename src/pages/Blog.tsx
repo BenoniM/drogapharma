@@ -5,9 +5,9 @@ import {
   ArrowRight,
   Calendar,
   Clock,
-  Tag,
   Search,
   ChevronRight,
+  Tag,
 } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -145,39 +145,103 @@ const Blog = () => {
   return (
     <PageTransition>
       <div className="min-h-screen bg-background">
-        <section className="relative h-[70vh] min-h-[560px] flex items-end pb-20 bg-foreground overflow-hidden">
-          <ImageSlider
-            images={[
-              { src: heroBgOne, alt: "Droga Pharma blog" },
-              { src: heroBgTwo, alt: "Healthcare" },
-              { src: heroBgThree, alt: "Research" },
-            ]}
-            className="absolute inset-0 z-0"
-          />
-          <div
-            className="absolute inset-0 z-[5]"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 60%, rgba(0,0,0,0.82) 100%)",
-            }}
-          />
-          <div className="container-narrow relative z-[6] w-full">
-            <motion.div
-              initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+        {/* Dark Hero Section */}
+        <section className="relative bg-[#111317] pt-40 pb-48 overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+            <style>
+              {`
+                .anim-bg-text {
+                  fill: rgba(0, 0, 0, 0);
+                  stroke: #FFF200;
+                  stroke-width: 2px;
+
+                  /* Long visible line + long gap */
+                  stroke-dasharray: 3000 1000;
+
+                  /* Smooth infinite movement */
+                  animation: strokeDashBg 20s linear infinite;
+
+                  opacity: 0.55;
+
+                  filter:
+                    drop-shadow(0 0 6px rgba(255,242,0,0.7))
+                    drop-shadow(0 0 16px rgba(255,242,0,0.4));
+                }
+
+                @keyframes strokeDashBg {
+                  from {
+                    stroke-dashoffset: 0;
+                  }
+                  to {
+                    /* -(3000 + 1000) */
+                    stroke-dashoffset: -4000;
+                  }
+                }
+              `}
+            </style>
+
+            <svg
+              className="absolute w-full h-full"
+              viewBox="0 0 1600 300"
+              preserveAspectRatio="xMidYMid meet"
             >
-              <span className="section-label text-primary block mb-4">
-                Insights & Updates
-              </span>
-              <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-background tracking-tight">
-                Our Blog
-              </h1>
-              <p className="text-background/55 text-lg md:text-xl mt-4 max-w-xl leading-relaxed">
-                Stories, research, and news from Droga Pharma — Ethiopia's
-                leading pharmaceutical distributor.
-              </p>
-            </motion.div>
+              <text
+                x="200%"
+                y="-50%"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className="anim-bg-text uppercase"
+                style={{
+                  fontSize: "90rem",
+                  fontWeight: 900,
+                  letterSpacing: "-0.04em",
+                }}
+              >
+                OUR BLOG
+              </text>
+            </svg>
+          </div>
+          
+          <div className="container-wide relative z-10 px-6 lg:px-12">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+              <div className="flex flex-col">
+                <span className="section-label text-primary block mb-4">Insights & Updates</span>
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-white text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+                >
+                  Our Blog
+                </motion.h1>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="max-w-sm"
+              >
+                <p className="text-white font-medium text-lg leading-relaxed">
+                  Stories, research, and news from Droga Pharma — Ethiopia's
+                  leading pharmaceutical distributor.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Image overlapping the hero - moved to right edge */}
+        <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
+          <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
+            <ImageSlider
+              images={[
+                { src: heroBgOne, alt: "Droga Pharma blog" },
+                { src: heroBgTwo, alt: "Healthcare" },
+                { src: heroBgThree, alt: "Research" },
+              ]}
+              className="absolute inset-0 z-0"
+            />
           </div>
         </section>
 

@@ -56,7 +56,7 @@ const navLinks: NavItem[] = [
     ],
   },
   { label: "Careers", path: "/careers" },
-  { label: "CRS", path: "/crs" },
+  { label: "CSR", path: "/crs" },
 ];
 
 /* ─── Navbar ─────────────────────────────────────────────────────────────── */

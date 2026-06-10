@@ -24,23 +24,97 @@ const Gallery = () => {
   return (
     <PageTransition>
       <div className="bg-[#f5f5f5]">
-        <section className="relative h-[60vh] min-h-[460px] flex items-end pb-20 bg-foreground overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/35 to-black/75" />
-          <div className="container-narrow relative z-10 w-full">
-            <ScrollReveal>
-              <div className="max-w-2xl">
-                <span className="section-label text-primary block mb-4">
-                  Media
-                </span>
-                <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-background tracking-tight">
+        {/* Dark Hero Section */}
+        <section className="relative bg-[#111317] pt-40 pb-48 overflow-hidden">
+          {/* Subtle curved lines background element (matching image) */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+            <style>
+              {`
+                .anim-bg-text {
+                  fill: rgba(0, 0, 0, 0);
+                  stroke: #FFF200;
+                  stroke-width: 2px;
+
+                  /* Long visible line + long gap */
+                  stroke-dasharray: 3000 1000;
+
+                  /* Smooth infinite movement */
+                  animation: strokeDashBg 20s linear infinite;
+
+                  opacity: 0.55;
+
+                  filter:
+                    drop-shadow(0 0 6px rgba(255,242,0,0.7))
+                    drop-shadow(0 0 16px rgba(255,242,0,0.4));
+                }
+
+                @keyframes strokeDashBg {
+                  from {
+                    stroke-dashoffset: 0;
+                  }
+                  to {
+                    /* -(3000 + 1000) */
+                    stroke-dashoffset: -4000;
+                  }
+                }
+              `}
+            </style>
+
+            <svg
+              className="absolute w-full h-full"
+              viewBox="0 0 1600 300"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              <text
+                x="200%"
+                y="-50%"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className="anim-bg-text uppercase"
+                style={{
+                  fontSize: "90rem",
+                  fontWeight: 900,
+                  letterSpacing: "-0.04em",
+                }}
+              >
+                GALLERY
+              </text>
+            </svg>
+          </div>
+          
+          <div className="container-wide relative z-10 px-6 lg:px-12">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+              <div className="flex flex-col">
+                <span className="section-label text-primary block mb-4">Media</span>
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-white text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+                >
                   Gallery
-                </h1>
-                <p className="text-background/70 text-lg md:text-xl mt-4 max-w-xl leading-relaxed">
+                </motion.h1>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="max-w-sm"
+              >
+                <p className="text-white font-medium text-lg leading-relaxed">
                   Visual moments from our operations, teams, and healthcare
                   partnerships.
                 </p>
-              </div>
-            </ScrollReveal>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Image overlapping the hero - moved to right edge */}
+        <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
+          <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
+            <img src={heroBgOne} alt="Gallery" className="w-full h-full object-cover" />
           </div>
         </section>
 

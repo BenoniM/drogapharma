@@ -28,39 +28,97 @@ export default function CRS() {
   return (
     <div className="min-h-screen" style={{ background: "#ffffff" }}>
       {/* Header */}
-      <section style={{ padding: "64px 0 40px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px" }}>
-          <div style={{ borderTop: "1px solid rgba(0,0,0,0.15)", paddingTop: 32, marginBottom: 40 }} />
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              fontSize: "clamp(2.5rem, 5vw, 4rem)",
-              fontWeight: 700,
-              color: "#000000",
-              letterSpacing: "-0.02em",
-              margin: 0,
-            }}
-          >
-            Charities and Foundations
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              marginTop: 16,
-              fontSize: "1.05rem",
-              color: "rgba(0,0,0,0.55)",
-              maxWidth: 560,
-              lineHeight: 1.6,
-            }}
-          >
-            Our corporate social responsibility work focuses on health,
-            education, community support, and sustainable access across the
-            ecosystems we serve.
-          </motion.p>
+      <section className="relative bg-[#111317] pt-40 pb-48 overflow-hidden">
+        {/* Subtle curved lines background element (matching image) */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+            <style>
+              {`
+                .anim-bg-text {
+                  fill: rgba(0, 0, 0, 0);
+                  stroke: #FFF200;
+                  stroke-width: 2px;
+
+                  /* Long visible line + long gap */
+                  stroke-dasharray: 3000 1000;
+
+                  /* Smooth infinite movement */
+                  animation: strokeDashBg 20s linear infinite;
+
+                  opacity: 0.55;
+
+                  filter:
+                    drop-shadow(0 0 6px rgba(255,242,0,0.7))
+                    drop-shadow(0 0 16px rgba(255,242,0,0.4));
+                }
+
+                @keyframes strokeDashBg {
+                  from {
+                    stroke-dashoffset: 0;
+                  }
+                  to {
+                    /* -(3000 + 1000) */
+                    stroke-dashoffset: -4000;
+                  }
+                }
+              `}
+            </style>
+
+            <svg
+              className="absolute w-full h-full"
+              viewBox="0 0 1600 300"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              <text
+                x="200%"
+                y="-50%"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className="anim-bg-text uppercase"
+                style={{
+                  fontSize: "90rem",
+                  fontWeight: 900,
+                  letterSpacing: "-0.04em",
+                }}
+              >
+                CHARITY
+              </text>
+            </svg>
+          </div>
+        
+        <div className="container-wide relative z-10 px-6 lg:px-12">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+            <div className="flex flex-col">
+              <span className="section-label text-primary block mb-4">CRS</span>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-white text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+              >
+                Charities and<br />Foundations
+              </motion.h1>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="max-w-sm"
+            >
+              <p className="text-white font-medium text-lg leading-relaxed">
+                Our corporate social responsibility work focuses on health,
+                education, community support, and sustainable access across the
+                ecosystems we serve.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Image overlapping the hero - moved to right edge */}
+      <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
+        <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
+          <img src={initiatives[0]?.image || "https://images.unsplash.com/photo-1593113589914-075568e09f58?auto=format&fit=crop&w=1200"} alt="Charity" className="w-full h-full object-cover" />
         </div>
       </section>
 
