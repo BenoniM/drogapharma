@@ -108,7 +108,6 @@ function ServicesScroll() {
           height: "100vh",
           display: "grid",
           gridTemplateColumns: "1fr 44% 1fr",
-          background: "#f5f5f5",
           overflow: "hidden",
         }}
       >
@@ -338,21 +337,6 @@ const Services = () => {
               ]}
               className="absolute inset-0 z-0"
             />
-          </div>
-        </section>
-
-        {/* Intro line */}
-        <section
-          className="bg-[#f5f5f5] py-16"
-          style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}
-        >
-          <div className="container-narrow">
-            <ScrollReveal>
-              <p className="text-black text-xl md:text-2xl font-light leading-relaxed max-w-3xl">
-                From international sourcing to last-mile delivery, we provide
-                comprehensive pharmaceutical supply chain solutions.
-              </p>
-            </ScrollReveal>
           </div>
         </section>
 

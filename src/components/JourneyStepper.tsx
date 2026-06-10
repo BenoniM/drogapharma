@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -23,6 +23,22 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (cursorRef.current) {
+      cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+    }
+  }, []);
+
+  const handleMouseEnter = useCallback((e: React.MouseEvent) => {
+    setIsHovering(true);
+    if (cursorRef.current) {
+      cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+    }
+  }, []);
+
   if (!timeline?.length) return null;
 
   return (
@@ -46,27 +62,86 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
             onClick={scrollPrev}
             aria-label="Previous"
             style={{
-              width: "45px", height: "45px", borderRadius: "50%",
-              border: "1px solid #bbb", background: "transparent",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", color: "#333",
+              width: "50px",
+              height: "50px",
+              borderRadius: "50%",
+              border: "1px solid #bbb",
+              background: "transparent",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              color: "#000",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "#FFF200";
+              e.currentTarget.style.transform = "scale(1.15)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.transform = "scale(1)";
             }}
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={26} color="#000" />
           </button>
+
           <button
             onClick={scrollNext}
             aria-label="Next"
             style={{
-              width: "45px", height: "45px", borderRadius: "50%",
-              border: "1px solid #bbb", background: "transparent",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", color: "#333",
+              width: "50px",
+              height: "50px",
+              borderRadius: "50%",
+              border: "1px solid #bbb",
+              background: "transparent",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              color: "#000",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "#FFF200";
+              e.currentTarget.style.transform = "scale(1.15)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.transform = "scale(1)";
             }}
           >
-            <ChevronRight size={24} />
+            <ChevronRight size={26} color="#000" />
           </button>
         </div>
+      </div>
+
+      {/* Custom Cursor */}
+      <div
+        ref={cursorRef}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "125px",
+          height: "125px",
+          borderRadius: "50%",
+          backgroundColor: "#FFF200",
+          color: "black",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontWeight: 600,
+          fontSize: "14px",
+          letterSpacing: "0.05em",
+          pointerEvents: "none",
+          zIndex: 9999,
+          opacity: isHovering ? 1 : 0,
+          transition: "opacity 0.2s ease",
+          willChange: "transform",
+        }}
+      >
+        DRAG
       </div>
 
       {/* Carousel — fills remaining height */}
@@ -74,6 +149,9 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
         className="overflow-hidden cursor-grab active:cursor-grabbing flex-1 min-h-0"
         ref={emblaRef}
         style={{borderBottom: "1px solid #c5c5c5"}}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={() => setIsHovering(false)}
+        onMouseMove={handleMouseMove}
       >
         <div className="flex h-full select-none">
           {timeline.map((item, index) => {

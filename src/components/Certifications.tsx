@@ -91,7 +91,7 @@ const Certifications = () => {
                   onHoverStart={() => setHoveredId(cert.id)}
                   onHoverEnd={() => setHoveredId(null)}
                   onClick={() => setActive(cert.id)}
-                  className="relative w-[180px] md:w-[240px] lg:w-[280px] overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.18)] cursor-zoom-in bg-white border border-black/5"
+                  className="relative w-[180px] md:w-[240px] lg:w-[360px] overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.18)] cursor-zoom-in bg-white border border-black/5"
                   tabIndex={0}
                   role="button"
                   aria-label={`View ${cert.label}`}

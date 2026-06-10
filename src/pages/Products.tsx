@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
-import { Search, X, ArrowRight, Plus, Check, ShoppingBag } from "lucide-react";
+import { Search, X, ArrowRight, Plus, Check, ShoppingBag, Pill, Microscope, Scissors, LayoutGrid } from "lucide-react";
 import { useInquiryStore } from "@/stores/inquiryStore";
 import productsImg from "@/assets/products.jpg";
 import medicinesImg from "@/assets/medicines.jpg";
@@ -261,134 +261,117 @@ const Products = () => {
         </div>
 
         {/* Filters & Grid */}
-        <section className="bg-[#f5f5f5] section-padding">
-          <div className="container-narrow">
-            <ScrollReveal>
-              <p className="text-black text-xl font-light leading-relaxed max-w-3xl mx-auto text-center mb-16 md:text-lg">
-                Our product range includes premium quality pharmaceuticals,
-                sutures, orthopedic implants, disposable medical devices and
-                diagnostic equipment.
-              </p>
-            </ScrollReveal>
-
-            {/* Search & Categories */}
-            <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-10">
-              <div className="relative flex-1 max-w-sm">
-                <Search
-                  size={16}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-black"
-                />
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-background/20 bg-white text-black text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow placeholder:text-black/30"
-                />
+        <section className="bg-white py-20 min-h-screen">
+          <div className="container-wide px-6 lg:px-12 mx-auto">
+            
+            {/* Filter Section */}
+            <div className="mb-16">
+              <div className="flex flex-col gap-4 mb-10">
+                <span className="text-[11px] font-bold text-black uppercase tracking-[0.2em] border-b border-black pb-2 w-max">Filter by Collections</span>
+                <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide pt-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                  {categories.map((c) => {
+                    const isActive = category === c;
+                    return (
+                      <button
+                        key={c}
+                        onClick={() => handleCategoryChange(c)}
+                        className={`flex flex-col p-2.5 transition-all w-[160px] shrink-0 border-2 ${
+                          isActive 
+                            ? "bg-[#FFF200] border-black" 
+                            : "bg-white border-black/20 hover:border-black"
+                        }`}
+                      >
+                        <div className={`w-full aspect-[4/3] flex items-center justify-center relative overflow-hidden ${isActive ? 'bg-white border-black/10' : 'bg-black/5'}`}>
+                          {c === 'All' ? (
+                            <LayoutGrid className={isActive ? "text-black" : "text-black/40"} size={32} />
+                          ) : (
+                            <img src={categoryImages[c]} alt={c} className={`w-full h-full object-cover transition-opacity ${isActive ? 'opacity-100' : 'opacity-70 mix-blend-multiply'}`} />
+                          )}
+                        </div>
+                        <div className={`w-full text-center text-xs font-bold uppercase tracking-wider pt-3 pb-1 ${isActive ? 'text-black' : 'text-black/80'}`}>
+                          {c}
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
-              <div className="flex gap-2 flex-wrap">
-                {categories.map((c) => (
-                  <button
-                    key={c}
-                    onClick={() => handleCategoryChange(c)}
-                    className={`px-4 py-2 text-sm text-black font-medium transition-all duration-300 ${category === c ? "bg-primary text-black" : "bg-white text-background/70 hover:bg-background/20"}`}
-                  >
-                    {c}
-                  </button>
-                ))}
+
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-t border-black pt-6">
+                <div className="text-sm font-semibold text-black uppercase tracking-widest">
+                  Showing {filtered.length} of {allProducts.length} Results
+                </div>
+                <div className="relative w-full md:w-80">
+                  <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-black" />
+                  <input
+                    type="text"
+                    placeholder="SEARCH PRODUCTS..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="w-full pl-11 pr-4 py-3 border border-black bg-white text-black text-xs font-bold uppercase tracking-widest focus:outline-none focus:bg-[#FFF200] transition-all placeholder:text-black/40"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Alphabetical Filter */}
-            {/* <div className="mb-16">
-              <div className="flex flex-wrap gap-x-6 gap-y-4 justify-center max-w-2xl mx-auto">
-                <button
-                  onClick={() => setLetter("All")}
-                  className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold transition-all ${
-                    letter === "All"
-                      ? "bg-primary/20 text-primary border border-primary/30"
-                      : "text-background/40 hover:text-background/70"
-                  }`}
-                >
-                  All
-                </button>
-                {letters.map((l) => {
-                  const isSelected = letter === l;
+            {/* Grid - Consistent sizes */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              <AnimatePresence>
+                {filtered.map((product, i) => {
                   return (
-                    <button
-                      key={l}
-                      onClick={() => setLetter(isSelected ? "All" : l)}
-                      className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold transition-all ${
-                        isSelected
-                          ? "bg-primary text-black font-bold shadow-[0_0_15px_rgba(255,242,0,0.3)]"
-                          : "text-black hover:text-white/70 hover:bg-white/5 cursor-pointer"
-                      }`}
-                    >
-                      {l}
-                    </button>
-                  );
-                })}
-              </div>
-            </div> */}
-
-            {/* Grid */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {filtered.map((product) => {
-                return (
-                  <motion.div key={product.name} variants={staggerItem}>
                     <motion.div
-                      initial="rest"
-                      whileHover="hover"
-                      variants={cardHover}
-                      className="group cursor-pointer relative bg-white p-3 hover:shadow-lg transition-shadow duration-300 rounded-lg h-full flex flex-col hover:bg-primary"
+                      key={product.name}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.4, delay: (i % 8) * 0.05 }}
+                      className="h-full"
                     >
-                      <div
-                        className="relative overflow-hidden aspect-[4/3] mb-4 bg-background/5"
+                      <div 
                         onClick={() => setSelected(product)}
+                        className="relative bg-black/5 p-6 cursor-pointer group hover:bg-black hover:text-white transition-colors duration-300 flex flex-col h-full border-2 border-transparent hover:border-black"
                       >
-                        <motion.img
-                          src={categoryImages[product.category] || productsImg}
-                          alt={product.name}
-                          className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500"
-                          whileHover={{ scale: 1.05 }}
-                          transition={{
-                            duration: 0.6,
-                            ease: [0.22, 1, 0.36, 1],
-                          }}
-                        />
-                        <div className="absolute top-4 left-4">
-                          <span className="bg-primary text-primary-foreground text-xs font-semibold px-3 py-1">
+                        <div className="flex justify-between items-start mb-6 gap-4">
+                          <h3 className="font-bold text-[16px] leading-snug w-3/4 group-hover:text-white transition-colors">{product.name}</h3>
+                          <div className="flex items-center justify-center gap-1.5 text-[9px] font-bold text-black bg-white px-2 py-1.5 uppercase tracking-widest border border-black/10 group-hover:border-transparent group-hover:text-black shrink-0">
+                            {product.category === 'Medicine' && <Pill size={12} />}
+                            {product.category === 'Diagnostics' && <Microscope size={12} />}
+                            {product.category === 'Surgical' && <Scissors size={12} />}
                             {product.category}
-                          </span>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-start justify-between gap-3">
-                        <div onClick={() => setSelected(product)}>
-                          <h3 className="font-display text-lg font-semibold text-black transition-colors duration-300">
-                            {product.name}
-                          </h3>
-                          <p className="text-black/70 text-sm mt-1">
-                            {product.desc}
-                          </p>
-                          <p className="text-black/50 text-xs mt-2">
-                            {product.manufacturer} · {product.origin}
-                          </p>
+
+                        <div className={`w-full relative flex items-center justify-center mb-8 overflow-hidden bg-white aspect-[4/3] border border-black/5 group-hover:border-white/20 p-4`}>
+                          <img
+                            src={categoryImages[product.category] || productsImg}
+                            alt={product.name}
+                            className="w-full h-full object-contain mix-blend-multiply opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
+                          />
+                        </div>
+
+                        <div className="mt-auto pt-5 border-t-2 border-black/10 group-hover:border-white/20 flex justify-between items-end">
+                          <div>
+                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-black/50 group-hover:text-white/50 block mb-2">Manufacturer</span>
+                            <div className="flex items-center gap-2">
+                              <div className="w-4 h-4 bg-[#FFF200] border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] group-hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] group-hover:border-white"></div>
+                              <span className="text-xs font-bold text-black group-hover:text-white">{product.manufacturer}</span>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-black/50 group-hover:text-white/50 block mb-2">Origin</span>
+                            <span className="text-xs font-bold text-black group-hover:text-white">{product.origin}</span>
+                          </div>
                         </div>
                       </div>
                     </motion.div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-
+                  );
+                })}
+              </AnimatePresence>
+            </div>
+            
             {filtered.length === 0 && (
-              <div className="text-center py-20">
-                <p className="text-background/50 text-lg">
+              <div className="text-center py-32 bg-black/5 border-2 border-black mt-8">
+                <p className="text-black text-lg font-bold uppercase tracking-widest">
                   No products found matching your criteria.
                 </p>
               </div>

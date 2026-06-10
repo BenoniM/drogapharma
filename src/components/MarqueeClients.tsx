@@ -55,7 +55,7 @@ const MarqueeClients = ({
                   <motion.div
                     key={`${column.id}-${client.src}-${i}`}
                     whileHover={{ scale: 1.03, y: -1 }}
-                    className="bg-secondary/80 border border-border rounded-xl py-4 px-5 cursor-default min-h-[92px] flex items-center justify-center hover:border-primary/30 hover:shadow-sm transition-all duration-300"
+                    className="bg-secondary/80 border border-border py-4 px-5 cursor-default min-h-[92px] flex items-center justify-center hover:border-primary/30 hover:shadow-sm transition-all duration-300"
                   >
                     <img
                       src={client.src}
