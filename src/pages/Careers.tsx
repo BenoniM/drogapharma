@@ -200,7 +200,7 @@ const CareersPage = () => {
       </section>
 
       {/* Image overlapping the hero - moved to right edge */}
-      <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
+      <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 w-full md:w-[90%] lg:w-[85%] ml-auto">
         <div className="w-full h-[400px] md:h-[600px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
           <ImageSlider
             images={careersHeroImages}
@@ -209,115 +209,149 @@ const CareersPage = () => {
         </div>
       </section>
 
-      {/* Why Droga — AccordGallery */}
-      <section className="section-padding bg-card">
-        <div className="max-w-7xl mx-auto">
-          <motion.h2
+<section className="bg-[#fcfcfc] pt-20 pb-0 border-t border-black">
+  <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+    <motion.p
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="text-xs font-semibold uppercase tracking-[0.12em] text-black/40 mb-3"
+    >
+      Our environment
+    </motion.p>
+    <motion.h2
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="font-display text-4xl md:text-5xl font-bold text-black tracking-tight leading-none"
+    >
+      Why Droga Pharma?
+    </motion.h2>
+  </div>
+
+  <div className="border-t border-black">
+    {[
+      [whyDrogaItems[0], whyDrogaItems[1]],
+      [whyDrogaItems[2], whyDrogaItems[3]],
+      [whyDrogaItems[4], whyDrogaItems[5]],
+    ].map((pair, rowIdx) => (
+      <div
+        key={rowIdx}
+        className="grid grid-cols-1 md:grid-cols-2 border-b border-black/10"
+      >
+        {pair.map((item, colIdx) => (
+          <motion.div
+            key={item.label}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-display text-3xl md:text-4xl font-bold tracking-tight text-center mb-12"
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: (rowIdx * 2 + colIdx) * 0.07 }}
+            className={`group flex flex-col hover:bg-[#FFF200] transition-colors duration-300 px-6 lg:px-10 py-10
+              ${colIdx === 0 ? "md:border-r border-black/10" : ""}
+            `}
           >
-            Why Droga Pharma?
-          </motion.h2>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            <AccordGallery items={whyDrogaItems} height="450px" />
+            <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-black/30 group-hover:text-black/50 transition-colors duration-300 mb-6">
+              {["Product", "Technology", "Operations", "Logistics", "Standards", "Partnerships"][rowIdx * 2 + colIdx]}
+            </span>
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-black tracking-tight leading-tight mb-4">
+              {item.label}
+            </h3>
+            <p className="text-sm leading-relaxed text-black/50 group-hover:text-black/75 transition-colors duration-300 max-w-prose">
+              {item.description}
+            </p>
           </motion.div>
-        </div>
-      </section>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>
+
 
       {/* Open positions */}
-      <section id="openings" className="bg-[#fcfcfc] pt-16 pb-0 border-t border-black/10">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+      <section id="openings" className="bg-[#fcfcfc] pt-20 pb-20 border-t border-black">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-black leading-tight tracking-tight"
+            className="text-xs font-semibold uppercase tracking-[0.12em] text-black/40 mb-3"
           >
-            Open Positions
-          </motion.h2>
-        </div>
-
-        <div className="flex flex-col w-full border-t border-black/10">
-          {openings.map((job, idx) => (
-            <motion.div
-              key={job.title}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: idx * 0.1 } }
-              }}
-              className="w-full border-b border-black/10 group hover:bg-primary transition-colors duration-400 cursor-pointer"
+            Join the team
+          </motion.p>
+          <div className="flex items-end justify-between">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="font-display text-4xl md:text-5xl font-bold text-black tracking-tight leading-none"
             >
-              <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row w-full px-4 sm:px-6 lg:px-8">
-                {/* Left: Image */}
-                <div className="w-full md:w-[30%] lg:w-[25%] py-4 shrink-0 pr-0 md:pr-6">
-                  <div className="aspect-[16/9] w-full overflow-hidden relative">
-                    <motion.img
-                      src={job.image}
-                      alt={job.title}
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    />
-                    <span className="absolute top-4 left-4 inline-block text-[10px] font-semibold uppercase tracking-wider px-2 py-1 bg-black/60 text-white backdrop-blur-sm">
-                      {job.type}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Right: Content */}
-                <div className="w-full md:w-[70%] lg:w-[75%] py-4 pl-0 md:pl-6 flex flex-col justify-center relative">
-                  <div className="flex flex-col justify-start mb-2">
-                    <h3 className="font-display text-xl md:text-2xl lg:text-3xl leading-tight text-black group-hover:text-primary-foreground transition-colors duration-400 pr-4 max-w-[85%]">
-                      {job.title}
-                    </h3>
-                    <div className="flex flex-wrap gap-3 text-xs text-[#888] group-hover:text-primary-foreground/70 transition-colors duration-300 mt-2">
-                      <span className="flex items-center gap-1">
-                        <Briefcase size={11} />
-                        {job.department}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MapPin size={11} />
-                        {job.location}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="pr-12 md:pr-16 lg:pr-24">
-                    <p className="text-sm md:text-base leading-relaxed text-black/70 group-hover:text-primary-foreground/80 transition-colors duration-400">
-                      {job.description}
-                    </p>
-                  </div>
-
-                  <div className="mt-5">
-                    <motion.a
-                      href={`mailto:info@drogapharma.com?subject=Application for ${job.title}`}
-                      className="inline-flex items-center gap-2 text-xs font-semibold bg-black text-white px-5 py-2.5 shadow-sm group-hover:bg-white group-hover:text-black transition-all duration-300"
-                      whileHover={{ y: -1 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      Apply Now
-                      <ArrowRight
-                        size={13}
-                        className="transition-transform duration-300"
-                      />
-                    </motion.a>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              Open Positions
+            </motion.h2>
+            <span className="text-xs text-black/40 tracking-wide hidden md:block">
+              4 roles · Addis Ababa
+            </span>
+          </div>
         </div>
-        <div className="pb-16"></div>
+
+        <div className="border-t border-black">
+          {openings.map((job, idx) => {
+            const icons = [
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>,
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>,
+            ];
+
+            return (
+              <motion.div
+                key={job.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: idx * 0.08 }}
+                className="grid border-b border-black/10 group hover:bg-[#FFF200] transition-colors duration-300 cursor-pointer px-4 sm:px-6 lg:px-8"
+                style={{ gridTemplateColumns: "180px 1fr 1fr" }}
+                onClick={() => window.location.href = `mailto:info@drogapharma.com?subject=Application for ${job.title}`}
+              >
+                {/* Left: icon + apply */}
+                <div className="flex flex-col justify-center items-start gap-4 py-8 pr-8">
+                  <div className="w-[52px] h-[52px] flex items-center justify-center shrink-0 text-black">
+                    {icons[idx]}
+                  </div>
+                  <a
+                    href={`mailto:info@drogapharma.com?subject=Application for ${job.title}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.07em] border border-black px-4 py-2 text-black bg-transparent group-hover:bg-black group-hover:text-[#FFF200] group-hover:border-black transition-all duration-300"
+                  >
+                    Apply
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </a>
+                </div>
+
+                {/* Center: title + tags */}
+                <div className="flex flex-col justify-center gap-3 py-8 px-8">
+                  <h3 className="font-display text-xl md:text-2xl font-bold text-black leading-tight tracking-tight">
+                    {job.title}
+                  </h3>
+                  <div className="flex flex-wrap gap-[5px]">
+                    {[job.department, job.location, job.type].map((tag) => (
+                      <span key={tag} className="text-[10px] font-semibold uppercase tracking-[0.09em] px-[10px] py-1 border border-black/20 text-black/50 group-hover:border-black/35 group-hover:text-black transition-colors duration-300">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: description */}
+                <div className="flex items-center py-8 pl-8 border-l border-black/10 group-hover:border-black/20 transition-colors duration-300">
+                  <p className="text-sm leading-relaxed text-black/55 group-hover:text-black transition-colors duration-300">
+                    {job.description}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </section>
     </div>
   );

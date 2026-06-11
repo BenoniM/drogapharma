@@ -113,7 +113,7 @@ const Navbar = () => {
           className="w-full flex h-[72px] bg-white shadow-sm"
         >
           {/* ── LEFT COLUMN: Logo ── */}
-          <div className="shrink-0 flex items-start border-r border-black h-full">
+          <div className="shrink-0 flex items-start h-full">
             <Link to="/" className="flex items-center justify-center px-8 h-full group">
               <img 
                 src={logo} 
@@ -200,7 +200,7 @@ const Navbar = () => {
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-                  className="absolute top-full left-[-1px] right-[-1px] border border-black bg-white overflow-hidden shadow-2xl"
+                  className="absolute top-full left-[-1px] right-[-1px] bg-white overflow-hidden shadow-2xl"
                 >
                   <div className="p-0">
                     <div className={`grid ${
@@ -249,7 +249,7 @@ const Navbar = () => {
           </div>
 
           {/* ── RIGHT COLUMN: Get In Touch ── */}
-          <div className="shrink-0 flex items-start border-l border-black h-full">
+          <div className="shrink-0 flex items-start h-full">
             <Link
               to="/contact"
               className="flex items-center justify-center px-10 h-full group hover:bg-primary transition-colors duration-300"

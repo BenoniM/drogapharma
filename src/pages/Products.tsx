@@ -100,9 +100,7 @@ const Products = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [letter, setLetter] = useState("All");
-  const [selected, setSelected] = useState<(typeof allProducts)[0] | null>(
-    null,
-  );
+  const [selected, setSelected] = useState<(typeof allProducts)[0] | null>(null);
   const { addItem, hasItem } = useInquiryStore();
 
   useEffect(() => {
@@ -125,10 +123,8 @@ const Products = () => {
 
   const filtered = allProducts.filter((p) => {
     if (category !== "All" && p.category !== category) return false;
-    if (letter !== "All" && !p.name.toUpperCase().startsWith(letter))
-      return false;
-    if (search && !p.name.toLowerCase().includes(search.toLowerCase()))
-      return false;
+    if (letter !== "All" && !p.name.toUpperCase().startsWith(letter)) return false;
+    if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
@@ -142,7 +138,6 @@ const Products = () => {
       <div>
         {/* Dark Hero Section */}
         <section className="relative bg-[#111317] pt-40 pb-48 overflow-hidden">
-          {/* Subtle curved lines background element (matching image) */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
@@ -150,32 +145,19 @@ const Products = () => {
                   fill: rgba(0, 0, 0, 0);
                   stroke: #FFF200;
                   stroke-width: 2px;
-
-                  /* Long visible line + long gap */
                   stroke-dasharray: 3000 1000;
-
-                  /* Smooth infinite movement */
                   animation: strokeDashBg 20s linear infinite;
-
                   opacity: 0.55;
-
                   filter:
                     drop-shadow(0 0 6px rgba(255,242,0,0.7))
                     drop-shadow(0 0 16px rgba(255,242,0,0.4));
                 }
-
                 @keyframes strokeDashBg {
-                  from {
-                    stroke-dashoffset: 0;
-                  }
-                  to {
-                    /* -(3000 + 1000) */
-                    stroke-dashoffset: -4000;
-                  }
+                  from { stroke-dashoffset: 0; }
+                  to { stroke-dashoffset: -4000; }
                 }
               `}
             </style>
-
             <svg
               className="absolute w-full h-full"
               viewBox="0 0 1600 300"
@@ -187,17 +169,13 @@ const Products = () => {
                 textAnchor="middle"
                 dominantBaseline="middle"
                 className="anim-bg-text uppercase"
-                style={{
-                  fontSize: "90rem",
-                  fontWeight: 900,
-                  letterSpacing: "-0.04em",
-                }}
+                style={{ fontSize: "90rem", fontWeight: 900, letterSpacing: "-0.04em" }}
               >
                 PRODUCTS
               </text>
             </svg>
           </div>
-          
+
           <div className="container-wide relative z-10 px-6 lg:px-12">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
               <div className="flex flex-col">
@@ -231,7 +209,7 @@ const Products = () => {
 
           {/* Image section */}
           <section className="-mt-24 w-full">
-            <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
+            <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden relative bg-black">
               <ImageSlider
                 images={[
                   { src: heroBgOne, alt: "Products" },
@@ -263,7 +241,7 @@ const Products = () => {
         {/* Filters & Grid */}
         <section className="bg-white py-20 min-h-screen">
           <div className="container-wide px-6 lg:px-12 mx-auto">
-            
+
             {/* Filter Section */}
             <div className="mb-16">
               <div className="flex flex-col gap-4 mb-10">
@@ -275,24 +253,30 @@ const Products = () => {
                       <button
                         key={c}
                         onClick={() => handleCategoryChange(c)}
-                        className={`flex flex-col p-2.5 transition-all w-[160px] shrink-0 border-2 ${
-                          isActive 
-                            ? "bg-[#FFF200] border-black" 
-                            : "bg-white border-black/20 hover:border-black"
+                        className={`flex flex-col p-2.5 transition-all w-[160px] shrink-0 ${
+                          isActive
+                            ? "bg-[#FFF200]"
+                            : "bg-zinc-100 hover:bg-zinc-200"
                         }`}
                       >
-                        <div className={`w-full aspect-[4/3] flex items-center justify-center relative overflow-hidden ${isActive ? 'bg-white border-black/10' : 'bg-black/5'}`}>
+                        <div className={`w-full aspect-[4/3] flex items-center justify-center relative overflow-hidden ${
+                          isActive ? "bg-white/60" : "bg-zinc-200/60"
+                        }`}>
                           {c === 'All' ? (
                             <LayoutGrid className={isActive ? "text-black" : "text-black/40"} size={32} />
                           ) : (
-                            <img src={categoryImages[c]} alt={c} className={`w-full h-full object-cover transition-opacity ${isActive ? 'opacity-100' : 'opacity-70 mix-blend-multiply'}`} />
+                            <img
+                              src={categoryImages[c]}
+                              alt={c}
+                              className={`w-full h-full object-cover transition-opacity ${isActive ? 'opacity-100' : 'opacity-60 mix-blend-multiply'}`}
+                            />
                           )}
                         </div>
-                        <div className={`w-full text-center text-xs font-bold uppercase tracking-wider pt-3 pb-1 ${isActive ? 'text-black' : 'text-black/80'}`}>
+                        <div className={`w-full text-center text-xs font-bold uppercase tracking-wider pt-3 pb-1 ${isActive ? 'text-black' : 'text-black/70'}`}>
                           {c}
                         </div>
                       </button>
-                    )
+                    );
                   })}
                 </div>
               </div>
@@ -308,13 +292,13 @@ const Products = () => {
                     placeholder="SEARCH PRODUCTS..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 border border-black bg-white text-black text-xs font-bold uppercase tracking-widest focus:outline-none focus:bg-[#FFF200] transition-all placeholder:text-black/40"
+                    className="w-full pl-11 pr-4 py-3 bg-zinc-100 text-black text-xs font-bold uppercase tracking-widest focus:outline-none focus:bg-[#FFF200] transition-all placeholder:text-black/40"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Grid - Consistent sizes */}
+            {/* Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               <AnimatePresence>
                 {filtered.map((product, i) => {
@@ -327,13 +311,13 @@ const Products = () => {
                       transition={{ duration: 0.4, delay: (i % 8) * 0.05 }}
                       className="h-full"
                     >
-                      <div 
+                      <div
                         onClick={() => setSelected(product)}
-                        className="relative bg-black/5 p-6 cursor-pointer group hover:bg-black hover:text-white transition-colors duration-300 flex flex-col h-full border-2 border-transparent hover:border-black"
+                        className="relative bg-zinc-100 p-6 cursor-pointer group hover:bg-black hover:text-white transition-colors duration-300 flex flex-col h-full"
                       >
                         <div className="flex justify-between items-start mb-6 gap-4">
                           <h3 className="font-bold text-[16px] leading-snug w-3/4 group-hover:text-white transition-colors">{product.name}</h3>
-                          <div className="flex items-center justify-center gap-1.5 text-[9px] font-bold text-black bg-white px-2 py-1.5 uppercase tracking-widest border border-black/10 group-hover:border-transparent group-hover:text-black shrink-0">
+                          <div className="flex items-center justify-center gap-1.5 text-[9px] font-bold text-black bg-zinc-200 group-hover:bg-white/10 group-hover:text-white px-2 py-1.5 uppercase tracking-widest shrink-0 transition-colors">
                             {product.category === 'Medicine' && <Pill size={12} />}
                             {product.category === 'Diagnostics' && <Microscope size={12} />}
                             {product.category === 'Surgical' && <Scissors size={12} />}
@@ -341,7 +325,7 @@ const Products = () => {
                           </div>
                         </div>
 
-                        <div className={`w-full relative flex items-center justify-center mb-8 overflow-hidden bg-white aspect-[4/3] border border-black/5 group-hover:border-white/20 p-4`}>
+                        <div className="w-full relative flex items-center justify-center mb-8 overflow-hidden bg-white group-hover:bg-white/90 aspect-[4/3] p-4 transition-colors duration-300">
                           <img
                             src={categoryImages[product.category] || productsImg}
                             alt={product.name}
@@ -349,11 +333,11 @@ const Products = () => {
                           />
                         </div>
 
-                        <div className="mt-auto pt-5 border-t-2 border-black/10 group-hover:border-white/20 flex justify-between items-end">
+                        <div className="mt-auto pt-5 border-t border-black/10 group-hover:border-white/20 flex justify-between items-end">
                           <div>
                             <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-black/50 group-hover:text-white/50 block mb-2">Manufacturer</span>
                             <div className="flex items-center gap-2">
-                              <div className="w-4 h-4 bg-[#FFF200] border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] group-hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)] group-hover:border-white"></div>
+                              <div className="w-4 h-4 bg-[#FFF200]"></div>
                               <span className="text-xs font-bold text-black group-hover:text-white">{product.manufacturer}</span>
                             </div>
                           </div>
@@ -368,9 +352,9 @@ const Products = () => {
                 })}
               </AnimatePresence>
             </div>
-            
+
             {filtered.length === 0 && (
-              <div className="text-center py-32 bg-black/5 border-2 border-black mt-8">
+              <div className="text-center py-32 bg-zinc-100 mt-8">
                 <p className="text-black text-lg font-bold uppercase tracking-widest">
                   No products found matching your criteria.
                 </p>
@@ -395,7 +379,7 @@ const Products = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-background max-w-lg w-full p-8 relative shadow-2xl"
+                className="bg-background max-w-lg w-full p-8 relative"
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
@@ -415,16 +399,12 @@ const Products = () => {
                   <div>
                     <span className="text-muted-foreground">Manufacturer:</span>
                     <br />
-                    <span className="text-foreground font-medium">
-                      {selected.manufacturer}
-                    </span>
+                    <span className="text-foreground font-medium">{selected.manufacturer}</span>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Origin:</span>
                     <br />
-                    <span className="text-foreground font-medium">
-                      {selected.origin}
-                    </span>
+                    <span className="text-foreground font-medium">{selected.origin}</span>
                   </div>
                 </div>
                 <button
@@ -436,13 +416,9 @@ const Products = () => {
                   className="btn-primary w-full justify-center disabled:opacity-50"
                 >
                   {hasItem(selected.name) ? (
-                    <>
-                      <Check size={16} /> Added to inquiry
-                    </>
+                    <><Check size={16} /> Added to inquiry</>
                   ) : (
-                    <>
-                      <Plus size={16} /> Add to inquiry
-                    </>
+                    <><Plus size={16} /> Add to inquiry</>
                   )}
                 </button>
               </motion.div>

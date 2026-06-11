@@ -151,8 +151,7 @@ export function MissionVisionValues() {
           margin-bottom: 1rem;
         }
         .mvv-headline {
-          font-family: var(--font-display, Georgia, serif);
-          font-size: clamp(1.6rem, 3.8vw, 2.6rem);
+          font-size: clamp(1.6rem, 2vw, 2.6rem);
           font-weight: 400;
           line-height: 1.28;
           color: #fff;

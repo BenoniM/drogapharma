@@ -1,4 +1,7 @@
 import { useRef, useState, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
@@ -18,35 +21,35 @@ const services = [
     tag: "Import",
     title: "Pharmaceutical Import",
     desc: "End-to-end pharmaceutical importation from source countries to Ethiopia, handling every customs and logistics touchpoint.",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1400&q=80",
+    image: "https://images.pexels.com/photos/19497086/pexels-photo-19497086.jpeg",
   },
   {
     icon: Search,
     tag: "Sourcing",
     title: "Supplier Sourcing",
     desc: "Strategic identification and vetting of WHO-approved pharmaceutical manufacturers worldwide.",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1400&q=80",
+    image: "https://images.pexels.com/photos/14554082/pexels-photo-14554082.jpeg",
   },
   {
     icon: Shield,
     tag: "Compliance",
     title: "Regulatory Compliance",
     desc: "Complete regulatory support for EFDA product registration, licensing, and ongoing compliance monitoring.",
-    image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1400&q=80",
+    image: "https://images.pexels.com/photos/9870220/pexels-photo-9870220.jpeg",
   },
   {
     icon: Thermometer,
     tag: "Cold Chain",
     title: "Cold Chain Logistics",
     desc: "Temperature-controlled supply chain maintaining 2–8°C integrity for heat-sensitive pharmaceuticals end to end.",
-    image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1400&q=80",
+    image: "https://images.pexels.com/photos/27099094/pexels-photo-27099094.jpeg",
   },
   {
     icon: Package,
     tag: "Distribution",
     title: "Wholesale Distribution",
     desc: "Nationwide wholesale distribution serving hospitals, pharmacies, and clinics with reliable, flexible ordering.",
-    image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1400&q=80",
+    image: "https://images.pexels.com/photos/32865457/pexels-photo-32865457.jpeg",
   },
   {
     icon: FileCheck,
@@ -60,17 +63,16 @@ const services = [
     tag: "R&D",
     title: "Research & Development",
     desc: "Innovative R&D initiatives developing cutting-edge pharmaceutical solutions through clinical trials and scientific research.",
-    image: "https://images.unsplash.com/photo-1581093577421-f561a654a353?w=1400&q=80",
+    image: "https://images.pexels.com/photos/8851630/pexels-photo-8851630.jpeg",
   },
 ];
 
-const PANEL_HEIGHT = 100; // vh per service step
+const PANEL_HEIGHT = 100;
 
 function ServicesScroll() {
   const sectionRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Total scroll height = one viewport per service
   const totalVh = services.length * PANEL_HEIGHT;
 
   const { scrollYProgress } = useScroll({
@@ -78,29 +80,19 @@ function ServicesScroll() {
     offset: ["start start", "end end"],
   });
 
-  // Which service is active based on scroll position
   useEffect(() => {
     const unsub = scrollYProgress.on("change", (v) => {
-      const idx = Math.min(
-        services.length - 1,
-        Math.floor(v * services.length)
-      );
+      const idx = Math.min(services.length - 1, Math.floor(v * services.length));
       setActiveIndex(idx);
     });
     return unsub;
   }, [scrollYProgress]);
 
-  // Image stack: each image's vertical position within the clip window
-  // goes from 100% (below) to 0% (fully revealed) as its turn comes
   const service = services[activeIndex];
   const Icon = service.icon;
 
   return (
-    <div
-      ref={sectionRef}
-      style={{ height: `${totalVh}vh`, position: "relative" }}
-    >
-      {/* Sticky viewport */}
+    <div ref={sectionRef} style={{ height: `${totalVh}vh`, position: "relative" }}>
       <div
         style={{
           position: "sticky",
@@ -111,7 +103,6 @@ function ServicesScroll() {
           overflow: "hidden",
         }}
       >
-        {/* LEFT: tag + icon + title */}
         <div
           style={{
             padding: "3.5rem 2rem 3.5rem 3.5rem",
@@ -136,13 +127,12 @@ function ServicesScroll() {
                   fontWeight: 600,
                   letterSpacing: "0.2em",
                   textTransform: "uppercase",
-                  color: "rgba(0,0,0,0.35)",
+                  color: "rgba(0,0,0,0.9)",
                   marginBottom: "1.25rem",
                 }}
               >
                 {service.tag}
               </span>
-
               <div
                 style={{
                   width: 40,
@@ -156,7 +146,6 @@ function ServicesScroll() {
               >
                 <Icon size={17} color="black" />
               </div>
-
               <h2
                 className="font-display font-bold text-black"
                 style={{
@@ -171,14 +160,7 @@ function ServicesScroll() {
           </AnimatePresence>
         </div>
 
-        {/* CENTER: image clip window — images slide up from bottom */}
-        <div
-          style={{
-            position: "relative",
-            overflow: "hidden",
-            margin: "3rem 0",
-          }}
-        >
+        <div style={{ position: "relative", overflow: "hidden", margin: "3rem 0" }}>
           {services.map((s, i) => (
             <motion.img
               key={i}
@@ -188,10 +170,7 @@ function ServicesScroll() {
               animate={{
                 y: i < activeIndex ? "-100%" : i === activeIndex ? "0%" : "100%",
               }}
-              transition={{
-                duration: 0.75,
-                ease: [0.76, 0, 0.24, 1],
-              }}
+              transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
               style={{
                 position: "absolute",
                 inset: 0,
@@ -203,7 +182,6 @@ function ServicesScroll() {
           ))}
         </div>
 
-        {/* RIGHT: description */}
         <div
           style={{
             padding: "3.5rem 3.5rem 3.5rem 2rem",
@@ -236,13 +214,258 @@ function ServicesScroll() {
   );
 }
 
+// ─── How It Works ─────────────────────────────────────────────────────────────
+
+const steps = [
+  { step: "01", title: "Sourcing",           desc: "Identify WHO-approved manufacturers" },
+  { step: "02", title: "Procurement",        desc: "Negotiate terms and place orders" },
+  { step: "03", title: "Import & Clearance", desc: "Handle shipping and customs" },
+  { step: "04", title: "Distribution",       desc: "Deliver to healthcare providers" },
+];
+
+function HowItWorksBlind() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardsRef = useRef<HTMLDivElement[]>([]);
+
+  useEffect(() => {
+    const cards = cardsRef.current;
+
+    // ── Entrance: slide in from right, staggered ──
+    const reset = () => gsap.set(cards, { xPercent: 110 });
+    const play  = () =>
+      gsap.to(cards, {
+        xPercent: 0,
+        duration: 0.75,
+        ease: "power3.out",
+        stagger: 0.12,
+      });
+
+    reset();
+
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top 80%",
+      onEnter:     () => { reset(); play(); },
+      onEnterBack: () => { reset(); play(); },
+    });
+
+    // ── Per-card hover + parallax ──
+    cards.forEach((card, index) => {
+      if (!card) return;
+      const isOdd   = index % 2 === 0; // 0,2 = white reveal; 1,3 = black reveal
+      const bg      = card.querySelector<HTMLElement>('.hiw-hover-bg');
+      const content = card.querySelector<HTMLElement>('.hiw-content');
+      const textEls = card.querySelectorAll<HTMLElement>('.hiw-text');
+
+      if (!bg || !content) return;
+
+      gsap.set(bg, {
+        clipPath: isOdd ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)",
+      });
+
+      const onEnter = () => {
+        gsap.to(bg, {
+          clipPath: "inset(0 0% 0 0%)",
+          duration: 0.8,
+          ease: "power3.inOut",
+        });
+        textEls.forEach((el, i) => {
+          gsap.to(el, {
+            color: el.dataset.hoverColor ?? '',
+            duration: 0.35,
+            delay: 0.3 + i * 0.06,
+            ease: "power2.out",
+          });
+        });
+      };
+
+      const onLeave = () => {
+        gsap.to(bg, {
+          clipPath: isOdd ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)",
+          duration: 0.6,
+          ease: "power3.inOut",
+        });
+        gsap.to(content, {
+          x: 0, y: 0, rotateX: 0, rotateY: 0,
+          duration: 1,
+          ease: "elastic.out(1, 0.3)",
+        });
+        textEls.forEach((el, i) => {
+          gsap.to(el, {
+            color: el.dataset.baseColor ?? '',
+            duration: 0.3,
+            delay: i * 0.03,
+            ease: "power2.in",
+          });
+        });
+      };
+
+      const onMove = (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        gsap.to(content, {
+          x: x * 20,
+          y: y * 20,
+          rotateX: -y * 8,
+          rotateY: x * 8,
+          duration: 0.6,
+          ease: "power2.out",
+          transformPerspective: 1000,
+        });
+      };
+
+      card.addEventListener('mouseenter', onEnter);
+      card.addEventListener('mouseleave', onLeave);
+      card.addEventListener('mousemove', onMove);
+    });
+
+    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+  }, []);
+
+  return (
+    <section ref={sectionRef} style={{ overflow: "hidden", backgroundColor: "#FFF200" }}>
+      {/* Header */}
+      <div style={{ textAlign: "center", padding: "5rem 1rem 3rem" }}>
+        <span
+          style={{
+            display: "block",
+            fontSize: "0.65rem",
+            fontWeight: 600,
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            color: "rgba(0,0,0,0.4)",
+            marginBottom: "0.75rem",
+          }}
+        >
+          How It Works
+        </span>
+        <h2
+          className="font-display"
+          style={{
+            fontSize: "clamp(1.8rem, 3vw, 2.6rem)",
+            fontWeight: 700,
+            color: "#000000",
+            margin: 0,
+          }}
+        >
+          Our Import Process
+        </h2>
+      </div>
+
+      {/* 4 cards */}
+      <div style={{ display: "flex", width: "100%" }}>
+        {steps.map((item, i) => {
+          const isOdd = i % 2 === 0;
+
+          // Yellow base colors (sitting on #FFF200)
+          const baseNumberColor = "rgba(0,0,0,0.4)";
+          const baseTitleColor  = "#000000";
+          const baseDescColor   = "rgba(0,0,0,0.5)";
+
+          // Hover colors — adapt to the revealed bg
+          // odd  → white bg  → dark text
+          // even → black bg  → light text
+          const hoverNumberColor = isOdd ? "rgba(0,0,0,0.4)"         : "rgba(255,255,255,0.4)";
+          const hoverTitleColor  = isOdd ? "#000000"                   : "#ffffff";
+          const hoverDescColor   = isOdd ? "rgba(0,0,0,0.5)"          : "rgba(255,255,255,0.6)";
+
+          return (
+            <div
+              key={item.step}
+              ref={(el) => { if (el) cardsRef.current[i] = el; }}
+              style={{
+                flex: "1 1 25%",
+                backgroundColor: "#FFF200",
+                position: "relative",
+                overflow: "hidden",
+                borderRight: i < steps.length - 1 ? "2px solid rgba(0,0,0,0.08)" : "none",
+                cursor: "default",
+              }}
+            >
+              {/* Sliding bg */}
+              <div
+                className="hiw-hover-bg"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  backgroundColor: isOdd ? "#ffffff" : "#000000",
+                  zIndex: 0,
+                }}
+              />
+
+              {/* Content */}
+              <div
+                className="hiw-content"
+                style={{
+                  position: "relative",
+                  zIndex: 1,
+                  padding: "4rem 2rem",
+                  textAlign: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.75rem",
+                }}
+              >
+                <div
+                  className="hiw-text"
+                  data-base-color={baseNumberColor}
+                  data-hover-color={hoverNumberColor}
+                  style={{
+                    fontSize: "clamp(3rem, 5vw, 4.5rem)",
+                    fontWeight: 900,
+                    color: baseNumberColor,
+                    lineHeight: 1,
+                  }}
+                >
+                  {item.step}
+                </div>
+                <h3
+                  className="hiw-text"
+                  data-base-color={baseTitleColor}
+                  data-hover-color={hoverTitleColor}
+                  style={{
+                    fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
+                    fontWeight: 700,
+                    color: baseTitleColor,
+                    margin: 0,
+                  }}
+                >
+                  {item.title}
+                </h3>
+                <p
+                  className="hiw-text"
+                  data-base-color={baseDescColor}
+                  data-hover-color={hoverDescColor}
+                  style={{
+                    fontSize: "0.82rem",
+                    color: baseDescColor,
+                    lineHeight: 1.65,
+                    maxWidth: "12rem",
+                    margin: 0,
+                  }}
+                >
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+// ─── Page ────────────────────────────────────────────────────────────────────
+
 const Services = () => {
   return (
     <PageTransition>
       <div>
         {/* Dark Hero Section */}
         <section className="relative bg-[#111317] pt-40 pb-48 overflow-hidden">
-          {/* Subtle curved lines background element (matching image) */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
@@ -250,32 +473,19 @@ const Services = () => {
                   fill: rgba(0, 0, 0, 0);
                   stroke: #FFF200;
                   stroke-width: 2px;
-
-                  /* Long visible line + long gap */
                   stroke-dasharray: 3000 1000;
-
-                  /* Smooth infinite movement */
                   animation: strokeDashBg 20s linear infinite;
-
                   opacity: 0.55;
-
                   filter:
                     drop-shadow(0 0 6px rgba(255,242,0,0.7))
                     drop-shadow(0 0 16px rgba(255,242,0,0.4));
                 }
-
                 @keyframes strokeDashBg {
-                  from {
-                    stroke-dashoffset: 0;
-                  }
-                  to {
-                    /* -(3000 + 1000) */
-                    stroke-dashoffset: -4000;
-                  }
+                  from { stroke-dashoffset: 0; }
+                  to   { stroke-dashoffset: -4000; }
                 }
               `}
             </style>
-
             <svg
               className="absolute w-full h-full"
               viewBox="0 0 1600 300"
@@ -287,17 +497,13 @@ const Services = () => {
                 textAnchor="middle"
                 dominantBaseline="middle"
                 className="anim-bg-text uppercase"
-                style={{
-                  fontSize: "90rem",
-                  fontWeight: 900,
-                  letterSpacing: "-0.04em",
-                }}
+                style={{ fontSize: "90rem", fontWeight: 900, letterSpacing: "-0.04em" }}
               >
                 SERVICES
               </text>
             </svg>
           </div>
-          
+
           <div className="container-wide relative z-10 px-6 lg:px-12">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
               <div className="flex flex-col">
@@ -311,7 +517,6 @@ const Services = () => {
                   Services
                 </motion.h1>
               </div>
-
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -326,7 +531,7 @@ const Services = () => {
           </div>
         </section>
 
-        {/* Image overlapping the hero - moved to right edge */}
+        {/* Image overlapping the hero */}
         <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
           <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
             <ImageSlider
@@ -343,57 +548,8 @@ const Services = () => {
         {/* Scroll-driven services */}
         <ServicesScroll />
 
-        {/* Process */}
-        <section className="bg-primary section-padding-lg">
-          <div className="container-narrow">
-            <ScrollReveal>
-              <div className="text-center mb-16">
-                <span className="text-xs font-semibold tracking-[0.2em] uppercase text-primary-foreground/60 block mb-3">
-                  How It Works
-                </span>
-                <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mt-2">
-                  Our Import Process
-                </h2>
-              </div>
-            </ScrollReveal>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12 } } }}
-              className="grid grid-cols-1 md:grid-cols-4 gap-8"
-            >
-              {[
-                { step: "01", title: "Sourcing", desc: "Identify WHO-approved manufacturers" },
-                { step: "02", title: "Procurement", desc: "Negotiate terms and place orders" },
-                { step: "03", title: "Import & Clearance", desc: "Handle shipping and customs" },
-                { step: "04", title: "Distribution", desc: "Deliver to healthcare providers" },
-              ].map((item) => (
-                <motion.div
-                  key={item.step}
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-                  }}
-                >
-                  <motion.div
-                    whileHover={{ y: -4 }}
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-center"
-                  >
-                    <div className="font-display text-5xl font-bold text-primary-foreground/25 mb-4">
-                      {item.step}
-                    </div>
-                    <h3 className="font-display text-lg font-semibold text-primary-foreground mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-primary-foreground/60 text-sm">{item.desc}</p>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+        {/* How It Works */}
+        <HowItWorksBlind />
       </div>
     </PageTransition>
   );

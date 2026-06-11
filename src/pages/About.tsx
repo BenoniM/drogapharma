@@ -229,9 +229,9 @@ function CoreValuesSection() {
       <div className="container-wide">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
           {coreValuesCards.map((cv, i) => (
-            <div key={i} className="bg-white p-8 md:p-10 border border-slate-200 rounded-xl hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300">
+            <div key={i} className="bg-white p-8 md:p-10 border border-slate-200 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300">
               <motion.div 
-                className="mb-10 inline-flex"
+                className="mb-40 inline-flex"
                 animate={cv.animation as any}
               >
                 {cv.icon}
@@ -593,138 +593,139 @@ const About = () => {
 
         <Certifications />
 
-        <section className="py-10 md:py-12 flex items-center justify-center min-h-screen md:min-h-0">
-          <div className="container-wide w-full">
+        <section className="py-16 md:py-24 relative overflow-hidden bg-white">
+
+          <div className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(180,160,0,0.08) 1px, transparent 0)`,
+              backgroundSize: '32px 32px',
+            }}
+          />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#FFF200] to-transparent" />
+
+          <div className="container-wide w-full relative z-10">
+
             <ScrollReveal>
-              <div className="text-center mb-6 lg:mb-8">
-                <span className="section-label block mb-2 text-[#b3a800] font-bold tracking-widest uppercase">DROGA GROUP</span>
-                <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-semibold text-slate-900 mt-2">
-                  Quality Policy / የጥራት ፖሊሲ
+              <div className="text-center mb-14">
+                <span className="inline-block text-[10px] font-bold tracking-[0.3em] uppercase text-[#b3a800] mb-4 border border-[#b3a800]/30 px-4 py-1.5">
+                  DROGA GROUP
+                </span>
+                <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-900 mt-4 leading-tight">
+                  Quality Policy
+                  <span className="block text-2xl md:text-3xl text-slate-400 mt-2 font-light">የጥራት ፖሊሲ</span>
                 </h2>
-                <p className="text-base text-slate-500 mt-2 italic max-w-2xl mx-auto">"Serving the people!"</p>
+                <div className="flex items-center justify-center gap-4 mt-6">
+                  <div className="h-[1px] w-16 bg-[#FFF200]" />
+                  <p className="text-sm text-slate-400 italic">"Serving the people!"</p>
+                  <div className="h-[1px] w-16 bg-[#FFF200]" />
+                </div>
               </div>
             </ScrollReveal>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="relative mx-auto max-w-7xl overflow-hidden bg-white border border-slate-100 p-6 md:p-10 lg:p-14 flex flex-col gap-8"
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="relative mx-auto max-w-7xl bg-white border border-slate-200"
+              style={{ boxShadow: '0 4px 40px rgba(0,0,0,0.06)' }}
             >
-              {/* Moving Background Pattern */}
-              <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-                <style>
-                  {`
-                    @keyframes panBg {
-                      0% { background-position: 0 0; }
-                      100% { background-position: -30px -30px; }
-                    }
-                  `}
-                </style>
-                <div 
-                  className="absolute inset-0 opacity-60"
-                  style={{
-                    backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255, 242, 0, 0.4) 2px, transparent 0)`,
-                    backgroundSize: '30px 30px',
-                    animation: 'panBg 3s linear infinite',
-                  }}
-                />
-              </div>
+              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#FFF200]" />
+              <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#FFF200]" />
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#FFF200]" />
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#FFF200]" />
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 relative z-10">
-                {/* English Section */}
-                <div className="flex flex-col h-full space-y-5">
-                  <p className="text-slate-700 leading-relaxed text-sm md:text-base text-justify">
-                    <strong className="text-slate-900 font-bold">Droga Group</strong> is established to sustainably provide quality, safe and effective pharmaceutical products, medical devices and services by its talented and motivated members to enhance health and create wealth for the nation.
-                  </p>
-                  
-                  <div className="bg-slate-50/80 p-5 border border-slate-100 flex-grow shadow-sm">
-                    <h3 className="font-bold text-slate-900 mb-4 text-xs md:text-sm uppercase tracking-wider">We will achieve this through:</h3>
-                    <ul className="space-y-3">
-                      {[
-                        "Continual improvement of our processes and systems",
-                        "Adherence to regulatory and statutory requirements",
-                        "Ensuring customer loyalty and satisfaction",
-                        "Ensuring Financial Sustainability",
-                        "Collaboration and partnership with interested parties",
-                        "Engaging, recognizing and capacitating of our employees",
-                        "Promoting collaboration and team work",
-                        "Automation and digitalization of our processes",
-                      ].map((item, i) => (
-                        <li key={i} className="flex items-start text-slate-700 text-sm leading-snug">
-                          <span className="flex-shrink-0 w-1.5 h-1.5 bg-[#FFF200] border border-[#d4c900] mt-1.5 mr-3" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <p className="text-slate-700 leading-relaxed text-sm text-justify">
-                    The top management committed to maintain an effective quality management system that meets or exceeds the needs and expectations of customers and interested parties through compliance with all applicable regulations.
-                  </p>
-                </div>
+              <div className="p-8 md:p-12 lg:p-16 flex flex-col gap-10">
 
-                {/* Amharic Section */}
-                <div className="flex flex-col h-full space-y-5">
-                  <p className="text-slate-700 leading-relaxed text-sm md:text-base text-justify">
-                    <strong className="text-slate-900 font-bold">ድሮጋ ግሩፕ</strong> ጥራት ያላቸው ፣ ደህንነታቸው የተጠበቀ እና ፈዋሽነታቸው የተረጋገጠ መድኃኒቶችን፣ የህክምና መገልገያዎችን እና አገልግሎቶችን ብቃትና ተነሳሽነት ባላቸው ባለሙያዎቹ ለማህበረሰብ ጤና መሻሻል እና ሀብትን ለመፍጠር የተቀቋቋመ የግል ድርጅት ነው፡፡
-                  </p>
-                  
-                  <div className="bg-slate-50/80 p-5 border border-slate-100 flex-grow shadow-sm">
-                    <h3 className="font-bold text-slate-900 mb-4 text-xs md:text-sm uppercase tracking-wider">ይህንንም ለማሳካት የሚከተሉትን መርሆዎች ይተገብራል፡-</h3>
-                    <ul className="space-y-3">
-                      {[
-                        "ቀጣይነት ያለው የአሰራር ስርዓት መዘርጋት",
-                        "ዘርፉ የሚመራባቸውን የቁጥጥር እና የህግ መመሪያዎችን ማክበር",
-                        "የደንበኞችን አመኔታና እርካታን ማረጋገጥ",
-                        "የፋይናንስ ዘላቂነትን ማረጋገጥ",
-                        "ከባለድርሻ አካላት ጋር በትብብር መስራት",
-                        "የባለሙያዎቻችንን ተሳትፎ ማሳደግ፣ እውቅና መስጠት እና አቅምን መገንባት",
-                        "የአብሮነትና እና የቡድን ስራን ማበረታታት",
-                        "ወረቀት አልባ የአሰራር ሂደትን መዘርጋት",
-                      ].map((item, i) => (
-                        <li key={i} className="flex items-start text-slate-700 text-sm leading-snug">
-                          <span className="flex-shrink-0 w-1.5 h-1.5 bg-[#FFF200] border border-[#d4c900] mt-1.5 mr-3" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <p className="text-slate-700 leading-relaxed text-sm text-justify">
-                    የድሮጋ ግሩፕ ከፍተኛ አመራርም የደንበኞችን ፍላጎት ዘርፉ የሚጠይቀውን መመሪያ በመተግበር በላቀ ደረጃ ለማሟላት ቁርጠኛ ነው፡፡
-                  </p>
-                </div>
-              </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20">
 
-              {/* Signature Section */}
-              <div className="mt-4 pt-6 border-t border-slate-100 flex justify-center md:justify-end relative z-10">
-                <div className="text-center md:text-right relative">
-                  <p className="text-slate-400 text-[10px] md:text-xs font-semibold uppercase tracking-widest mb-4">Approved by</p>
-                  
-                  <div className="group relative cursor-default inline-block px-6 py-3 bg-white/50 backdrop-blur-sm border border-transparent hover:border-slate-200 hover:shadow-sm transition-all duration-300">
-                    {/* Fancy Default View */}
-                    <div className="transition-opacity duration-300 group-hover:opacity-0 flex flex-col items-center md:items-end">
-                      <div className="text-4xl md:text-5xl text-slate-800 select-none leading-none -rotate-2" style={{ fontFamily: "'Brush Script MT', 'Caveat', cursive" }}>
-                        Henok Teka
-                      </div>
-                      <div className="text-lg md:text-xl text-[#a19800] select-none mt-2 -rotate-2" style={{ fontFamily: "'Brush Script MT', 'Caveat', cursive" }}>
-                        Group CEO
-                      </div>
+                  {/* English */}
+                  <div className="flex flex-col space-y-6">
+                    <p className="text-slate-600 leading-relaxed text-sm md:text-base text-justify">
+                      <strong className="text-slate-900 font-semibold">Droga Group</strong> is established to sustainably provide quality, safe and effective pharmaceutical products, medical devices and services by its talented and motivated members to enhance health and create wealth for the nation.
+                    </p>
+
+                    <div className="flex-grow bg-slate-50 border border-slate-100 p-6 relative">
+                      <div className="absolute -top-px left-6 right-6 h-[2px] bg-[#FFF200]" />
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#b3a800] mb-5">We will achieve this through</h3>
+                      <ul className="space-y-3">
+                        {[
+                          "Continual improvement of our processes and systems",
+                          "Adherence to regulatory and statutory requirements",
+                          "Ensuring customer loyalty and satisfaction",
+                          "Ensuring financial sustainability",
+                          "Collaboration and partnership with interested parties",
+                          "Engaging, recognizing and capacitating of our employees",
+                          "Promoting collaboration and team work",
+                          "Automation and digitalization of our processes",
+                        ].map((item, i) => (
+                          <li key={i} className="flex items-start text-slate-600 text-sm leading-snug group/item">
+                            <span className="flex-shrink-0 w-[5px] h-[5px] bg-[#FFF200] border border-[#d4c900] mt-[7px] mr-3 transition-transform duration-200 group-hover/item:scale-150" />
+                            <span className="group-hover/item:text-slate-900 transition-colors duration-200">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    
-                    {/* Normal Font Hover View */}
-                    <div className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 flex flex-col items-center md:items-end justify-center px-6">
-                      <h4 className="font-bold text-slate-900 text-lg md:text-xl whitespace-nowrap">Henok Teka</h4>
-                      <p className="text-[#a19800] font-bold text-sm md:text-base tracking-wide whitespace-nowrap uppercase">Group CEO</p>
+
+                    <p className="text-slate-500 leading-relaxed text-sm text-justify">
+                      The top management is committed to maintaining an effective quality management system that meets or exceeds the needs and expectations of customers and interested parties through compliance with all applicable regulations.
+                    </p>
+                  </div>
+
+                  {/* Amharic */}
+                  <div className="flex flex-col space-y-6 lg:border-l lg:border-slate-100 lg:pl-20">
+                    <p className="text-slate-600 leading-relaxed text-sm md:text-base text-justify">
+                      <strong className="text-slate-900 font-semibold">ድሮጋ ግሩፕ</strong> ጥራት ያላቸው ፣ ደህንነታቸው የተጠበቀ እና ፈዋሽነታቸው የተረጋገጠ መድኃኒቶችን፣ የህክምና መገልገያዎችን እና አገልግሎቶችን ብቃትና ተነሳሽነት ባላቸው ባለሙያዎቹ ለማህበረሰብ ጤና መሻሻል እና ሀብትን ለመፍጠር የተቀቋቋመ የግል ድርጅት ነው፡፡
+                    </p>
+
+                    <div className="flex-grow bg-slate-50 border border-slate-100 p-6 relative">
+                      <div className="absolute -top-px left-6 right-6 h-[2px] bg-[#FFF200]" />
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#b3a800] mb-5">ይህንንም ለማሳካት የሚከተሉትን መርሆዎች ይተገብራል</h3>
+                      <ul className="space-y-3">
+                        {[
+                          "ቀጣይነት ያለው የአሰራር ስርዓት መዘርጋት",
+                          "ዘርፉ የሚመራባቸውን የቁጥጥር እና የህግ መመሪያዎችን ማክበር",
+                          "የደንበኞችን አመኔታና እርካታን ማረጋገጥ",
+                          "የፋይናንስ ዘላቂነትን ማረጋገጥ",
+                          "ከባለድርሻ አካላት ጋር በትብብር መስራት",
+                          "የባለሙያዎቻችንን ተሳትፎ ማሳደግ፣ እውቅና መስጠት እና አቅምን መገንባት",
+                          "የአብሮነትና እና የቡድን ስራን ማበረታታት",
+                          "ወረቀት አልባ የአሰራር ሂደትን መዘርጋት",
+                        ].map((item, i) => (
+                          <li key={i} className="flex items-start text-slate-600 text-sm leading-snug group/item">
+                            <span className="flex-shrink-0 w-[5px] h-[5px] bg-[#FFF200] border border-[#d4c900] mt-[7px] mr-3 transition-transform duration-200 group-hover/item:scale-150" />
+                            <span className="group-hover/item:text-slate-900 transition-colors duration-200">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <p className="text-slate-500 leading-relaxed text-sm text-justify">
+                      የድሮጋ ግሩፕ ከፍተኛ አመራርም የደንበኞችን ፍላጎት ዘርፉ የሚጠይቀውን መመሪያ በመተግበር በላቀ ደረጃ ለማሟላት ቁርጠኛ ነው፡፡
+                    </p>
+                  </div>
+
+                </div>
+
+                {/* Signature */}
+                {/* Signature */}
+                <div className="pt-8 border-t border-slate-100 flex justify-end">
+                  <div className="text-right">
+                    <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-[0.3em] mb-2">Approved by</p>
+                    <div className="text-slate-900 text-xl font-semibold">
+                      Henok Teka
+                    </div>
+                    <div className="text-[#b3a800] text-xs uppercase tracking-[0.2em] mt-1">
+                      Group CEO
                     </div>
                   </div>
-
                 </div>
+
               </div>
             </motion.div>
           </div>
+
+          <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#FFF200] to-transparent" />
         </section>
 
         {/* Clients */}
