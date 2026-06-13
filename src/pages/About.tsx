@@ -239,9 +239,9 @@ function CoreValuesSection() {
               <h3 className="font-display text-2xl font-bold text-slate-900 mb-6">
                 {cv.category}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-1">
                 {cv.titles.map((t, idx) => (
-                  <li key={idx} className="text-slate-600 text-base leading-relaxed">
+                  <li key={idx} className="text-slate-600 text-base leading-snug">
                     {t}
                   </li>
                 ))}

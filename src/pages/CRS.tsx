@@ -128,26 +128,20 @@ export default function CRS() {
                 className="relative bg-zinc-100 p-6 cursor-pointer group hover:bg-[#FFF200] hover:text-black transition-colors duration-300 flex flex-col h-full"
               >
                 <div className="flex justify-between items-start mb-6 gap-4">
-                  <h3 className="font-bold text-[16px] leading-snug w-3/4 group-hover:text-black transition-colors capitalize">
+                  <h3 className="font-semibold text-[16px] leading-snug text-left group-hover:text-black transition-colors capitalize">
                     {item.title}
                   </h3>
-                  <div className="flex items-center justify-center gap-1.5 text-[9px] font-bold text-black bg-zinc-200 group-hover:bg-black/10 group-hover:text-black px-2 py-1.5 uppercase tracking-widest shrink-0 transition-colors">
-                    {item.category}
+                  <div className="text-black group-hover:text-black transition-colors shrink-0">
+                    <ArrowRight size={20} />
                   </div>
                 </div>
 
-                <div className="w-full relative flex items-center justify-center mb-8 overflow-hidden bg-white aspect-[4/3] p-2 md:p-4">
+                <div className="mt-auto w-full relative flex items-center justify-center overflow-hidden aspect-[4/3]">
                   <img
                     src={item.image}
                     alt={item.title}
                     className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
                   />
-                </div>
-
-                <div className="mt-auto pt-5 border-t border-black/10 group-hover:border-black/20 flex justify-between items-end">
-                  <div className="text-right text-black group-hover:text-black">
-                    <ArrowRight size={20} />
-                  </div>
                 </div>
               </motion.article>
             ))}

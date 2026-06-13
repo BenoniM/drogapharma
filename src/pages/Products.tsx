@@ -313,21 +313,15 @@ const Products = () => {
                         onClick={() => setSelected(product)}
                         className="relative bg-zinc-100 p-6 cursor-pointer group hover:bg-[#FFF200] hover:text-black transition-colors duration-300 flex flex-col h-full"
                       >
-                        <div className="flex justify-between items-start mb-6 gap-4">
-                          <h3 className="font-bold text-[16px] leading-snug w-3/4 group-hover:text-black transition-colors">{product.name}</h3>
-                          <div className="flex items-center justify-center gap-1.5 text-[9px] font-bold text-black bg-zinc-200 group-hover:bg-black/10 group-hover:text-black px-2 py-1.5 uppercase tracking-widest shrink-0 transition-colors">
-                            {product.category === 'Medicine' && <Pill size={12} />}
-                            {product.category === 'Diagnostics' && <Microscope size={12} />}
-                            {product.category === 'Surgical' && <Scissors size={12} />}
-                            {product.category}
-                          </div>
+                        <div className="mb-6 text-center">
+                          <h3 className="font-semibold text-[16px] leading-snug w-full group-hover:text-black transition-colors">{product.name}</h3>
                         </div>
 
-                        <div className="w-full relative flex items-center justify-center mb-8 overflow-hidden bg-white group-hover:bg-white/90 aspect-[4/3] p-4 transition-colors duration-300">
+                        <div className="w-full relative flex items-center justify-center mb-8 overflow-hidden aspect-[4/3] transition-colors duration-300">
                           <img
                             src={categoryImages[product.category] || productsImg}
                             alt={product.name}
-                            className="w-full h-full object-contain mix-blend-multiply opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
+                            className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
                           />
                         </div>
 
