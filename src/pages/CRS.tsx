@@ -29,20 +29,18 @@ export default function CRS() {
     <div className="min-h-screen" style={{ background: "#ffffff" }}>
 
       {/* Header */}
-      <section className="relative bg-[#111317] pt-40 pb-48 overflow-hidden">
+      <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
           <style>
             {`
               .anim-bg-text {
                 fill: rgba(0, 0, 0, 0);
-                stroke: #FFF200;
+                stroke: #000;
                 stroke-width: 2px;
                 stroke-dasharray: 3000 1000;
                 animation: strokeDashBg 20s linear infinite;
                 opacity: 0.55;
-                filter:
-                  drop-shadow(0 0 6px rgba(255,242,0,0.7))
-                  drop-shadow(0 0 16px rgba(255,242,0,0.4));
+                
               }
               @keyframes strokeDashBg {
                 from { stroke-dashoffset: 0; }
@@ -71,12 +69,12 @@ export default function CRS() {
         <div className="container-wide relative z-10 px-6 lg:px-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
             <div className="flex flex-col">
-              <span className="section-label text-primary block mb-4">CRS</span>
+              <span className="section-label text-black block mb-4">CRS</span>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="text-white text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+                className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
               >
                 Charities and<br />Foundations
               </motion.h1>
@@ -88,7 +86,7 @@ export default function CRS() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="max-w-sm"
             >
-              <p className="text-white font-medium text-lg leading-relaxed">
+              <p className="text-black font-medium text-lg leading-relaxed">
                 Our corporate social responsibility work focuses on health,
                 education, community support, and sustainable access across the
                 ecosystems we serve.
@@ -100,7 +98,7 @@ export default function CRS() {
 
       {/* Image overlapping the hero */}
       <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
-        <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden relative bg-black">
+        <div className="w-full h-[250px] md:h-[400px] overflow-hidden relative bg-black">
           <img
             src={initiatives[0]?.image || "https://images.unsplash.com/photo-1593113589914-075568e09f58?auto=format&fit=crop&w=1200"}
             alt="Charity"
@@ -127,13 +125,13 @@ export default function CRS() {
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ delay: index * 0.07, duration: 0.5 }}
                 onClick={() => setSelected(item)}
-                className="relative bg-zinc-100 p-6 cursor-pointer group hover:bg-black hover:text-white transition-colors duration-300 flex flex-col h-full"
+                className="relative bg-zinc-100 p-6 cursor-pointer group hover:bg-[#FFF200] hover:text-black transition-colors duration-300 flex flex-col h-full"
               >
                 <div className="flex justify-between items-start mb-6 gap-4">
-                  <h3 className="font-bold text-[16px] leading-snug w-3/4 group-hover:text-white transition-colors capitalize">
+                  <h3 className="font-bold text-[16px] leading-snug w-3/4 group-hover:text-black transition-colors capitalize">
                     {item.title}
                   </h3>
-                  <div className="flex items-center justify-center gap-1.5 text-[9px] font-bold text-black bg-zinc-200 group-hover:bg-white/10 group-hover:text-white px-2 py-1.5 uppercase tracking-widest shrink-0 transition-colors">
+                  <div className="flex items-center justify-center gap-1.5 text-[9px] font-bold text-black bg-zinc-200 group-hover:bg-black/10 group-hover:text-black px-2 py-1.5 uppercase tracking-widest shrink-0 transition-colors">
                     {item.category}
                   </div>
                 </div>
@@ -146,8 +144,8 @@ export default function CRS() {
                   />
                 </div>
 
-                <div className="mt-auto pt-5 border-t border-black/10 group-hover:border-white/20 flex justify-between items-end">
-                  <div className="text-right text-black group-hover:text-white">
+                <div className="mt-auto pt-5 border-t border-black/10 group-hover:border-black/20 flex justify-between items-end">
+                  <div className="text-right text-black group-hover:text-black">
                     <ArrowRight size={20} />
                   </div>
                 </div>
@@ -203,7 +201,6 @@ export default function CRS() {
                   right: 20,
                   width: 44,
                   height: 44,
-                  borderRadius: 8,
                   background: "#000000",
                   border: "none",
                   display: "flex",
@@ -276,7 +273,6 @@ export default function CRS() {
                       style={{
                         width: 68,
                         height: 68,
-                        borderRadius: 8,
                         overflow: "hidden",
                         background: i === 0 ? "#FFF200" : "#f0f0f0",
                         padding: i === 0 ? 2.5 : 0,
@@ -291,7 +287,6 @@ export default function CRS() {
                           width: "100%",
                           height: "100%",
                           objectFit: "cover",
-                          borderRadius: i === 0 ? 6 : 8,
                           display: "block",
                         }}
                       />
@@ -384,7 +379,6 @@ export default function CRS() {
                     textDecoration: "none",
                     background: "#FFF200",
                     padding: "10px 20px",
-                    borderRadius: 4,
                   }}
                 >
                   Learn more <ChevronRight size={14} />

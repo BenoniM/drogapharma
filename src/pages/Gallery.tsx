@@ -25,14 +25,14 @@ const Gallery = () => {
     <PageTransition>
       <div className="bg-[#f5f5f5]">
         {/* Dark Hero Section */}
-        <section className="relative bg-[#111317] pt-40 pb-48 overflow-hidden">
+        <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
           {/* Subtle curved lines background element (matching image) */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text {
                   fill: rgba(0, 0, 0, 0);
-                  stroke: #FFF200;
+                  stroke: #000;
                   stroke-width: 2px;
 
                   /* Long visible line + long gap */
@@ -43,9 +43,7 @@ const Gallery = () => {
 
                   opacity: 0.55;
 
-                  filter:
-                    drop-shadow(0 0 6px rgba(255,242,0,0.7))
-                    drop-shadow(0 0 16px rgba(255,242,0,0.4));
+                  
                 }
 
                 @keyframes strokeDashBg {
@@ -85,12 +83,12 @@ const Gallery = () => {
           <div className="container-wide relative z-10 px-6 lg:px-12">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
               <div className="flex flex-col">
-                <span className="section-label text-primary block mb-4">Media</span>
+                <span className="section-label text-black block mb-4">Media</span>
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
-                  className="text-white text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+                  className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
                 >
                   Gallery
                 </motion.h1>
@@ -102,7 +100,7 @@ const Gallery = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="max-w-sm"
               >
-                <p className="text-white font-medium text-lg leading-relaxed">
+                <p className="text-black font-medium text-lg leading-relaxed">
                   Visual moments from our operations, teams, and healthcare
                   partnerships.
                 </p>

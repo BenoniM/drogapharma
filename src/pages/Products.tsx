@@ -137,20 +137,18 @@ const Products = () => {
     <PageTransition>
       <div>
         {/* Dark Hero Section */}
-        <section className="relative bg-[#111317] pt-40 pb-48 overflow-hidden">
+        <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text {
                   fill: rgba(0, 0, 0, 0);
-                  stroke: #FFF200;
+                  stroke: #000;
                   stroke-width: 2px;
                   stroke-dasharray: 3000 1000;
                   animation: strokeDashBg 20s linear infinite;
                   opacity: 0.55;
-                  filter:
-                    drop-shadow(0 0 6px rgba(255,242,0,0.7))
-                    drop-shadow(0 0 16px rgba(255,242,0,0.4));
+                  
                 }
                 @keyframes strokeDashBg {
                   from { stroke-dashoffset: 0; }
@@ -179,12 +177,12 @@ const Products = () => {
           <div className="container-wide relative z-10 px-6 lg:px-12">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
               <div className="flex flex-col">
-                <span className="section-label text-primary block mb-4">Our Catalog</span>
+                <span className="section-label text-black block mb-4">Our Catalog</span>
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
-                  className="text-white text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+                  className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
                 >
                   Products
                 </motion.h1>
@@ -196,7 +194,7 @@ const Products = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="max-w-sm"
               >
-                <p className="text-white font-medium text-lg leading-relaxed">
+                <p className="text-black font-medium text-lg leading-relaxed">
                   Quality medicines, sutures, orthopedic implants, medical devices
                   and diagnostic equipment.
                 </p>
@@ -313,11 +311,11 @@ const Products = () => {
                     >
                       <div
                         onClick={() => setSelected(product)}
-                        className="relative bg-zinc-100 p-6 cursor-pointer group hover:bg-black hover:text-white transition-colors duration-300 flex flex-col h-full"
+                        className="relative bg-zinc-100 p-6 cursor-pointer group hover:bg-[#FFF200] hover:text-black transition-colors duration-300 flex flex-col h-full"
                       >
                         <div className="flex justify-between items-start mb-6 gap-4">
-                          <h3 className="font-bold text-[16px] leading-snug w-3/4 group-hover:text-white transition-colors">{product.name}</h3>
-                          <div className="flex items-center justify-center gap-1.5 text-[9px] font-bold text-black bg-zinc-200 group-hover:bg-white/10 group-hover:text-white px-2 py-1.5 uppercase tracking-widest shrink-0 transition-colors">
+                          <h3 className="font-bold text-[16px] leading-snug w-3/4 group-hover:text-black transition-colors">{product.name}</h3>
+                          <div className="flex items-center justify-center gap-1.5 text-[9px] font-bold text-black bg-zinc-200 group-hover:bg-black/10 group-hover:text-black px-2 py-1.5 uppercase tracking-widest shrink-0 transition-colors">
                             {product.category === 'Medicine' && <Pill size={12} />}
                             {product.category === 'Diagnostics' && <Microscope size={12} />}
                             {product.category === 'Surgical' && <Scissors size={12} />}
@@ -333,17 +331,17 @@ const Products = () => {
                           />
                         </div>
 
-                        <div className="mt-auto pt-5 border-t border-black/10 group-hover:border-white/20 flex justify-between items-end">
+                        <div className="mt-auto pt-5 border-t border-black/10 group-hover:border-black/20 flex justify-between items-end">
                           <div>
-                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-black/50 group-hover:text-white/50 block mb-2">Manufacturer</span>
+                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-black/50 group-hover:text-black/50 block mb-2">Manufacturer</span>
                             <div className="flex items-center gap-2">
-                              <div className="w-4 h-4 bg-[#FFF200]"></div>
-                              <span className="text-xs font-bold text-black group-hover:text-white">{product.manufacturer}</span>
+                              <div className="w-4 h-4 bg-[#FFF200] group-hover:bg-black transition-colors"></div>
+                              <span className="text-xs font-bold text-black group-hover:text-black">{product.manufacturer}</span>
                             </div>
                           </div>
                           <div className="text-right">
-                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-black/50 group-hover:text-white/50 block mb-2">Origin</span>
-                            <span className="text-xs font-bold text-black group-hover:text-white">{product.origin}</span>
+                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-black/50 group-hover:text-black/50 block mb-2">Origin</span>
+                            <span className="text-xs font-bold text-black group-hover:text-black">{product.origin}</span>
                           </div>
                         </div>
                       </div>

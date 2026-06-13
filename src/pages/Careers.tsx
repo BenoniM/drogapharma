@@ -114,14 +114,14 @@ const CareersPage = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Dark Hero Section */}
-      <section className="relative bg-[#111317] pt-40 pb-48 overflow-hidden">
+      <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
         {/* Subtle curved lines background element (matching image) */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text {
                   fill: rgba(0, 0, 0, 0);
-                  stroke: #FFF200;
+                  stroke: #000;
                   stroke-width: 2px;
 
                   /* Long visible line + long gap */
@@ -132,9 +132,7 @@ const CareersPage = () => {
 
                   opacity: 0.55;
 
-                  filter:
-                    drop-shadow(0 0 6px rgba(255,242,0,0.7))
-                    drop-shadow(0 0 16px rgba(255,242,0,0.4));
+                  
                 }
 
                 @keyframes strokeDashBg {
@@ -178,7 +176,7 @@ const CareersPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="text-white text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+                className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
               >
                 Careers
               </motion.h1>
@@ -190,7 +188,7 @@ const CareersPage = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="max-w-sm"
             >
-              <p className="text-white font-medium text-lg leading-relaxed">
+              <p className="text-black font-medium text-lg leading-relaxed">
                 Build your career with us and help shape the future of healthcare
                 access in Ethiopia.
               </p>
