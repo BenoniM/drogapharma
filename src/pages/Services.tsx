@@ -21,49 +21,49 @@ const services = [
     tag: "Import",
     title: "Pharmaceutical Import",
     desc: "End-to-end pharmaceutical importation from source countries to Ethiopia, handling every customs and logistics touchpoint.",
-    image: "https://images.pexels.com/photos/19497086/pexels-photo-19497086.jpeg",
+    image: "https://images.pexels.com/photos/19497086/pexels-photo-19497086.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
     icon: Search,
     tag: "Sourcing",
     title: "Supplier Sourcing",
     desc: "Strategic identification and vetting of WHO-approved pharmaceutical manufacturers worldwide.",
-    image: "https://images.pexels.com/photos/14554082/pexels-photo-14554082.jpeg",
+    image: "https://images.pexels.com/photos/14554082/pexels-photo-14554082.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
     icon: Shield,
     tag: "Compliance",
     title: "Regulatory Compliance",
     desc: "Complete regulatory support for EFDA product registration, licensing, and ongoing compliance monitoring.",
-    image: "https://images.pexels.com/photos/9870220/pexels-photo-9870220.jpeg",
+    image: "https://images.pexels.com/photos/9870220/pexels-photo-9870220.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
     icon: Thermometer,
     tag: "Cold Chain",
     title: "Cold Chain Logistics",
     desc: "Temperature-controlled supply chain maintaining 2–8°C integrity for heat-sensitive pharmaceuticals end to end.",
-    image: "https://images.pexels.com/photos/27099094/pexels-photo-27099094.jpeg",
+    image: "https://images.pexels.com/photos/27099094/pexels-photo-27099094.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
     icon: Package,
     tag: "Distribution",
     title: "Wholesale Distribution",
     desc: "Nationwide wholesale distribution serving hospitals, pharmacies, and clinics with reliable, flexible ordering.",
-    image: "https://images.pexels.com/photos/32865457/pexels-photo-32865457.jpeg",
+    image: "https://images.pexels.com/photos/32865457/pexels-photo-32865457.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
   {
     icon: FileCheck,
     tag: "Quality",
     title: "Quality Assurance",
     desc: "Rigorous quality control including batch verification, shelf-life management, and anti-counterfeit measures.",
-    image: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1400&q=80",
+    image: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80",
   },
   {
     icon: FlaskConical,
     tag: "R&D",
     title: "Research & Development",
     desc: "Innovative R&D initiatives developing cutting-edge pharmaceutical solutions through clinical trials and scientific research.",
-    image: "https://images.pexels.com/photos/8851630/pexels-photo-8851630.jpeg",
+    image: "https://images.pexels.com/photos/8851630/pexels-photo-8851630.jpeg?auto=compress&cs=tinysrgb&w=800",
   },
 ];
 
@@ -82,7 +82,7 @@ function ServicesScroll() {
 
   useEffect(() => {
     const unsub = scrollYProgress.on("change", (v) => {
-      const idx = Math.min(services.length - 1, Math.floor(v * services.length));
+      const idx = Math.round(v * (services.length - 1));
       setActiveIndex(idx);
     });
     return unsub;
@@ -160,26 +160,41 @@ function ServicesScroll() {
           </AnimatePresence>
         </div>
 
-        <div style={{ position: "relative", overflow: "hidden", margin: "3rem 0" }}>
-          {services.map((s, i) => (
-            <motion.img
-              key={i}
-              src={s.image}
-              alt={s.title}
-              loading={i === 0 ? "eager" : "lazy"}
-              animate={{
-                y: i < activeIndex ? "-100%" : i === activeIndex ? "0%" : "100%",
-              }}
-              transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            />
-          ))}
+        <div style={{ position: "relative", height: "100vh", width: "100%" }}>
+          <motion.div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              y: useTransform(scrollYProgress, [0, 1], ["0vh", `-${(services.length - 1) * 100}vh`]),
+            }}
+          >
+            {services.map((s, i) => (
+              <div 
+                key={i} 
+                style={{ 
+                  height: "100vh", 
+                  width: "100%", 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center",
+                  padding: "2rem 0" 
+                }}
+              >
+                <img
+                  src={s.image}
+                  alt={s.title}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
+            ))}
+          </motion.div>
         </div>
 
         <div
