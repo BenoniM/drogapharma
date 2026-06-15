@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 type Testimonial = {
@@ -42,26 +42,21 @@ const TESTIMONIALS_DATA: Testimonial[] = [
 
 const TestimonialsSection = () => {
   const N = TESTIMONIALS_DATA.length;
-  // Start deep in the middle so we have plenty of cards on both left and right
-  const [currentIndex, setCurrentIndex] = useState(3 * N);
+  const MULTIPLIER = 20; // Massive buffer to prevent ever reaching the end
+  const middleIndex = Math.floor(MULTIPLIER / 2) * N;
+  
+  const [currentIndex, setCurrentIndex] = useState(middleIndex);
   const [isTransitioning, setIsTransitioning] = useState(true);
 
   const isMobile = useIsMobile();
   const autoSlideInterval = 5000;
 
-  // Smaller cards for sleeker look
-  const cardWidth = isMobile ? 280 : 360;
+  const cardWidth = isMobile ? 300 : 380;
+  const gap = 16;
+  const itemWidth = cardWidth + gap;
 
-  // Make an extended array: 7 sets to guarantee the screen never runs out of cards before jumping
-  const extendedData = [
-    ...TESTIMONIALS_DATA,
-    ...TESTIMONIALS_DATA,
-    ...TESTIMONIALS_DATA,
-    ...TESTIMONIALS_DATA,
-    ...TESTIMONIALS_DATA,
-    ...TESTIMONIALS_DATA,
-    ...TESTIMONIALS_DATA,
-  ];
+  // Extended array for infinite loop
+  const extendedData = Array(MULTIPLIER).fill(TESTIMONIALS_DATA).flat();
 
   const handlePrev = () => {
     setIsTransitioning(true);
@@ -82,133 +77,105 @@ const TestimonialsSection = () => {
 
   useEffect(() => {
     // Infinite loop jump logic
-    if (currentIndex < 2 * N) {
+    // If we move 2 sets left of the middle, jump right by 2 sets
+    if (currentIndex <= middleIndex - 2 * N) {
       const timer = setTimeout(() => {
         setIsTransitioning(false);
-        setCurrentIndex((prev) => prev + N);
-      }, 600);
+        setCurrentIndex((prev) => prev + 2 * N);
+      }, 500);
       return () => clearTimeout(timer);
     }
 
-    if (currentIndex >= 4 * N) {
+    // If we move 2 sets right of the middle, jump left by 2 sets
+    if (currentIndex >= middleIndex + 2 * N) {
       const timer = setTimeout(() => {
         setIsTransitioning(false);
-        setCurrentIndex((prev) => prev - N);
-      }, 600);
+        setCurrentIndex((prev) => prev - 2 * N);
+      }, 500);
       return () => clearTimeout(timer);
     }
-  }, [currentIndex, N]);
+  }, [currentIndex, N, middleIndex]);
 
   return (
-    <section className="bg-white pt-4 md:pt-8 overflow-hidden">
-      <div className="w-full">
-        {/* The Tab centered over the active card */}
-        <div
-          className="flex justify-center mx-auto"
-          style={{ width: `${cardWidth}px` }}
-        >
-          <div className="relative w-max">
-            <div className="bg-[#eff1f3] rounded-t-[20px] px-6 py-3 md:px-8 md:py-4 relative z-10">
-              <h2 className="font-display text-base md:text-lg font-medium text-black">
-                Experiences Droga Group
-              </h2>
-            </div>
-            {/* Left Swoosh */}
-            <div
-              className="absolute bottom-0 -left-[20px] w-[20px] h-[20px] pointer-events-none"
-              style={{
-                borderBottomRightRadius: '20px',
-                boxShadow: '10px 0 0 0 #eff1f3',
-                zIndex: 10
-              }}
-            />
-            {/* Right Swoosh */}
-            <div
-              className="absolute bottom-0 -right-[20px] w-[20px] h-[20px] pointer-events-none"
-              style={{
-                borderBottomLeftRadius: '20px',
-                boxShadow: '-10px 0 0 0 #eff1f3',
-                zIndex: 10
-              }}
-            />
-          </div>
-        </div>
+    <section className="bg-white py-16 md:py-24 overflow-hidden relative">
+      <div className="w-full px-4 md:px-8 lg:px-12 xl:px-16">
+        <div className="flex flex-col md:flex-row gap-12 md:gap-8 relative">
+          {/* Left Column (Covers sliding cards with solid background) */}
+          <div className="md:w-1/3 flex flex-col justify-between shrink-0 min-h-[300px] md:min-h-[350px] pb-4 relative z-20 bg-white pr-4 md:pr-8">
+            {/* White cover stretching to the far left of the screen */}
+            <div className="absolute top-0 right-full w-[100vw] h-full bg-white z-20" />
+            
+            <h2 className="text-4xl md:text-5xl lg:text-[56px] font-bold text-black leading-[1.1] tracking-tight relative z-30">
+              Our <br className="hidden md:block" />
+              Testimonials
+            </h2>
 
-        {/* Main Content Container (Edge to Edge) */}
-        <div className="bg-[#eff1f3] pt-8 pb-10 relative overflow-hidden flex flex-col w-full">
-
-          {/* Carousel Track */}
-          <div className="relative w-full h-[250px] md:h-[280px]">
-            <div className="absolute top-0 h-full w-0" style={{ left: "50%" }}>
-              <div
-                className="flex items-center w-max h-full"
-                style={{
-                  transition: isTransitioning
-                    ? "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
-                    : "none",
-                  transform: `translateX(calc(-${currentIndex * cardWidth}px - ${cardWidth / 2}px))`,
-                }}
+            {/* Controls */}
+            <div className="flex items-center gap-4 mt-8 md:mt-0 relative z-30">
+              <button
+                onClick={handlePrev}
+                className="w-14 h-14 rounded-full border border-black/20 text-black flex items-center justify-center transition-all duration-300 hover:bg-[#FFF200] hover:text-black hover:border-transparent group"
+                aria-label="Previous testimonial"
               >
-                {extendedData.map((item, index) => {
-                  const isActive = index === currentIndex;
-
-                  return (
-                    <div
-                      key={`${item.id}-${index}`}
-                      className="px-3 flex-shrink-0"
-                      style={{
-                        width: `${cardWidth}px`,
-                        opacity: isActive ? 1 : 0.4,
-                        filter: isActive ? "none" : "blur(3px)",
-                        transform: isActive ? "scale(1)" : "scale(0.85)",
-                        zIndex: isActive ? 10 : 5,
-                        transition: isTransitioning
-                          ? "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
-                          : "none",
-                      }}
-                    >
-                      <article className="h-full bg-white/40 rounded-2xl p-6 md:p-8 border border-white/60 shadow-sm backdrop-blur-sm">
-                        <Quote className="text-primary mb-4 opacity-50" size={24} />
-                        <p className="text-black/80 font-medium leading-relaxed text-xs md:text-sm line-clamp-4">
-                          "{item.message}"
-                        </p>
-                        <div className="mt-6 flex flex-col">
-                          <h3 className="font-bold text-black text-sm">
-                            {item.name}
-                          </h3>
-                          <p className="text-black/50 text-[10px] md:text-xs mt-1 font-semibold uppercase tracking-wider">
-                            {item.role}
-                          </p>
-                        </div>
-                      </article>
-                    </div>
-                  );
-                })}
-              </div>
+                <ArrowLeft size={24} strokeWidth={1} className="group-hover:-translate-x-1 transition-transform duration-300" />
+              </button>
+              <button
+                onClick={handleNext}
+                className="w-14 h-14 rounded-full border border-black/20 text-black flex items-center justify-center transition-all duration-300 hover:bg-[#FFF200] hover:text-black hover:border-transparent group"
+                aria-label="Next testimonial"
+              >
+                <ArrowRight size={24} strokeWidth={1} className="group-hover:translate-x-1 transition-transform duration-300" />
+              </button>
             </div>
           </div>
 
-          {/* Controls - Centered exactly below the active item */}
-          <div
-            className="flex items-center justify-center gap-4 mt-6 relative z-20 mx-auto"
-            style={{ width: `${cardWidth}px` }}
-          >
-            <button
-              onClick={handlePrev}
-              className="w-10 h-10 rounded-full border border-black/10 bg-white/50 text-black flex items-center justify-center transition-all duration-300 hover:bg-primary hover:text-black hover:border-transparent shadow-sm"
-              aria-label="Previous testimonial"
+          {/* Right Column - Carousel */}
+          <div className="md:w-2/3 min-w-0 relative z-10">
+            <div
+              className="flex"
+              style={{
+                width: "max-content",
+                gap: `${gap}px`,
+                transition: isTransitioning
+                  ? "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)"
+                  : "none",
+                transform: `translateX(-${currentIndex * itemWidth}px)`,
+              }}
             >
-              <ChevronLeft size={18} />
-            </button>
-            <button
-              onClick={handleNext}
-              className="w-10 h-10 rounded-full border border-black/10 bg-white/50 text-black flex items-center justify-center transition-all duration-300 hover:bg-primary hover:text-black hover:border-transparent shadow-sm"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
+              {extendedData.map((item, index) => (
+                <div
+                  key={`${item.id}-${index}`}
+                  className="bg-[#E6E6E6] p-8 md:p-10 flex-shrink-0 flex flex-col justify-between group hover:bg-[#d9d9d9] transition-colors duration-300"
+                  style={{
+                    width: `${cardWidth}px`,
+                    height: isMobile ? "320px" : "350px",
+                  }}
+                >
+                  <div>
+                    <div className="flex justify-between items-start mb-6">
+                      <h3 className="text-black font-bold text-xl md:text-2xl pr-4">
+                        {item.name}
+                      </h3>
+                      <ExternalLink
+                        className="text-black shrink-0 opacity-80 group-hover:opacity-100 transition-opacity"
+                        size={24}
+                        strokeWidth={1.5}
+                      />
+                    </div>
+                    <p className="text-black leading-relaxed text-sm md:text-base font-medium">
+                      "{item.message}"
+                    </p>
+                  </div>
 
+                  <div className="mt-8 flex justify-end">
+                    <span className="text-black/70 font-semibold text-xs md:text-sm text-right max-w-[200px] uppercase tracking-wide">
+                      {item.role}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

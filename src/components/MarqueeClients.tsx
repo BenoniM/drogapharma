@@ -73,7 +73,7 @@ const MarqueeClients = ({
     );
   }
 
-  const marqueeRows = [clients, clients, clients].map(
+  const marqueeRows = [clients, clients].map(
     (rowClients, rowIndex) => ({
       id: rowIndex,
       reverse: rowIndex === 1,
@@ -90,8 +90,8 @@ const MarqueeClients = ({
       {marqueeRows.map((row) => (
         <div
           key={row.id}
-          className="flex animate-marquee"
-          style={row.reverse ? { animationDirection: "reverse" } : undefined}
+          className="flex animate-marquee-fast"
+          style={row.reverse ? { animationDirection: "reverse", animationDuration: "12s" } : { animationDuration: "12s" }}
         >
           {row.items.map((client, i) => (
             <div
@@ -100,13 +100,13 @@ const MarqueeClients = ({
             >
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
-                className="bg-secondary/80 border border-border rounded-xl py-4 px-5 cursor-default min-w-[180px] h-[86px] flex items-center justify-center hover:border-primary/30 hover:shadow-sm transition-all duration-300"
+                className="bg-black/5 py-4 px-5 cursor-default min-w-[200px] h-[120px] flex items-center justify-center transition-all duration-300"
               >
                 <img
                   src={client.src}
                   alt={client.alt}
                   loading="lazy"
-                  className="max-h-12 w-auto max-w-[150px] object-contain"
+                  className="max-h-20 w-auto max-w-[160px] object-contain"
                 />
               </motion.div>
             </div>

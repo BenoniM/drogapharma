@@ -316,8 +316,8 @@ const Home = () => {
 
           <div className="relative z-10 w-full px-4 md:px-8 lg:px-12 xl:px-16">
             <ScrollReveal>
-              <div className="flex flex-col lg:flex-row justify-between items-end gap-10 lg:gap-16">
-                <div className="relative bottom-48 flex items-start gap-4 md:gap-8 lg:w-[45%] xl:w-[40%] pb-16 lg:pb-32">
+              <div className="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-16">
+                <div className="flex items-start gap-4 md:gap-8 lg:w-[45%] xl:w-[40%]">
                   <div className="w-16 md:w-20 flex-shrink-0 pt-1">
                     <span className="text-sm font-medium text-white/80">
                       About Us
@@ -372,7 +372,7 @@ const Home = () => {
         </section>
 
         {/* Reverse split (Our Experts) moved here as requested */}
-        <section className="bg-white border-y-[2px] border-black">
+        <section className="bg-[#f2f2f0]">
           <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[550px]">
             <div className="flex items-center p-10 md:p-16 lg:p-20 order-2 lg:order-1">
               <ScrollReveal
@@ -461,7 +461,7 @@ const Home = () => {
         </section> */}
 
         {/* Products — Image Hover Cards */}
-        <section className="bg-white py-16 md:py-24">
+        <section className="bg-[#E6E6E6] py-16 md:py-24">
           <div className="w-full px-4 md:px-8 lg:px-12 xl:px-16">
             <ScrollReveal>
               <div className="text-center mb-12">
@@ -492,9 +492,6 @@ const Home = () => {
                       className="absolute inset-0 w-full h-full object-cover opacity-0 scale-110 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-100 group-hover:scale-100"
                     />
 
-                    {/* Subtle overlay to make text readable if image is bright */}
-                    <div className="absolute inset-0 bg-black/5 transition-opacity duration-500 group-hover:opacity-0 z-10 pointer-events-none" />
-
                     {/* White info box overlay on hover */}
                     <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-[20px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] z-20">
                       <div className="flex flex-col shadow-lg">
@@ -517,7 +514,7 @@ const Home = () => {
               <div className="mt-16 text-center">
                 <Link
                   to="/products"
-                  className="inline-flex items-center gap-2 border border-black px-8 py-3 text-xs font-bold uppercase tracking-widest text-black hover:bg-primary hover:text-black hover:border-primary transition-colors duration-300"
+                  className="inline-flex items-center gap-2 border border-black px-8 py-4 text-xs font-bold uppercase tracking-widest text-black hover:bg-primary hover:text-black hover:border-primary transition-colors duration-300"
                 >
                   View all products <ArrowRight size={14} />
                 </Link>
@@ -576,7 +573,7 @@ const Home = () => {
         <TestimonialsSection />
 
         {/* Clients */}
-        <section className="bg-[#fffdfd] section-padding border-t border-primary-foreground/10">
+        <section className="bg-[#fffdfd] section-padding">
           <div className="container-narrow mb-12">
             <ScrollReveal>
               <div className="text-center">
@@ -590,12 +587,10 @@ const Home = () => {
               </div>
             </ScrollReveal>
           </div>
-          <div className="max-w-7xl mx-auto w-full">
-            {/* <SlidingPartners clients={clients} /> */}
+          <div className="w-full">
             <MarqueeClients
               clients={clients}
-              variant="vertical-3"
-              additionalSlides={2}
+              variant="horizontal"
             />
           </div>
         </section>

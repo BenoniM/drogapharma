@@ -142,7 +142,7 @@ const NewsMosaic = () => {
   const pos = getTextPosition(hoveredIndex);
 
   return (
-    <section id="news" className="bg-[#fcfcfc] min-h-[80vh] relative flex items-center justify-center overflow-hidden py-24 border-t border-black/10">
+    <section id="news" className="bg-[#fcfcfc] min-h-[80vh] relative flex items-center justify-center overflow-hidden py-24">
 
       {/* Corner Labels */}
       <div className="absolute top-10 left-10 md:left-16 z-30">

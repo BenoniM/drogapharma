@@ -106,7 +106,7 @@ const Footer = () => {
       </AnimatePresence>
 
       {/* ── TOP: brand + branch columns ──────────────────────────────────── */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 pt-10 pb-6">
+      <div className="relative z-10 w-full px-4 lg:px-12 xl:px-20 pt-10 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-4">
 
           {/* Brand blurb */}
@@ -184,24 +184,23 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* ── MIDDLE: logo + giant DROGA wordmark ──────────────────────────── */}
-      <div className="relative z-10 border-t border-black">
-        <div className="max-w-[1400px] mx-auto pb-5 px-6 sm:px-10 lg:px-16 overflow-hidden">
-          <div className="flex items-center justify-center gap-4 md:gap-6">
-            {/* Giant wordmark */}
-            <span
-              className={`font-display font-black tracking-tighter select-none transition-colors duration-500 ${isHovered ? "text-primary" : "text-black"} text-center`}
-              style={{ fontSize: "clamp(3.5rem, 10vw, 12rem)", lineHeight: 0.83 }}
-            >
-              DROGA PHARMA
-            </span>
+      {/* ── MIDDLE: logo + giant wordmark ──────────────────────────── */}
+      <div className="relative z-10 w-full overflow-hidden pb-5 pt-2">
+        <div className="flex items-center justify-between w-full px-4 lg:px-12 xl:px-20">
+          <div 
+            className={`flex justify-between w-full font-display font-black tracking-tighter select-none whitespace-nowrap transition-colors duration-500 ${isHovered ? "text-primary" : "text-black"}`}
+            style={{ fontSize: "clamp(2rem, 8.5vw, 15rem)", lineHeight: 0.83, letterSpacing: "-0.02em" }}
+          >
+            <span>SERVING</span>
+            <span>THE</span>
+            <span>PEOPLE</span>
           </div>
         </div>
       </div>
 
       {/* ── BOTTOM: legal bar ─────────────────────────────────────────────── */}
-      <div className="relative z-10 border-t border-black">
-        <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="relative z-10">
+        <div className="w-full px-4 lg:px-12 xl:px-20 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className={`text-xs font-semibold transition-colors duration-500 ${tc3}`}>
             © {new Date().getFullYear()} Droga Consulting. All rights reserved.
           </p>

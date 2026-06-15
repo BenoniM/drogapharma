@@ -10,7 +10,7 @@ const SLIDES = [
   {
     id: "mission",
     label: "Our Mission",
-    text: "We build ethical companies that provide quality products and services by our talented members to serve humanity and contribute to socio economic development.",
+    text: "We build ethical companies that provide quality products and services by our talented members to serve humanity and contribute to socio-economic development.",
     image: "https://images.pexels.com/photos/9301292/pexels-photo-9301292.jpeg",
   },
   {

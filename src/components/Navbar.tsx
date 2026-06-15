@@ -65,7 +65,7 @@ const Navbar = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [mobileExp, setMobileExp] = useState<string | null>(null);
   const [hidden, setHidden] = useState(false);
-  
+
   const navRef = useRef<HTMLDivElement>(null);
   const lastY = useRef(0);
   const location = useLocation();
@@ -103,86 +103,59 @@ const Navbar = () => {
     <>
       {/* ── Desktop Navbar ── */}
       <header
-        className={`hidden lg:flex fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-[1400px] transition-transform duration-500 ease-in-out ${
-          hidden ? "-translate-y-[150%]" : "translate-y-0"
-        }`}
+        className={`hidden lg:block fixed top-0 left-0 w-full z-50 transition-transform duration-500 ease-in-out ${hidden ? "-translate-y-[150%]" : "translate-y-0"
+          }`}
+        onMouseLeave={() => setHoveredItem(null)}
       >
-        <nav
-          ref={navRef}
-          onMouseLeave={() => setHoveredItem(null)}
-          className="w-full flex h-[72px] bg-white shadow-sm"
-        >
-          {/* ── LEFT COLUMN: Logo ── */}
-          <div className="shrink-0 flex items-start h-full">
-            <Link to="/" className="flex items-center justify-center px-8 h-full group">
-              <img 
-                src={logo} 
-                alt="Droga Pharma" 
-                className="h-10 w-auto group-hover:scale-105 transition-transform duration-300" 
-              />
+        {/* Navbar Background (Separate layer to allow children to blur independently) */}
+        <div className="absolute inset-0 bg-white/70 backdrop-blur-md shadow-sm pointer-events-none -z-10" />
+
+        {/* ── Nav Bar Row ── */}
+        <nav ref={navRef} className="relative w-full flex h-[60px] px-4 lg:px-12 xl:px-16">
+          {/* Logo */}
+          <div className="shrink-0 flex items-center h-full">
+            <Link to="/" className="flex items-center pr-8 h-full group">
+              <img src={logo} alt="Droga Pharma" className="h-10 w-auto group-hover:scale-105 transition-transform duration-300" />
             </Link>
           </div>
 
-          {/* ── CENTER COLUMN: Links + Dropdown ── */}
-          <div 
-            className="flex-1 flex flex-col relative h-full"
-            onMouseLeave={() => setHoveredItem(null)}
-          >
-            {/* Top Row: Links */}
-            <div className="flex items-center justify-center gap-1 px-4 h-full">
+          {/* Center Links + Dropdown Container */}
+          <div className="flex-1 flex flex-col relative h-full">
+            {/* Links */}
+            <div className="flex-1 flex items-center justify-center gap-1 h-full">
               {navLinks.map((item) => {
                 const active = isActive(item);
                 const isHovered = hoveredItem === item.label;
-                
                 return (
                   <div
                     key={item.label}
                     onMouseEnter={() => setHoveredItem(item.label)}
-                    className={`h-full flex items-center px-6 cursor-pointer transition-colors duration-200 ${
-                      isHovered ? "bg-primary" : "hover:bg-primary"
-                    }`}
+                    className={`h-full flex items-center px-4 cursor-pointer transition-colors duration-200 ${isHovered ? "bg-primary" : "hover:bg-primary"
+                      }`}
                   >
                     {item.path ? (
-                      <Link
-                        to={item.path}
-                        className="relative flex items-center h-full"
-                      >
-                        {/* Active Indicator Square */}
-                        <div 
-                          className={`absolute -left-4 top-1/2 -translate-y-1/2 w-2 h-2 transition-all duration-300 ${
-                            active ? (isHovered ? "bg-black scale-100" : "bg-primary scale-100") : "bg-transparent scale-0"
-                          }`} 
-                        />
-                        <span className={`text-[13px] font-bold tracking-wider uppercase transition-colors duration-200 text-black`}>
+                      <Link to={item.path} className="relative flex items-center gap-1 h-full">
+                        <div className={`absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 transition-all duration-300 ${active ? (isHovered ? "bg-black scale-100" : "bg-primary scale-100") : "bg-transparent scale-0"
+                          }`} />
+                        <span className="text-[13px] font-normal tracking-wide capitalize transition-colors duration-200 text-black">
                           {item.label}
                         </span>
                         {item.children && (
-                          <motion.div
-                            animate={{ rotate: isHovered ? 180 : 0 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <ChevronDown size={14} className="text-black transition-colors" />
+                          <motion.div animate={{ rotate: isHovered ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                            <ChevronDown size={13} className="text-black" />
                           </motion.div>
                         )}
                       </Link>
                     ) : (
-                      <button
-                        className="relative flex items-center h-full"
-                      >
-                        <div 
-                          className={`absolute -left-4 top-1/2 -translate-y-1/2 w-2 h-2 transition-all duration-300 ${
-                            active ? (isHovered ? "bg-black scale-100" : "bg-primary scale-100") : "bg-transparent scale-0"
-                          }`} 
-                        />
-                        <span className={`text-[13px] font-bold tracking-wider uppercase transition-colors duration-200 text-black`}>
+                      <button className="relative flex items-center gap-1 h-full">
+                        <div className={`absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 transition-all duration-300 ${active ? (isHovered ? "bg-black scale-100" : "bg-primary scale-100") : "bg-transparent scale-0"
+                          }`} />
+                        <span className="text-[13px] font-normal tracking-wide capitalize transition-colors duration-200 text-black">
                           {item.label}
                         </span>
                         {item.children && (
-                          <motion.div
-                            animate={{ rotate: isHovered ? 180 : 0 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <ChevronDown size={14} className="text-black transition-colors" />
+                          <motion.div animate={{ rotate: isHovered ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                            <ChevronDown size={13} className="text-black" />
                           </motion.div>
                         )}
                       </button>
@@ -200,61 +173,53 @@ const Navbar = () => {
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-                  className="absolute top-full left-[-1px] right-[-1px] bg-white overflow-hidden shadow-2xl"
+                  className="absolute top-full left-[-1px] right-[-1px] bg-white/70 backdrop-blur-3xl overflow-hidden shadow-2xl"
                 >
-                  <div className="p-0">
-                    <div className={`grid ${
-                      activeHoverItem?.label === "Group" ? "grid-cols-4" : 
-                      activeHoverItem?.label === "Products" ? "grid-cols-3" : 
+                  <div className={`grid ${activeHoverItem?.label === "Group" ? "grid-cols-4" :
+                    activeHoverItem?.label === "Products" ? "grid-cols-3" :
                       "grid-cols-3"
                     }`}>
-                      {activeHoverItem?.children?.map((child, idx) => {
-                        const inner = (
-                          <motion.div
-                            key={child.label}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: idx * 0.03, duration: 0.2 }}
-                            className="group flex flex-col gap-1 p-6 md:p-8 hover:bg-primary transition-colors cursor-pointer"
-                          >
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm font-bold text-black transition-colors">
-                                {child.label}
-                              </span>
-                              {child.external && <ArrowUpRight size={14} className="text-black/80" />}
-                            </div>
-                            {child.description && (
-                              <p className="text-xs text-black/70 leading-relaxed font-medium">
-                                {child.description}
-                              </p>
-                            )}
-                          </motion.div>
-                        );
-
-                        return child.external ? (
-                          <a key={child.label} href={child.path} target="_blank" rel="noopener noreferrer">
-                            {inner}
-                          </a>
-                        ) : (
-                          <Link key={child.label} to={child.path} onClick={() => setHoveredItem(null)}>
-                            {inner}
-                          </Link>
-                        );
-                      })}
-                    </div>
+                    {activeHoverItem?.children?.map((child, idx) => {
+                      const inner = (
+                        <motion.div
+                          key={child.label}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: idx * 0.03, duration: 0.2 }}
+                          className="group flex flex-col gap-1 p-6 md:p-8 hover:bg-primary transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="text-[13px] font-normal tracking-wide capitalize text-black transition-colors">
+                              {child.label}
+                            </span>
+                            {child.external && <ArrowUpRight size={14} className="text-black/80" />}
+                          </div>
+                          {child.description && (
+                            <p className="text-xs text-black/70 leading-relaxed font-medium">
+                              {child.description}
+                            </p>
+                          )}
+                        </motion.div>
+                      );
+                      return child.external ? (
+                        <a key={child.label} href={child.path} target="_blank" rel="noopener noreferrer">{inner}</a>
+                      ) : (
+                        <Link key={child.label} to={child.path} onClick={() => setHoveredItem(null)}>{inner}</Link>
+                      );
+                    })}
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          {/* ── RIGHT COLUMN: Get In Touch ── */}
-          <div className="shrink-0 flex items-start h-full">
+          {/* Get In Touch */}
+          <div className="shrink-0 flex items-center h-full -mr-4 lg:-mr-12 xl:-mr-16">
             <Link
               to="/contact"
-              className="flex items-center justify-center px-10 h-full group hover:bg-primary transition-colors duration-300"
+              className="flex items-center pl-8 pr-4 lg:pr-12 xl:pr-16 h-full group hover:bg-primary transition-colors duration-300"
             >
-              <span className="text-[13px] font-bold tracking-wider uppercase text-black">
+              <span className="text-[13px] font-normal tracking-wide capitalize text-black">
                 Get In Touch
               </span>
             </Link>
@@ -264,18 +229,16 @@ const Navbar = () => {
 
       {/* ── Mobile Navbar (Remains sticky top but styled similarly) ── */}
       <header
-        className={`lg:hidden fixed top-4 left-4 right-4 z-50 transition-transform duration-500 ease-in-out ${
-          hidden ? "-translate-y-[150%]" : "translate-y-0"
-        }`}
+        className={`lg:hidden fixed top-0 left-0 w-full z-50 transition-transform duration-500 ease-in-out ${hidden ? "-translate-y-[150%]" : "translate-y-0"
+          }`}
       >
         <motion.nav
           layout
-          className={`w-full flex flex-col overflow-hidden transition-colors duration-300 shadow-sm ${
-            isMobileOpen ? "bg-primary" : "bg-white"
-          }`}
+          className={`w-full flex flex-col overflow-hidden transition-colors duration-300 shadow-sm ${isMobileOpen ? "bg-primary" : "bg-white/80 backdrop-blur-md"
+            }`}
           style={{ borderRadius: "0" }}
         >
-          <div className="flex items-center justify-between h-[64px] px-6">
+          <div className="flex items-center justify-between h-[56px] px-6">
             <Link to="/" className="flex items-center" onClick={() => setIsMobileOpen(false)}>
               <img src={logo} alt="Droga Pharma" className="h-8 w-auto" style={{ mixBlendMode: isMobileOpen ? "multiply" : "normal" }} />
             </Link>

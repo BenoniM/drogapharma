@@ -536,7 +536,7 @@ const Services = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="max-w-sm"
               >
-                <p className="text-black font-medium text-lg leading-relaxed">
+                <p className="text-black font-normal text-lg leading-relaxed">
                   Complete pharmaceutical supply chain solutions for the Ethiopian market.
                 </p>
               </motion.div>

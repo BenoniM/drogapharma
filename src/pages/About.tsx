@@ -155,7 +155,7 @@ const storySlides = [
 ];
 
 const BalanceScale = () => (
-  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#FFF200" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#000000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     {/* Stand */}
     <path d="M20 35 L20 8" />
     <path d="M12 35 L28 35" />
@@ -188,7 +188,7 @@ const RippleTarget = () => (
         top: 50%; left: 50%;
         width: 14px; height: 14px;
         border-radius: 50%;
-        border: 2px solid #FFF200;
+        border: 2px solid #000000;
         animation: ripple 2.4s ease-out infinite;
         will-change: transform, opacity;
       }
@@ -218,7 +218,7 @@ const coreValuesCards = [
   {
     category: "Care",
     titles: ["Care For Us (Employee & Terms)", "Care For Community", "Care For The Planet"],
-    icon: <Heart className="w-10 h-10 text-[#FFF200]" strokeWidth={2.5} />,
+    icon: <Heart className="w-10 h-10 text-black" strokeWidth={2.5} />,
     animation: { scale: [1, 1.2, 1], transition: { duration: 1.2, repeat: Infinity, ease: "easeInOut" } }
   }
 ];
@@ -229,7 +229,7 @@ function CoreValuesSection() {
       <div className="container-wide">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
           {coreValuesCards.map((cv, i) => (
-            <div key={i} className="bg-white p-8 md:p-10 border border-slate-200 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300">
+            <div key={i} className="bg-[#FFF200] p-8 md:p-10 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300">
               <motion.div 
                 className="mb-40 inline-flex"
                 animate={cv.animation as any}
@@ -435,7 +435,7 @@ const About = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="max-w-sm"
               >
-                <p className="text-black font-medium text-lg leading-relaxed">
+                <p className="text-black font-normal text-lg leading-relaxed">
                   Established in 2015, serving Ethiopia's healthcare needs.
                 </p>
               </motion.div>
@@ -459,114 +459,104 @@ const About = () => {
 
         {/* Story section */}
         <section ref={storyRef} className="bg-white py-16 md:py-24 relative overflow-hidden border-t border-slate-100">
-          <div className="container-wide relative px-6 md:px-12 z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0 relative">
+  <div className="container-wide relative px-6 md:px-12 z-10">
+    
+    {/* Centered Top Header */}
+    <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
+      <div className="mx-auto mb-4 h-[3px] w-12 bg-[#FFF200]" />
+      <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
+        Founders' Message
+      </h2>
+    </div>
 
-              {/* CEO 1 — yellow hover */}
-              <div className="lg:col-span-5 story-card group relative py-4 transition-colors duration-500 cursor-pointer">
-                {/* Sliding Yellow Background */}
-                <div className="hover-bg absolute top-0 bottom-0 bg-[#FFF200] z-0"
-                  style={{ left: '-100vw', right: '-20%' }} />
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0 relative">
 
-                <div className="parallax-content relative z-10">
-                  <ScrollReveal>
-                    <div className="px-6 md:px-8 py-4 h-full flex flex-col">
-                      <div className="mb-8 h-[3px] w-12 bg-[#FFF200] group-hover:bg-black transition-colors duration-500" />
-                      <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-900 mb-6 group-hover:text-black transition-colors">
-                        {storySlides[0].title}
-                      </h2>
-                      <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-8 transition-colors">{storySlides[0].intro}</p>
-                      <p className="text-lg md:text-xl font-semibold leading-snug mb-8 text-slate-900 border-l-4 border-[#FFF200] group-hover:border-black group-hover:text-black pl-6 italic transition-colors">
-                        "{storySlides[0].highlight}"
-                      </p>
-                      <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-10 transition-colors">{storySlides[0].outro}</p>
-                      <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200 group-hover:border-black/20 transition-colors">
-                        <p className="font-bold text-base text-slate-900 group-hover:text-black transition-colors">{storySlides[0].signatureName}</p>
-                        <p className="text-sm mt-1 text-slate-500 group-hover:text-black/70 transition-colors">{storySlides[0].signatureRole}</p>
-                      </div>
-                    </div>
-                  </ScrollReveal>
-                </div>
+      {/* Left Card — Yellow Hover */}
+      <div className="lg:col-span-5 story-card group relative py-4 transition-colors duration-500 cursor-pointer">
+        {/* Sliding Yellow Background */}
+        <div className="hover-bg absolute top-0 bottom-0 bg-[#FFF200] z-0 transition-transform duration-500"
+          style={{ left: '-100vw', right: '-20%' }} />
+
+        <div className="parallax-content relative z-10">
+          <ScrollReveal>
+            <div className="px-6 md:px-8 py-4 h-full flex flex-col">
+              <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-8 transition-colors duration-500">
+                {storySlides[0].intro}
+              </p>
+              
+              {/* Blockquote with Large Quote Marks */}
+              <div className="mb-8 relative flex items-start gap-3">
+                <span className="font-serif text-5xl md:text-6xl text-[#FFF200] group-hover:text-black leading-none select-none transition-colors duration-500">
+                  “
+                </span>
+                <p className="text-lg md:text-xl font-semibold leading-snug text-slate-900 group-hover:text-black italic transition-colors duration-500 pt-1">
+                  {storySlides[0].highlight}’’
+                </p>
               </div>
 
-              {/* Divider on large screens */}
-              <div className="hidden lg:block lg:col-span-2 relative h-full">
-                <div className="absolute left-1/2 top-0 bottom-0 w-px bg-slate-200 origin-top story-divider scale-y-100" />
+              <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-10 transition-colors duration-500">
+                {storySlides[0].outro}
+              </p>
+              <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200 group-hover:border-black/20 transition-colors duration-500">
+                <p className="font-bold text-base text-slate-900 group-hover:text-black transition-colors duration-500">
+                  {storySlides[0].signatureName}
+                </p>
+                <p className="text-sm mt-1 text-slate-500 group-hover:text-black/70 transition-colors duration-500">
+                  {storySlides[0].signatureRole}
+                </p>
               </div>
-
-              {/* CEO 2 — black hover, GSAP-driven text sync */}
-              <div className="lg:col-span-5 story-card group relative py-4 cursor-pointer">
-                {/* Sliding Black Background */}
-                <div className="hover-bg absolute top-0 bottom-0 bg-black z-0"
-                  style={{ left: '-20%', right: '-100vw' }} />
-
-                <div className="parallax-content relative z-10 h-full">
-                  <ScrollReveal delay={0.2}>
-                    <div className="px-6 md:px-8 py-4 h-full flex flex-col">
-                      <div className="mb-8 h-[3px] w-12 bg-[#FFF200]" />
-                      <h2
-                        className="gsap-text font-display text-3xl md:text-4xl font-bold mb-6"
-                        data-base-color="#0f172a"
-                        data-hover-color="#ffffff"
-                        style={{ color: '#0f172a' }}
-                      >
-                        {storySlides[1].title}
-                      </h2>
-                      <p
-                        className="gsap-text text-base leading-relaxed mb-8"
-                        data-base-color="#475569"
-                        data-hover-color="rgba(255,255,255,0.8)"
-                        style={{ color: '#475569' }}
-                      >
-                        {storySlides[1].intro}
-                      </p>
-                      <p
-                        className="gsap-text text-lg md:text-xl font-semibold leading-snug mb-8 border-l-4 border-[#FFF200] pl-6 italic"
-                        data-base-color="#0f172a"
-                        data-hover-color="#ffffff"
-                        style={{ color: '#0f172a' }}
-                      >
-                        "{storySlides[1].highlight}"
-                      </p>
-                      <p
-                        className="gsap-text text-base leading-relaxed mb-10"
-                        data-base-color="#475569"
-                        data-hover-color="rgba(255,255,255,0.8)"
-                        style={{ color: '#475569' }}
-                      >
-                        {storySlides[1].outro}
-                      </p>
-                      <div
-                        className="gsap-border inline-block text-left mt-auto pt-6 border-t"
-                        data-base-border="#e2e8f0"
-                        data-hover-border="rgba(255,255,255,0.2)"
-                        style={{ borderColor: '#e2e8f0' }}
-                      >
-                        <p
-                          className="gsap-text font-bold text-base"
-                          data-base-color="#0f172a"
-                          data-hover-color="#ffffff"
-                          style={{ color: '#0f172a' }}
-                        >
-                          {storySlides[1].signatureName}
-                        </p>
-                        <p
-                          className="gsap-text text-sm mt-1"
-                          data-base-color="#64748b"
-                          data-hover-color="rgba(255,255,255,0.6)"
-                          style={{ color: '#64748b' }}
-                        >
-                          {storySlides[1].signatureRole}
-                        </p>
-                      </div>
-                    </div>
-                  </ScrollReveal>
-                </div>
-              </div>
-
             </div>
-          </div>
-        </section>
+          </ScrollReveal>
+        </div>
+      </div>
+
+      {/* Divider on large screens */}
+      <div className="hidden lg:block lg:col-span-2 relative h-full">
+        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-slate-200 origin-top story-divider scale-y-100" />
+      </div>
+
+      {/* Right Card — Yellow Hover */}
+      <div className="lg:col-span-5 story-card group relative py-4 cursor-pointer">
+        {/* Sliding Yellow Background */}
+        <div className="hover-bg absolute top-0 bottom-0 bg-[#FFF200] z-0 transition-transform duration-500"
+          style={{ left: '-20%', right: '-100vw' }} />
+
+        <div className="parallax-content relative z-10 h-full">
+          <ScrollReveal delay={0.2}>
+            <div className="px-6 md:px-8 py-4 h-full flex flex-col">
+              <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-8 transition-colors duration-500">
+                {storySlides[1].intro}
+              </p>
+              
+              {/* Blockquote with Large Quote Marks */}
+              <div className="mb-8 relative flex items-start gap-3">
+                <span className="font-serif text-5xl md:text-6xl text-[#FFF200] group-hover:text-black leading-none select-none transition-colors duration-500">
+                  “
+                </span>
+                <p className="text-lg md:text-xl font-semibold leading-snug text-slate-900 group-hover:text-black italic transition-colors duration-500 pt-1">
+                  {storySlides[1].highlight}’’
+                </p>
+              </div>
+
+              <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-10 transition-colors duration-500">
+                {storySlides[1].outro}
+              </p>
+              <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200 group-hover:border-black/20 transition-colors duration-500">
+                <p className="font-bold text-base text-slate-900 group-hover:text-black transition-colors duration-500">
+                  {storySlides[1].signatureName}
+                </p>
+                <p className="text-sm mt-1 text-slate-500 group-hover:text-black/70 transition-colors duration-500">
+                  {storySlides[1].signatureRole}
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
         <MissionVisionValues />
         <CoreValuesSection />
@@ -740,8 +730,8 @@ const About = () => {
               </div>
             </ScrollReveal>
           </div>
-          <div className="max-w-7xl mx-auto">
-            <MarqueeClients clients={clients} variant="vertical-3" additionalSlides={2} />
+          <div className="w-full">
+            <MarqueeClients clients={clients} variant="horizontal" />
           </div>
         </section>
       </div>

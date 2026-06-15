@@ -172,11 +172,9 @@
   }
 
   .text-gradient {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--brand-yellow)) 0%,
-      hsl(58, 100%, 60%) 100%
-    );
+    background: linear-gradient(135deg,
+        hsl(var(--brand-yellow)) 0%,
+        hsl(58, 100%, 60%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -216,6 +214,7 @@
   .link-underline {
     position: relative;
   }
+
   .link-underline::after {
     content: "";
     position: absolute;
@@ -226,6 +225,7 @@
     background: hsl(var(--primary));
     transition: width 0.3s ease;
   }
+
   .link-underline:hover::after {
     width: 100%;
   }
@@ -234,6 +234,7 @@
     0% {
       transform: translateX(0);
     }
+
     100% {
       transform: translateX(-50%);
     }
@@ -257,12 +258,10 @@
 
   .hr-gradient {
     height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      hsl(var(--border)),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        hsl(var(--border)),
+        transparent);
     border: none;
   }
 
@@ -281,6 +280,7 @@
     position: relative;
     overflow: hidden;
   }
+
   .reveal-line::after {
     content: "";
     position: absolute;
@@ -293,6 +293,7 @@
     transform-origin: right;
     transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
   }
+
   .reveal-line.revealed::after {
     transform: scaleX(0);
     transform-origin: left;
@@ -312,6 +313,7 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;

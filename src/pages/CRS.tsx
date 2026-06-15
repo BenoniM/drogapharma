@@ -86,7 +86,7 @@ export default function CRS() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="max-w-sm"
             >
-              <p className="text-black font-medium text-lg leading-relaxed">
+              <p className="text-black font-normal text-lg leading-relaxed">
                 Our corporate social responsibility work focuses on health,
                 education, community support, and sustainable access across the
                 ecosystems we serve.

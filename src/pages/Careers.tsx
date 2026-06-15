@@ -188,7 +188,7 @@ const CareersPage = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="max-w-sm"
             >
-              <p className="text-black font-medium text-lg leading-relaxed">
+              <p className="text-black font-normal text-lg leading-relaxed">
                 Build your career with us and help shape the future of healthcare
                 access in Ethiopia.
               </p>

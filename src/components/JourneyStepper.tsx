@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -26,6 +26,22 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
+  // Auto-play effect: scrolls every 5 seconds
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const autoplay = setInterval(() => {
+      // If we can't scroll next (reached the end), loop back to the beginning
+      if (!emblaApi.canScrollNext()) {
+        emblaApi.scrollTo(0);
+      } else {
+        emblaApi.scrollNext();
+      }
+    }, 3000); // 5000ms = 5 seconds
+
+    return () => clearInterval(autoplay);
+  }, [emblaApi]);
+
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (cursorRef.current) {
       cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
@@ -50,11 +66,10 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
           justifyContent: "space-between",
           alignItems: "center",
           padding: "12px 0px",
-          borderBottom: "1px solid #c5c5c5",
           flexShrink: 0,
         }}
       >
-        <span style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase"}}>
+        <span style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase" }}>
           Our history
         </span>
         <div style={{ display: "flex", gap: "10px" }}>
@@ -148,7 +163,6 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
       <div
         className="overflow-hidden cursor-grab active:cursor-grabbing flex-1 min-h-0"
         ref={emblaRef}
-        style={{borderBottom: "1px solid #c5c5c5"}}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={() => setIsHovering(false)}
         onMouseMove={handleMouseMove}
@@ -163,8 +177,8 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
                 className="flex-none flex flex-col h-full"
                 style={{
                   width: "clamp(200px, 22vw, 340px)",
-                  borderRight: "1px solid #c5c5c5",
                   padding: "28px 24px",
+                  backgroundColor: isEven ? "transparent" : "#E6E6E6",
                 }}
               >
                 {isEven ? (

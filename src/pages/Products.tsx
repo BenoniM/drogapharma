@@ -194,7 +194,7 @@ const Products = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="max-w-sm"
               >
-                <p className="text-black font-medium text-lg leading-relaxed">
+                <p className="text-black font-normal text-lg leading-relaxed">
                   Quality medicines, sutures, orthopedic implants, medical devices
                   and diagnostic equipment.
                 </p>

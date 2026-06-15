@@ -7,9 +7,9 @@ import supplyImg from "@/assets/ourexpert.jpg";
 import grp1  from "@/assets/HeroGroups/2.jpg";
 import grp2  from "@/assets/HeroGroups/photo_2026-06-04_09-09-38.jpg";
 import grp3  from "@/assets/HeroGroups/img_2004.jpg";
-import grp4  from "@/assets/HeroGroups/img_3097.jpg";
-import grp5  from "@/assets/HeroGroups/img_3136.jpg";
-import grp6  from "@/assets/HeroGroups/img_3458.jpg";
+import grp4  from "@/assets/HeroGroups/FullStore13.jpg";
+import grp5  from "@/assets/HeroGroups/IMG_3651.jpg";
+import grp6  from "@/assets/HeroGroups/teams.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -110,8 +110,7 @@ export default function ScrollHero() {
 
     return () => ctx.revert();
   }, []);
-
-  const textBase = "absolute z-[30] flex items-center justify-center px-6";
+  const textBase = "absolute z-[30] flex items-end justify-start px-6 md:px-16 pb-0 md:pb-0";
 
   return (
     <div ref={wrapRef} style={{ height: "300vh", position: "relative" }}>
@@ -200,16 +199,17 @@ export default function ScrollHero() {
           className={textBase}
           style={{ inset: 0, position: "absolute", willChange: "opacity" }}
         >
-          <div style={{ textAlign: "center", maxWidth: 560 }}>
-            <h1 style={{ fontSize: "clamp(1.75rem,3vw,3rem)", fontWeight: 700, color: "#fff", marginBottom: "1.25rem", lineHeight: 1.05 }}>
-              Our Experts
-            </h1>
-            <p className="mx-auto" style={{ color: "rgba(255,255,255,0.95)", fontSize: "clamp(0.8rem,1vw,0.95rem)", marginBottom: "2.25rem", lineHeight: 1.65, fontWeight: 300, maxWidth: "420px" }}>
+          <div style={{ textAlign: "left", maxWidth: 800 }}>
+            <p style={{ color: "rgba(255,255,255,0.95)", fontSize: "clamp(0.85rem,1.2vw,1rem)", marginBottom: "1.75rem", lineHeight: 1.65, fontWeight: 400, maxWidth: "450px" }}>
               Highly experienced pharmacists and manufacturing industry professionals that drive our partners' success.
             </p>
-            <Link to="/about" className="inline-flex items-center gap-[10px] px-[24px] py-[12px] bg-white text-black font-semibold text-[13px] hover:bg-primary" style={{ textDecoration: "none" }}>
-              Our Team →
+            <Link to="/about" className="inline-flex items-center gap-[10px] px-[20px] py-[10px] bg-white text-black font-semibold text-[13px] md:text-[14px] hover:bg-primary transition-colors" style={{ textDecoration: "none" }}>
+              About Us →
             </Link>
+            <h1 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#fff", marginTop: "2rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
+              <span style={{ display: "block" }}>Serving</span>
+              <span style={{ display: "block" }}>the people !</span>
+            </h1>
           </div>
         </div>
 
@@ -218,16 +218,17 @@ export default function ScrollHero() {
           className={textBase}
           style={{ inset: 0, position: "absolute", opacity: 0, willChange: "opacity" }}
         >
-          <div style={{ textAlign: "center", maxWidth: 560 }}>
-            <h2 style={{ fontSize: "clamp(1.75rem,3vw,3rem)", fontWeight: 700, color: "#fff", marginBottom: "1.25rem", lineHeight: 1.05 }}>
-              Quality You Can Trust
-            </h2>
-            <p className="mx-auto" style={{ color: "rgba(255,255,255,0.95)", fontSize: "clamp(0.8rem,1vw,0.95rem)", marginBottom: "2.25rem", lineHeight: 1.65, fontWeight: 300, maxWidth: "420px" }}>
+          <div style={{ textAlign: "left", maxWidth: 800 }}>
+            <p style={{ color: "rgba(255,255,255,0.95)", fontSize: "clamp(0.85rem,1.2vw,1rem)", marginBottom: "1.75rem", lineHeight: 1.65, fontWeight: 400, maxWidth: "450px" }}>
               WHO-approved products from globally certified manufacturers ensuring the highest standards.
             </p>
-            <Link to="/products" className="inline-flex items-center gap-[10px] px-[24px] py-[12px] bg-white text-black font-semibold text-[13px] hover:bg-primary" style={{ textDecoration: "none" }}>
-              Our Products →
+            <Link to="/about" className="inline-flex items-center gap-[10px] px-[20px] py-[10px] bg-white text-black font-semibold text-[13px] md:text-[14px] hover:bg-primary transition-colors" style={{ textDecoration: "none" }}>
+              About Us →
             </Link>
+            <h2 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#fff", marginTop: "2rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
+              <span style={{ display: "block" }}>Serving</span>
+              <span style={{ display: "block" }}>the people !</span>
+            </h2>
           </div>
         </div>
 
@@ -236,16 +237,57 @@ export default function ScrollHero() {
           className={textBase}
           style={{ inset: 0, position: "absolute", opacity: 0, willChange: "opacity" }}
         >
-          <div style={{ textAlign: "center", maxWidth: 560 }}>
-            <h2 style={{ fontSize: "clamp(1.75rem,3vw,3rem)", fontWeight: 700, color: "#000", marginBottom: "1.25rem", lineHeight: 1.05 }}>
-              Serving The People!
-            </h2>
-            <p className="mx-auto" style={{ color: "rgba(0,0,0,0.95)", fontSize: "clamp(0.8rem,1vw,0.95rem)", marginBottom: "2.25rem", lineHeight: 1.65, fontWeight: 300, maxWidth: "480px" }}>
+          {/* Animated Text from About Page placed Top Right */}
+          <div className="absolute -top-20 md:-top-32 right-0 w-[40vw] md:w-[35vw] h-[50vh] pointer-events-none overflow-visible flex items-start justify-start z-[-1]">
+            <style>
+              {`
+                .hero-anim-bg-text {
+                  fill: rgba(0, 0, 0, 0);
+                  stroke: #000000;
+                  stroke-width: 4px;
+                  stroke-dasharray: 4000 4000;
+                  animation: heroStrokeDashBg 5s ease-in-out infinite alternate;
+                }
+                @keyframes heroStrokeDashBg {
+                  from { stroke-dashoffset: 0; }
+                  to { stroke-dashoffset: 4000; }
+                }
+              `}
+            </style>
+            <svg
+              className="absolute w-[200%] h-[200%]"
+              viewBox="0 0 1600 600"
+              preserveAspectRatio="xMinYMin meet"
+              style={{ transform: "translate(0, 0)" }}
+            >
+              <text
+                x="0"
+                y="0"
+                textAnchor="start"
+                dominantBaseline="hanging"
+                className="hero-anim-bg-text uppercase"
+                style={{
+                  fontSize: "55rem",
+                  fontWeight: 900,
+                  letterSpacing: "0.02em",
+                }}
+              >
+                DROGA
+              </text>
+            </svg>
+          </div>
+
+          <div style={{ textAlign: "left", maxWidth: 800 }}>
+            <p style={{ color: "rgba(0,0,0,0.95)", fontSize: "clamp(0.85rem,1.2vw,1rem)", marginBottom: "1.75rem", lineHeight: 1.65, fontWeight: 400, maxWidth: "450px" }}>
               Droga Pharma Pvt.Ltd Co. is a private limited company based in Addis Ababa, Ethiopia, aiming on sustainable supply of quality medicines, sutures, orthopedic implants and medical devices.
             </p>
-            <Link to="/about" className="inline-flex items-center gap-[10px] px-[24px] py-[12px] bg-black text-white font-semibold text-[13px] hover:bg-white hover:text-black" style={{ textDecoration: "none" }}>
-              More About Us →
+            <Link to="/about" className="inline-flex items-center gap-[10px] px-[20px] py-[10px] bg-black text-white font-semibold text-[13px] md:text-[14px] hover:bg-white hover:text-black transition-colors" style={{ textDecoration: "none" }}>
+              About Us →
             </Link>
+            <h2 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#000", marginTop: "2rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
+              <span style={{ display: "block" }}>Serving</span>
+              <span style={{ display: "block" }}>the people !</span>
+            </h2>
           </div>
         </div>
 
