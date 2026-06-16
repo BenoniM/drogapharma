@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import ScrollReveal from "@/components/ScrollReveal";
 import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
-import { Search, X, ArrowRight, Plus, Check, ShoppingBag, Pill, Microscope, Scissors, LayoutGrid } from "lucide-react";
-import { useInquiryStore } from "@/stores/inquiryStore";
+import { Search, Plus, Minus, ShoppingBag, ChevronLeft, ChevronRight } from "lucide-react";
+
 import productsImg from "@/assets/products.jpg";
 import medicinesImg from "@/assets/medicines.jpg";
 import medDevicesImg from "@/assets/medical-devices.jpg";
@@ -13,7 +12,6 @@ import labImg from "@/assets/lab-research.jpg";
 import heroBgOne from "@/assets/herobg/2.jpg";
 import heroBgTwo from "@/assets/herobg/4.jpg";
 import heroBgThree from "@/assets/herobg/5.jpg";
-import { staggerContainer, staggerItem, cardHover } from "@/lib/variants";
 
 const allProducts = [
   // Medicine
@@ -99,9 +97,10 @@ const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
-  const [letter, setLetter] = useState("All");
-  const [selected, setSelected] = useState<(typeof allProducts)[0] | null>(null);
-  const { addItem, hasItem } = useInquiryStore();
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const urlCategory = searchParams.get("category");
@@ -110,10 +109,12 @@ const Products = () => {
     } else {
       setCategory("All");
     }
+    setCurrentPage(1);
   }, [searchParams]);
 
   const handleCategoryChange = (c: string) => {
     setCategory(c);
+    setCurrentPage(1);
     if (c === "All") {
       setSearchParams({});
     } else {
@@ -123,19 +124,24 @@ const Products = () => {
 
   const filtered = allProducts.filter((p) => {
     if (category !== "All" && p.category !== category) return false;
-    if (letter !== "All" && !p.name.toUpperCase().startsWith(letter)) return false;
     if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-  const availableLetters = Array.from(
-    new Set(allProducts.map((p) => p.name[0].toUpperCase())),
-  );
+  const sortedFiltered = [...filtered].sort((a, b) => {
+    if (a.category < b.category) return -1;
+    if (a.category > b.category) return 1;
+    return a.name.localeCompare(b.name);
+  });
+
+  const totalPages = Math.ceil(sortedFiltered.length / itemsPerPage) || 1;
+  const paginatedItems = sortedFiltered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  let lastCategory = "";
 
   return (
     <PageTransition>
-      <div>
+      <div className="bg-white min-h-screen">
         {/* Dark Hero Section */}
         <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
@@ -148,7 +154,6 @@ const Products = () => {
                   stroke-dasharray: 3000 1000;
                   animation: strokeDashBg 20s linear infinite;
                   opacity: 0.55;
-                  
                 }
                 @keyframes strokeDashBg {
                   from { stroke-dashoffset: 0; }
@@ -207,7 +212,7 @@ const Products = () => {
 
           {/* Image section */}
           <section className="-mt-24 w-full">
-            <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden relative bg-black">
+            <div className="w-full h-[250px] md:h-[400px] overflow-hidden relative bg-black">
               <ImageSlider
                 images={[
                   { src: heroBgOne, alt: "Products" },
@@ -224,11 +229,11 @@ const Products = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="bg-primary w-full relative"
+            className="bg-black w-full relative"
           >
             <div className="pl-4 md:pl-8 pr-0 py-4 flex items-center gap-3 text-sm">
-              <ShoppingBag size={18} className="text-primary-foreground" />
-              <span className="text-primary-foreground font-semibold">
+              <ShoppingBag size={18} className="text-[#FFF200]" />
+              <span className="text-white font-semibold">
                 Select products you're interested in and send us an inquiry — we'll get back within 24 hours.
               </span>
             </div>
@@ -241,47 +246,32 @@ const Products = () => {
           <div className="container-wide px-6 lg:px-12 mx-auto">
 
             {/* Filter Section */}
-            <div className="mb-16">
+            <div className="mb-6">
               <div className="flex flex-col gap-4 mb-10">
-                <span className="text-[11px] font-bold text-black uppercase tracking-[0.2em] border-b border-black pb-2 w-max">Filter by Collections</span>
-                <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide pt-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                <span className="text-[11px] font-bold text-black uppercase tracking-[0.2em] w-max">Filter by Collections</span>
+                <div className="flex flex-wrap gap-4 pt-2">
                   {categories.map((c) => {
                     const isActive = category === c;
                     return (
                       <button
                         key={c}
                         onClick={() => handleCategoryChange(c)}
-                        className={`flex flex-col p-2.5 transition-all w-[160px] shrink-0 ${
+                        className={`px-8 py-3 text-sm font-bold uppercase tracking-widest transition-colors ${
                           isActive
-                            ? "bg-[#FFF200]"
-                            : "bg-zinc-100 hover:bg-zinc-200"
+                            ? "bg-[#FFF200] text-black"
+                            : "bg-zinc-100 text-black hover:bg-zinc-200"
                         }`}
                       >
-                        <div className={`w-full aspect-[4/3] flex items-center justify-center relative overflow-hidden ${
-                          isActive ? "bg-white/60" : "bg-zinc-200/60"
-                        }`}>
-                          {c === 'All' ? (
-                            <LayoutGrid className={isActive ? "text-black" : "text-black/40"} size={32} />
-                          ) : (
-                            <img
-                              src={categoryImages[c]}
-                              alt={c}
-                              className={`w-full h-full object-cover transition-opacity ${isActive ? 'opacity-100' : 'opacity-60 mix-blend-multiply'}`}
-                            />
-                          )}
-                        </div>
-                        <div className={`w-full text-center text-xs font-bold uppercase tracking-wider pt-3 pb-1 ${isActive ? 'text-black' : 'text-black/70'}`}>
-                          {c}
-                        </div>
+                        {c}
                       </button>
                     );
                   })}
                 </div>
               </div>
 
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-t border-black pt-6">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-4">
                 <div className="text-sm font-semibold text-black uppercase tracking-widest">
-                  Showing {filtered.length} of {allProducts.length} Results
+                  Showing {sortedFiltered.length} Results
                 </div>
                 <div className="relative w-full md:w-80">
                   <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-black" />
@@ -289,134 +279,136 @@ const Products = () => {
                     type="text"
                     placeholder="SEARCH PRODUCTS..."
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
                     className="w-full pl-11 pr-4 py-3 bg-zinc-100 text-black text-xs font-bold uppercase tracking-widest focus:outline-none focus:bg-[#FFF200] transition-all placeholder:text-black/40"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              <AnimatePresence>
-                {filtered.map((product, i) => {
-                  return (
-                    <motion.div
-                      key={product.name}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.4, delay: (i % 8) * 0.05 }}
-                      className="h-full"
-                    >
-                      <div
-                        onClick={() => setSelected(product)}
-                        className="relative bg-zinc-100 p-6 cursor-pointer group hover:bg-[#FFF200] hover:text-black transition-colors duration-300 flex flex-col h-full"
-                      >
-                        <div className="mb-6 text-center">
-                          <h3 className="font-semibold text-[16px] leading-snug w-full group-hover:text-black transition-colors">{product.name}</h3>
-                        </div>
+            {/* List */}
+            <div className="flex flex-col w-full pt-4">
+              {paginatedItems.map((product) => {
+                const showHeader = product.category !== lastCategory;
+                lastCategory = product.category;
 
-                        <div className="w-full relative flex items-center justify-center mb-8 overflow-hidden aspect-[4/3] transition-colors duration-300">
-                          <img
-                            src={categoryImages[product.category] || productsImg}
-                            alt={product.name}
-                            className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
-                          />
-                        </div>
-
-                        <div className="mt-auto pt-5 border-t border-black/10 group-hover:border-black/20 flex justify-between items-end">
-                          <div>
-                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-black/50 group-hover:text-black/50 block mb-2">Manufacturer</span>
-                            <div className="flex items-center gap-2">
-                              <div className="w-4 h-4 bg-[#FFF200] group-hover:bg-black transition-colors"></div>
-                              <span className="text-xs font-bold text-black group-hover:text-black">{product.manufacturer}</span>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-black/50 group-hover:text-black/50 block mb-2">Origin</span>
-                            <span className="text-xs font-bold text-black group-hover:text-black">{product.origin}</span>
-                          </div>
-                        </div>
+                return (
+                  <React.Fragment key={product.name}>
+                    {showHeader && (
+                      <div className="mt-8 mb-2">
+                        <h2 className="text-3xl md:text-4xl font-bold text-black pb-4">
+                          {product.category}
+                        </h2>
+                        <div className="h-[1px] w-full bg-zinc-200" />
                       </div>
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
+                    )}
+                    
+                    <div className="bg-white group">
+                      <button 
+                        onClick={() => setExpandedId(expandedId === product.name ? null : product.name)}
+                        className="w-full py-8 flex items-center justify-between text-left hover:bg-zinc-50 transition-colors px-4"
+                      >
+                        <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 w-full pr-4">
+                          <span className="font-normal text-black text-lg md:text-xl uppercase tracking-wide">
+                            {product.name}
+                          </span>
+                          <span className="text-sm font-normal text-zinc-600">
+                            ({product.desc})
+                          </span>
+                          <span className="text-[10px] bg-[#FFF200] px-2 py-1 font-bold text-black uppercase tracking-wider w-max ml-0 md:ml-4">
+                            {product.category}
+                          </span>
+                        </div>
+                        <div className="flex-shrink-0 ml-4">
+                          <div className="w-10 h-10 rounded-full bg-[#FFF200] flex items-center justify-center text-black">
+                            {expandedId === product.name ? <Minus size={20} /> : <Plus size={20} />}
+                          </div>
+                        </div>
+                      </button>
+                      
+                      <AnimatePresence>
+                        {expandedId === product.name && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="px-4 pb-8 pt-2 flex flex-col md:flex-row gap-8 items-start bg-zinc-50">
+                              <div className="flex-1 w-full pt-4">
+                                <h4 className="text-sm font-bold text-black mb-4">Details</h4>
+                                <ul className="space-y-3">
+                                  <li className="flex items-center gap-2 text-sm">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#FFF200]" />
+                                    <span className="font-medium text-black">Manufacturer: {product.manufacturer}</span>
+                                  </li>
+                                  <li className="flex items-center gap-2 text-sm">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#FFF200]" />
+                                    <span className="font-medium text-black">Origin: {product.origin}</span>
+                                  </li>
+                                  <li className="flex items-center gap-2 text-sm">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#FFF200]" />
+                                    <span className="font-medium text-black">Description: {product.desc}</span>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div className="w-[200px] aspect-[4/3] bg-white p-2 flex items-center justify-center shrink-0">
+                                <img 
+                                  src={categoryImages[product.category] || productsImg} 
+                                  alt={product.name} 
+                                  className="max-w-full max-h-full object-contain mix-blend-multiply" 
+                                />
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                      <div className="h-[1px] w-full bg-zinc-200" />
+                    </div>
+                  </React.Fragment>
+                );
+              })}
+
+              {paginatedItems.length === 0 && (
+                <div className="text-center py-32 bg-zinc-50 mt-8">
+                  <p className="text-black text-lg font-bold uppercase tracking-widest">
+                    No products found matching your criteria.
+                  </p>
+                </div>
+              )}
             </div>
 
-            {filtered.length === 0 && (
-              <div className="text-center py-32 bg-zinc-100 mt-8">
-                <p className="text-black text-lg font-bold uppercase tracking-widest">
-                  No products found matching your criteria.
-                </p>
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-6 mt-16">
+                <button 
+                  disabled={currentPage === 1} 
+                  onClick={() => {
+                    setCurrentPage(prev => prev - 1);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="p-3 bg-zinc-100 hover:bg-[#FFF200] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronLeft className="text-black" />
+                </button>
+                <span className="text-sm font-bold uppercase tracking-widest">Page {currentPage} of {totalPages}</span>
+                <button 
+                  disabled={currentPage === totalPages} 
+                  onClick={() => {
+                    setCurrentPage(prev => prev + 1);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="p-3 bg-zinc-100 hover:bg-[#FFF200] disabled:opacity-50 disabled:cursor-not-allowed transition-colors rounded-full"
+                >
+                  <ChevronRight className="text-black" />
+                </button>
               </div>
             )}
+            
           </div>
         </section>
 
-        {/* Modal */}
-        <AnimatePresence>
-          {selected && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/50 backdrop-blur-sm p-4"
-              onClick={() => setSelected(null)}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-background max-w-lg w-full p-8 relative"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  onClick={() => setSelected(null)}
-                  className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <X size={20} />
-                </button>
-                <span className="bg-primary text-primary-foreground text-xs font-semibold px-3 py-1">
-                  {selected.category}
-                </span>
-                <h2 className="font-display text-2xl font-bold text-foreground mt-4 mb-2">
-                  {selected.name}
-                </h2>
-                <p className="text-muted-foreground mb-6">{selected.desc}</p>
-                <div className="grid grid-cols-2 gap-4 text-sm border-t border-border pt-4 mb-6">
-                  <div>
-                    <span className="text-muted-foreground">Manufacturer:</span>
-                    <br />
-                    <span className="text-foreground font-medium">{selected.manufacturer}</span>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Origin:</span>
-                    <br />
-                    <span className="text-foreground font-medium">{selected.origin}</span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    addItem(selected);
-                    setSelected(null);
-                  }}
-                  disabled={hasItem(selected.name)}
-                  className="btn-primary w-full justify-center disabled:opacity-50"
-                >
-                  {hasItem(selected.name) ? (
-                    <><Check size={16} /> Added to inquiry</>
-                  ) : (
-                    <><Plus size={16} /> Add to inquiry</>
-                  )}
-                </button>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </PageTransition>
   );

@@ -100,7 +100,7 @@ const MarqueeClients = ({
             >
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
-                className="bg-[#FFF200]/50 py-4 px-5 cursor-default min-w-[200px] h-[120px] flex items-center justify-center transition-all duration-300"
+                className="bg-[#E6E6E6]/50 py-4 px-5 cursor-default min-w-[200px] h-[120px] flex items-center justify-center transition-all duration-300"
               >
                 <img
                   src={client.src}

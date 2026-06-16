@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, X, Clock, ChevronRight } from "lucide-react";
 
@@ -24,6 +24,17 @@ const initiatives = Object.entries(crsImageModules)
 
 export default function CRS() {
   const [selected, setSelected] = useState<(typeof initiatives)[0] | null>(null);
+
+  useEffect(() => {
+    if (selected) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selected]);
 
   return (
     <div className="min-h-screen" style={{ background: "#ffffff" }}>
@@ -66,7 +77,7 @@ export default function CRS() {
           </svg>
         </div>
 
-        <div className="container-wide relative z-10 px-6 lg:px-12">
+        <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
             <div className="flex flex-col">
               <span className="section-label text-black block mb-4">CRS</span>
@@ -97,7 +108,7 @@ export default function CRS() {
       </section>
 
       {/* Image overlapping the hero */}
-      <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
+      <section className="relative z-20 pl-4 lg:pl-12 xl:pl-16 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
         <div className="w-full h-[250px] md:h-[400px] overflow-hidden relative bg-black">
           <img
             src={initiatives[0]?.image || "https://images.unsplash.com/photo-1593113589914-075568e09f58?auto=format&fit=crop&w=1200"}
@@ -109,14 +120,8 @@ export default function CRS() {
 
       {/* Card Grid */}
       <section style={{ paddingBottom: 80 }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px" }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-              gap: 24,
-            }}
-          >
+        <div className="w-full mx-auto px-4 lg:px-12 xl:px-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
             {initiatives.map((item, index) => (
               <motion.article
                 key={item.title}
@@ -125,22 +130,22 @@ export default function CRS() {
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ delay: index * 0.07, duration: 0.5 }}
                 onClick={() => setSelected(item)}
-                className="relative bg-zinc-100 p-6 cursor-pointer group hover:bg-[#FFF200] hover:text-black transition-colors duration-300 flex flex-col h-full"
+                className="relative cursor-pointer group flex flex-col h-full"
               >
-                <div className="flex justify-between items-start mb-6 gap-4">
-                  <h3 className="font-semibold text-[16px] leading-snug text-left group-hover:text-black transition-colors capitalize">
+                <div className="flex justify-between items-start mb-4 gap-4">
+                  <h3 className="font-display font-bold text-xl leading-snug text-black capitalize group-hover:scale-105 transition-transform duration-300">
                     {item.title}
                   </h3>
-                  <div className="text-black group-hover:text-black transition-colors shrink-0">
-                    <ArrowRight size={20} />
+                  <div className="text-black group-hover:text-[#FFF200] transition-colors shrink-0">
+                    <ArrowRight size={24} className="-rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
                   </div>
                 </div>
 
-                <div className="mt-auto w-full relative flex items-center justify-center overflow-hidden aspect-[4/3]">
+                <div className="w-full relative flex items-center justify-center overflow-hidden aspect-[4/3]">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
               </motion.article>
@@ -179,7 +184,7 @@ export default function CRS() {
                 top: 0,
                 right: 0,
                 bottom: 0,
-                width: "min(640px, 100vw)",
+                width: "min(840px, 100vw)",
                 background: "#ffffff",
                 zIndex: 50,
                 overflowY: "auto",
@@ -189,22 +194,9 @@ export default function CRS() {
             >
               <button
                 onClick={() => setSelected(null)}
-                style={{
-                  position: "absolute",
-                  top: 20,
-                  right: 20,
-                  width: 44,
-                  height: 44,
-                  background: "#000000",
-                  border: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  zIndex: 10,
-                }}
+                className="absolute top-5 right-5 w-11 h-11 flex items-center justify-center bg-black text-white hover:bg-[#FFF200] hover:text-black transition-colors duration-300 z-10 cursor-pointer"
               >
-                <X size={18} color="#ffffff" />
+                <X size={18} />
               </button>
 
               <div style={{ padding: "56px 52px 0", textAlign: "center" }}>
@@ -225,33 +217,18 @@ export default function CRS() {
                 </span>
 
                 <h2
+                  className="font-display capitalize"
                   style={{
-                    fontFamily: "Georgia, 'Times New Roman', serif",
                     fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
                     fontWeight: 700,
                     color: "#000000",
-                    margin: "20px 0 10px",
+                    margin: "20px 0 28px",
                     letterSpacing: "-0.02em",
                     lineHeight: 1.2,
                   }}
                 >
                   {selected.title}
                 </h2>
-
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 6,
-                    color: "rgba(0,0,0,0.45)",
-                    fontSize: "0.85rem",
-                    marginBottom: 28,
-                  }}
-                >
-                  <Clock size={13} />
-                  {selected.readTime}
-                </div>
 
                 <div
                   style={{
@@ -319,22 +296,6 @@ export default function CRS() {
                 >
                   View gallery
                 </a>
-
-                <div style={{ marginBottom: 24 }}>
-                  <a
-                    href="#panel-body"
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 6,
-                      fontSize: "0.85rem",
-                      color: "rgba(0,0,0,0.45)",
-                      textDecoration: "none",
-                    }}
-                  >
-                    Keep Reading ↓
-                  </a>
-                </div>
               </div>
 
               <div style={{ width: "100%", flexShrink: 0 }}>
@@ -362,20 +323,9 @@ export default function CRS() {
 
                 <a
                   href="/contact"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    marginTop: 28,
-                    fontSize: "0.875rem",
-                    fontWeight: 700,
-                    color: "#000000",
-                    textDecoration: "none",
-                    background: "#FFF200",
-                    padding: "10px 20px",
-                  }}
+                  className="inline-flex items-center gap-2 mt-7 text-[0.875rem] font-bold text-black no-underline bg-[#FFF200] px-5 py-2.5 transition-colors duration-300 hover:bg-black hover:text-white"
                 >
-                  Learn more <ChevronRight size={14} />
+                  Contact Us <ChevronRight size={14} />
                 </a>
               </div>
             </motion.aside>

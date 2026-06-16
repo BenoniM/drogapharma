@@ -195,7 +195,7 @@ const Certifications = () => {
             </svg>
           </div>
           
-          <div className="container-wide relative z-10 px-6 lg:px-12">
+          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
               <div className="flex flex-col">
                 <span className="section-label text-black block mb-4">Quality Standards</span>
@@ -225,7 +225,7 @@ const Certifications = () => {
         </section>
 
         {/* Image overlapping the hero - moved to right edge */}
-        <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
+        <section className="relative z-20 pl-4 lg:pl-12 xl:pl-16 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
           <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
             <ImageSlider
               images={[
@@ -240,17 +240,17 @@ const Certifications = () => {
 
         {/* Grid */}
         <section className="bg-[#f5f5f5] section-padding-lg">
-          <div className="container-narrow">
-            <div className="mb-12 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8">
+          <div className="w-full mx-auto px-4 lg:px-12 xl:px-16">
+            <div className="mb-12 flex flex-col lg:flex-row items-start lg:items-start justify-between gap-6 lg:gap-8">
               <ScrollReveal>
-                <p className="text-black text-xl md:text-2xl font-light leading-relaxed max-w-3xl text-center">
+                <p className="text-black text-xl font-normal leading-relaxed max-w-3xl text-left">
                   We maintain the highest industry standards through rigorous
                   certifications and continuous compliance monitoring.
                 </p>
               </ScrollReveal>
 
               {/* Filters */}
-              <div className="w-full md:w-auto lg:shrink-0 p-3 md:p-4 ">
+              <div className="w-full md:w-auto lg:shrink-0 py-3 md:py-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                   <label className="block">
                     <span className="text-[10px] font-semibold text-black/65 uppercase tracking-[0.12em] block mb-1.5">

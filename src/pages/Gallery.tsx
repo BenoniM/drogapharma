@@ -1,147 +1,478 @@
-import { motion } from "framer-motion";
-import ScrollReveal from "@/components/ScrollReveal";
-import AccordGallery from "@/components/AccordGallery";
-import PageTransition from "@/components/PageTransition";
-import heroBgOne from "@/assets/herobg/2.jpg";
-import heroBgTwo from "@/assets/herobg/4.jpg";
-import heroBgThree from "@/assets/herobg/5.jpg";
-import warehouseImg from "@/assets/warehouse.jpg";
-import supplyImg from "@/assets/supply-chain.jpg";
-import healthcareTeamImg from "@/assets/healthcare-team.jpg";
-import labImg from "@/assets/lab-research.jpg";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 
-const galleryItems = [
-  { image: heroBgOne, label: "Corporate overview" },
-  { image: healthcareTeamImg, label: "Healthcare team" },
-  { image: warehouseImg, label: "Warehouse operations" },
-  { image: supplyImg, label: "Supply chain network" },
-  { image: labImg, label: "Research and development" },
-  { image: heroBgTwo, label: "Distribution support" },
-  { image: heroBgThree, label: "Healthcare partnerships" },
+const baseImages = [
+  "https://images.pexels.com/photos/33410957/pexels-photo-33410957.jpeg",
+  "https://images.pexels.com/photos/11876277/pexels-photo-11876277.jpeg",
+  "https://images.pexels.com/photos/1407487/pexels-photo-1407487.jpeg",
+  "https://images.pexels.com/photos/13025284/pexels-photo-13025284.jpeg",
+  "https://images.pexels.com/photos/11299583/pexels-photo-11299583.jpeg",
+  "https://images.pexels.com/photos/905956/pexels-photo-905956.jpeg",
+  "https://images.pexels.com/photos/14479234/pexels-photo-14479234.jpeg",
+  "https://images.pexels.com/photos/31291737/pexels-photo-31291737.jpeg",
+  "https://images.pexels.com/photos/37722714/pexels-photo-37722714.jpeg",
+  "https://images.pexels.com/photos/30395628/pexels-photo-30395628.jpeg",
+  "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg",
+  "https://images.pexels.com/photos/4476718/pexels-photo-4476718.jpeg",
+  "https://images.pexels.com/photos/18506932/pexels-photo-18506932.jpeg",
+  "https://images.pexels.com/photos/20346013/pexels-photo-20346013.jpeg",
+  "https://images.pexels.com/photos/28984522/pexels-photo-28984522.jpeg",
+  "https://images.pexels.com/photos/15005692/pexels-photo-15005692.jpeg",
+  "https://images.pexels.com/photos/4916183/pexels-photo-4916183.jpeg",
+  "https://images.pexels.com/photos/13970256/pexels-photo-13970256.jpeg",
+  "https://images.pexels.com/photos/17706641/pexels-photo-17706641.jpeg",
+  "https://images.pexels.com/photos/16790837/pexels-photo-16790837.jpeg",
+  "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg",
+  "https://images.pexels.com/photos/34993717/pexels-photo-34993717.jpeg",
+  "https://images.pexels.com/photos/28649913/pexels-photo-28649913.jpeg",
+  "https://images.pexels.com/photos/30824915/pexels-photo-30824915.jpeg",
+  "https://images.pexels.com/photos/28145545/pexels-photo-28145545.jpeg",
 ];
 
-const Gallery = () => {
+function thumbUrl(src: string) {
+  return `${src}?auto=compress&cs=tinysrgb&w=200`;
+}
+function fullUrl(src: string) {
+  return `${src}?auto=compress&cs=tinysrgb&w=600`;
+}
+
+const COLS = 20;
+const ROWS = 20;
+const TOTAL = COLS * ROWS;
+
+const PUSH_BY_RING: Record<number, { cardinal: number; diagonal: number }> = {
+  1: { cardinal: 130, diagonal: 92 },
+  2: { cardinal: 75, diagonal: 53 },
+  3: { cardinal: 35, diagonal: 25 },
+};
+
+const items = Array.from({ length: TOTAL }).map((_, i) => {
+  const col = i % COLS;
+  const row = Math.floor(i / COLS);
+  const isImageCell = (col + row) % 2 === 0;
+  if (!isImageCell) return null;
+  return { src: baseImages[i % baseImages.length] };
+});
+
+function computePushMap(
+  hoveredIdx: number
+): Map<number, { tx: number; ty: number }> {
+  const map = new Map<number, { tx: number; ty: number }>();
+  const hCol = hoveredIdx % COLS;
+  const hRow = Math.floor(hoveredIdx / COLS);
+
+  for (let i = 0; i < TOTAL; i++) {
+    if (i === hoveredIdx || items[i] === null) continue;
+    const tCol = i % COLS;
+    const tRow = Math.floor(i / COLS);
+    const dc = tCol - hCol;
+    const dr = tRow - hRow;
+    const dist = Math.max(Math.abs(dc), Math.abs(dr));
+    if (dist === 0 || dist > 3) continue;
+    const ring = PUSH_BY_RING[dist];
+    const isDiagonal = dc !== 0 && dr !== 0;
+    map.set(
+      i,
+      isDiagonal
+        ? {
+            tx: Math.sign(dc) * ring.diagonal,
+            ty: Math.sign(dr) * ring.diagonal,
+          }
+        : {
+            tx: Math.sign(dc) * ring.cardinal,
+            ty: Math.sign(dr) * ring.cardinal,
+          }
+    );
+  }
+  return map;
+}
+
+const EASE = "0.5s cubic-bezier(0.34, 1.4, 0.64, 1)";
+
+function GalleryCell({
+  item,
+  index,
+  isHovered,
+  neighborStyle,
+  hiResRequested,
+  hiResLoaded,
+  onEnter,
+  onLeave,
+  onHiResLoaded,
+}: {
+  item: { src: string };
+  index: number;
+  isHovered: boolean;
+  neighborStyle: React.CSSProperties;
+  hiResRequested: boolean;
+  hiResLoaded: boolean;
+  onEnter: (i: number, el: HTMLDivElement) => void;
+  onLeave: () => void;
+  onHiResLoaded: (i: number) => void;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const thumb = thumbUrl(item.src);
+  const full = fullUrl(item.src);
+
   return (
-    <PageTransition>
-      <div className="bg-[#f5f5f5]">
-        {/* Dark Hero Section */}
-        <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
-          {/* Subtle curved lines background element (matching image) */}
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
-            <style>
-              {`
-                .anim-bg-text {
-                  fill: rgba(0, 0, 0, 0);
-                  stroke: #000;
-                  stroke-width: 2px;
+    <div
+      ref={ref}
+      className="group relative overflow-hidden shadow-lg rounded-none aspect-square col-span-1 row-span-1 place-self-center w-48 md:w-full max-w-[250px] sm:max-w-[250px] md:max-w-[280px]"
+      style={{
+        ...(isHovered
+          ? { transform: "scale(2.8)", zIndex: 100, transition: `transform ${EASE}` }
+          : { ...neighborStyle, zIndex: 1 }),
+        backgroundColor: "#f5f5f5",
+      }}
+      onMouseEnter={() => ref.current && onEnter(index, ref.current)}
+      onMouseLeave={onLeave}
+    >
+      <img
+        src={thumb}
+        alt=""
+        aria-hidden
+        className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+        style={{ opacity: hiResLoaded ? 0 : 1, transition: "opacity 0.4s ease" }}
+        draggable={false}
+      />
+      {hiResRequested && (
+        <img
+          src={full}
+          alt="Gallery"
+          className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+          style={{ opacity: hiResLoaded ? 1 : 0, transition: "opacity 0.4s ease" }}
+          onLoad={() => onHiResLoaded(index)}
+          draggable={false}
+        />
+      )}
+      {/* Subtle dark overlay on hover */}
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100"
+        style={{
+          background: "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 60%)",
+          transition: "opacity 0.35s ease",
+        }}
+      />
+    </div>
+  );
+}
 
-                  /* Long visible line + long gap */
-                  stroke-dasharray: 3000 1000;
+const Gallery = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
-                  /* Smooth infinite movement */
-                  animation: strokeDashBg 20s linear infinite;
+  const targetVelocity = useRef({ x: 0, y: 0 });
+  const velocity = useRef({ x: 0, y: 0 });
+  const pos = useRef({ x: 0, y: 0 });
+  const isHoveredRef = useRef(false);
+  const bounds = useRef({ minX: 0, maxX: 0, minY: 0, maxY: 0 });
+  const centerTarget = useRef<{ x: number; y: number } | null>(null);
 
-                  opacity: 0.55;
+  const touchRef = useRef<{
+    lastX: number;
+    lastY: number;
+    vx: number;
+    vy: number;
+    isDragging: boolean;
+  } | null>(null);
 
-                  
-                }
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [hiResRequested, setHiResRequested] = useState<Set<number>>(new Set());
+  const [hiResLoaded, setHiResLoaded] = useState<Set<number>>(new Set());
 
-                @keyframes strokeDashBg {
-                  from {
-                    stroke-dashoffset: 0;
-                  }
-                  to {
-                    /* -(3000 + 1000) */
-                    stroke-dashoffset: -4000;
-                  }
-                }
-              `}
-            </style>
+  const handleEnter = useCallback((i: number, cellEl: HTMLDivElement) => {
+    isHoveredRef.current = true;
+    setHoveredIdx(i);
+    setHiResRequested((prev) => {
+      if (prev.has(i)) return prev;
+      const next = new Set(prev);
+      next.add(i);
+      return next;
+    });
 
-            <svg
-              className="absolute w-full h-full"
-              viewBox="0 0 1600 300"
-              preserveAspectRatio="xMidYMid meet"
-            >
-              <text
-                x="200%"
-                y="-50%"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="anim-bg-text uppercase"
-                style={{
-                  fontSize: "90rem",
-                  fontWeight: 900,
-                  letterSpacing: "-0.04em",
-                }}
-              >
-                GALLERY
-              </text>
-            </svg>
-          </div>
-          
-          <div className="container-wide relative z-10 px-6 lg:px-12">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
-              <div className="flex flex-col">
-                <span className="section-label text-black block mb-4">Media</span>
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
-                >
-                  Gallery
-                </motion.h1>
-              </div>
+    if (containerRef.current) {
+      const cellRect = cellEl.getBoundingClientRect();
+      const containerRect = containerRef.current.getBoundingClientRect();
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="max-w-sm"
-              >
-                <p className="text-black font-normal text-lg leading-relaxed">
-                  Visual moments from our operations, teams, and healthcare
-                  partnerships.
-                </p>
-              </motion.div>
-            </div>
-          </div>
-        </section>
+      const cellCenterX = cellRect.left + cellRect.width / 2;
+      const cellCenterY = cellRect.top + cellRect.height / 2;
 
-        {/* Image overlapping the hero - moved to right edge */}
-        <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
-          <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
-            <img src={heroBgOne} alt="Gallery" className="w-full h-full object-cover" />
-          </div>
-        </section>
+      const vpCx = containerRect.left + containerRect.width / 2;
+      const vpCy = containerRect.top + containerRect.height / 2;
 
-        <section className="section-padding-lg">
-          <div className="container-narrow">
-            <ScrollReveal>
-              <div className="text-center mb-10">
-                <h2 className="font-display text-3xl md:text-4xl font-bold text-black">
-                  Droga in Pictures
-                </h2>
-                <p className="text-black/65 mt-3 max-w-2xl mx-auto text-lg">
-                  A curated look at our facilities, people, and work across the
-                  group.
-                </p>
-              </div>
-            </ScrollReveal>
+      const dx = vpCx - cellCenterX;
+      const dy = vpCy - cellCenterY;
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <AccordGallery items={galleryItems} height="560px" />
-            </motion.div>
-          </div>
-        </section>
+      centerTarget.current = {
+        x: pos.current.x + dx,
+        y: pos.current.y + dy,
+      };
+
+      velocity.current = { x: 0, y: 0 };
+      targetVelocity.current = { x: 0, y: 0 };
+    }
+  }, []);
+
+  const handleLeave = useCallback(() => {
+    isHoveredRef.current = false;
+    centerTarget.current = null;
+    setHoveredIdx(null);
+  }, []);
+
+  const handleHiResLoaded = useCallback((i: number) => {
+    setHiResLoaded((prev) => {
+      if (prev.has(i)) return prev;
+      const next = new Set(prev);
+      next.add(i);
+      return next;
+    });
+  }, []);
+
+  const pushMap = useMemo(
+    () => (hoveredIdx !== null ? computePushMap(hoveredIdx) : null),
+    [hoveredIdx]
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (!containerRef.current || !gridRef.current) return;
+      const cw = containerRef.current.clientWidth;
+      const ch = containerRef.current.clientHeight;
+      const gw = gridRef.current.scrollWidth;
+      const gh = gridRef.current.scrollHeight;
+
+      bounds.current = {
+        minX: Math.min(0, cw - gw),
+        maxX: 0,
+        minY: Math.min(0, ch - gh),
+        maxY: 0,
+      };
+
+      if (pos.current.x === 0 && pos.current.y === 0) {
+        pos.current = { x: (cw - gw) / 2, y: (ch - gh) / 2 };
+      }
+    };
+
+    setTimeout(handleResize, 100);
+    window.addEventListener("resize", handleResize);
+
+    const NAVBAR_HEIGHT = 60;
+    const handleMouseMove = (e: MouseEvent) => {
+      // Stop panning when cursor is inside the navbar
+      if (e.clientY < NAVBAR_HEIGHT) {
+        targetVelocity.current = { x: 0, y: 0 };
+        return;
+      }
+      if (isHoveredRef.current) return;
+      const hw = window.innerWidth / 2;
+      const hh = window.innerHeight / 2;
+      let nx = (e.clientX - hw) / hw;
+      let ny = (e.clientY - hh) / hh;
+      const deadzone = 0.15;
+      if (Math.abs(nx) < deadzone) nx = 0;
+      else nx = nx > 0 ? nx - deadzone : nx + deadzone;
+      if (Math.abs(ny) < deadzone) ny = 0;
+      else ny = ny > 0 ? ny - deadzone : ny + deadzone;
+      targetVelocity.current = { x: -nx * 16, y: -ny * 16 };
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    const onTouchStart = (e: TouchEvent) => {
+      const t = e.touches[0];
+      touchRef.current = {
+        lastX: t.clientX,
+        lastY: t.clientY,
+        vx: 0,
+        vy: 0,
+        isDragging: true,
+      };
+      velocity.current = { x: 0, y: 0 };
+      centerTarget.current = null;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!touchRef.current?.isDragging) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      const dx = t.clientX - touchRef.current.lastX;
+      const dy = t.clientY - touchRef.current.lastY;
+
+      pos.current.x += dx;
+      pos.current.y += dy;
+
+      touchRef.current.vx = touchRef.current.vx * 0.6 + dx * 0.4;
+      touchRef.current.vy = touchRef.current.vy * 0.6 + dy * 0.4;
+
+      touchRef.current.lastX = t.clientX;
+      touchRef.current.lastY = t.clientY;
+    };
+
+    const onTouchEnd = () => {
+      if (!touchRef.current) return;
+      velocity.current.x = touchRef.current.vx;
+      velocity.current.y = touchRef.current.vy;
+      touchRef.current.isDragging = false;
+      touchRef.current = null;
+    };
+
+    const container = containerRef.current;
+    container?.addEventListener("touchstart", onTouchStart, { passive: true });
+    container?.addEventListener("touchmove", onTouchMove, { passive: false });
+    container?.addEventListener("touchend", onTouchEnd);
+    container?.addEventListener("touchcancel", onTouchEnd);
+
+    let rafId: number;
+    const loop = () => {
+      const isMobile = window.innerWidth < 768;
+
+      if (!touchRef.current?.isDragging) {
+        if (centerTarget.current) {
+          const lerpSpeed = 0.1;
+          pos.current.x += (centerTarget.current.x - pos.current.x) * lerpSpeed;
+          pos.current.y += (centerTarget.current.y - pos.current.y) * lerpSpeed;
+          const distX = Math.abs(centerTarget.current.x - pos.current.x);
+          const distY = Math.abs(centerTarget.current.y - pos.current.y);
+          if (distX < 0.5 && distY < 0.5) {
+            pos.current.x = centerTarget.current.x;
+            pos.current.y = centerTarget.current.y;
+          }
+        } else {
+          const targetVx = isMobile ? 0 : targetVelocity.current.x;
+          const targetVy = isMobile ? 0 : targetVelocity.current.y;
+
+          if (document.body.classList.contains("nav-open")) {
+            velocity.current.x *= 0.85;
+            velocity.current.y *= 0.85;
+          } else {
+            if (isMobile) {
+              velocity.current.x *= 0.92;
+              velocity.current.y *= 0.92;
+            } else {
+              velocity.current.x += (targetVx - velocity.current.x) * 0.08;
+              velocity.current.y += (targetVy - velocity.current.y) * 0.08;
+            }
+          }
+
+          pos.current.x += velocity.current.x;
+          pos.current.y += velocity.current.y;
+        }
+      }
+
+      const { minX, maxX, minY, maxY } = bounds.current;
+      if (pos.current.x < minX)
+        pos.current.x += (minX - pos.current.x) * 0.15;
+      else if (pos.current.x > maxX)
+        pos.current.x += (maxX - pos.current.x) * 0.15;
+      if (pos.current.y < minY)
+        pos.current.y += (minY - pos.current.y) * 0.15;
+      else if (pos.current.y > maxY)
+        pos.current.y += (maxY - pos.current.y) * 0.15;
+
+      if (gridRef.current) {
+        gridRef.current.style.transform = `translate3d(${pos.current.x}px, ${pos.current.y}px, 0)`;
+      }
+
+      rafId = requestAnimationFrame(loop);
+    };
+
+    rafId = requestAnimationFrame(loop);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      container?.removeEventListener("touchstart", onTouchStart);
+      container?.removeEventListener("touchmove", onTouchMove);
+      container?.removeEventListener("touchend", onTouchEnd);
+      container?.removeEventListener("touchcancel", onTouchEnd);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-screen overflow-hidden touch-none"
+      style={{ height: "100dvh", backgroundColor: "#ffffff" }}
+    >
+
+      {/* Grid */}
+      <div
+        ref={gridRef}
+        className="absolute will-change-transform z-10 cursor-crosshair"
+        style={{
+          width: "800vw",
+          height: "800vh",
+          padding: "6rem",
+          display: "grid",
+          gridTemplateColumns: `repeat(${COLS}, 1fr)`,
+          gridTemplateRows: `repeat(${ROWS}, 1fr)`,
+          gap: "10vw",
+        }}
+      >
+        {items.map((item, i) => {
+          if (!item) return <div key={i} className="pointer-events-none" />;
+
+          const isHovered = hoveredIdx === i;
+          const push = pushMap?.get(i);
+
+          const neighborStyle: React.CSSProperties = {
+            transform: push
+              ? `translate(${push.tx}px, ${push.ty}px)`
+              : "translate(0px, 0px)",
+            transition: `transform ${EASE}`,
+          };
+
+          return (
+            <GalleryCell
+              key={i}
+              item={item}
+              index={i}
+              isHovered={isHovered}
+              neighborStyle={neighborStyle}
+              hiResRequested={hiResRequested.has(i)}
+              hiResLoaded={hiResLoaded.has(i)}
+              onEnter={handleEnter}
+              onLeave={handleLeave}
+              onHiResLoaded={handleHiResLoaded}
+            />
+          );
+        })}
       </div>
-    </PageTransition>
+
+      {/* Bottom hint label — fixed so it always sits above the fold */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: "32px",
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          zIndex: 9999,
+          pointerEvents: "none",
+        }}
+      >
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            backgroundColor: "#000",
+            color: "#fff",
+            padding: "8px 22px",
+            borderRadius: "999px",
+            fontSize: "11px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            fontWeight: 500,
+          }}
+        >
+          Move your cursor
+          <span style={{ color: "#fff", fontWeight: 700 }}>·</span>
+          hover to zoom
+        </span>
+      </div>
+    </div>
   );
 };
 

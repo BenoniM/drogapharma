@@ -208,7 +208,7 @@ export default function ScrollHero() {
             </Link>
             <h1 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#fff", marginTop: "1.5rem", marginBottom: "1rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
               <span style={{ display: "block" }}>Serving</span>
-              <span style={{ display: "block" }}>the people !</span>
+              <span style={{ display: "block" }}>the people!</span>
             </h1>
           </div>
         </div>

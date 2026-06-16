@@ -137,7 +137,7 @@ function ServicesScroll() {
                 style={{
                   width: 40,
                   height: 40,
-                  border: "1px solid rgba(0,0,0,0.18)",
+                  backgroundColor: "#FFF200",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -268,52 +268,8 @@ function HowItWorksBlind() {
     cards.forEach((card, index) => {
       if (!card) return;
       const isOdd   = index % 2 === 0; // 0,2 = white reveal; 1,3 = black reveal
-      const bg      = card.querySelector<HTMLElement>('.hiw-hover-bg');
       const content = card.querySelector<HTMLElement>('.hiw-content');
       const textEls = card.querySelectorAll<HTMLElement>('.hiw-text');
-
-      if (!bg || !content) return;
-
-      gsap.set(bg, {
-        clipPath: isOdd ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)",
-      });
-
-      const onEnter = () => {
-        gsap.to(bg, {
-          clipPath: "inset(0 0% 0 0%)",
-          duration: 0.8,
-          ease: "power3.inOut",
-        });
-        textEls.forEach((el, i) => {
-          gsap.to(el, {
-            color: el.dataset.hoverColor ?? '',
-            duration: 0.35,
-            delay: 0.3 + i * 0.06,
-            ease: "power2.out",
-          });
-        });
-      };
-
-      const onLeave = () => {
-        gsap.to(bg, {
-          clipPath: isOdd ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)",
-          duration: 0.6,
-          ease: "power3.inOut",
-        });
-        gsap.to(content, {
-          x: 0, y: 0, rotateX: 0, rotateY: 0,
-          duration: 1,
-          ease: "elastic.out(1, 0.3)",
-        });
-        textEls.forEach((el, i) => {
-          gsap.to(el, {
-            color: el.dataset.baseColor ?? '',
-            duration: 0.3,
-            delay: i * 0.03,
-            ease: "power2.in",
-          });
-        });
-      };
 
       const onMove = (e: MouseEvent) => {
         const rect = card.getBoundingClientRect();
@@ -329,9 +285,7 @@ function HowItWorksBlind() {
           transformPerspective: 1000,
         });
       };
-
-      card.addEventListener('mouseenter', onEnter);
-      card.addEventListener('mouseleave', onLeave);
+      
       card.addEventListener('mousemove', onMove);
     });
 
@@ -398,16 +352,6 @@ function HowItWorksBlind() {
                 cursor: "default",
               }}
             >
-              {/* Sliding bg */}
-              <div
-                className="hiw-hover-bg"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  backgroundColor: isOdd ? "#ffffff" : "#000000",
-                  zIndex: 0,
-                }}
-              />
 
               {/* Content */}
               <div

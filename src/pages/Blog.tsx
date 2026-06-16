@@ -129,10 +129,7 @@ const Blog = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const featuredPost = posts.find((p) => p.featured)!;
-  const regularPosts = posts.filter((p) => !p.featured);
-
-  const filtered = regularPosts.filter((post) => {
+  const filtered = posts.filter((post) => {
     const matchCat =
       activeCategory === "All" || post.category === activeCategory;
     const matchSearch =
@@ -140,7 +137,7 @@ const Blog = () => {
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     return matchCat && matchSearch;
-  });
+  }).sort((a, b) => (a.featured === b.featured ? 0 : a.featured ? -1 : 1));
 
   return (
     <PageTransition>
@@ -200,7 +197,7 @@ const Blog = () => {
             </svg>
           </div>
           
-          <div className="container-wide relative z-10 px-6 lg:px-12">
+          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
               <div className="flex flex-col">
                 <span className="section-label text-black block mb-4">Insights & Updates</span>
@@ -230,7 +227,7 @@ const Blog = () => {
         </section>
 
         {/* Image overlapping the hero - moved to right edge */}
-        <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
+        <section className="relative z-20 pl-4 lg:pl-12 xl:pl-16 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
           <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
             <ImageSlider
               images={[
@@ -243,80 +240,10 @@ const Blog = () => {
           </div>
         </section>
 
-        {/* ── Featured Post ── */}
-        <section className="bg-white section-padding">
-          <div className="container-narrow">
-            <ScrollReveal>
-              <span className="section-label block mb-8 text-[#5c5858]">
-                Featured Story
-              </span>
-            </ScrollReveal>
-            <ScrollReveal>
-              <Link
-                to={`/blog/${featuredPost.id}`}
-                state={{ post: featuredPost }}
-              >
-                <motion.div
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className="group grid grid-cols-1 lg:grid-cols-2 gap-0 bg-[#f5f5f5] overflow-hidden border border-black/8 cursor-pointer"
-                >
-                  <div className="relative aspect-[4/3] lg:aspect-auto overflow-hidden">
-                    <motion.img
-                      src={featuredPost.img}
-                      alt={featuredPost.title}
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.04 }}
-                      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-foreground/20 group-hover:to-foreground/30 transition-all duration-500" />
-                    <span className="absolute top-5 left-5 inline-block bg-primary text-black text-xs font-bold uppercase tracking-widest px-4 py-1.5">
-                      {featuredPost.category}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col justify-center p-10 md:p-14 lg:p-16">
-                    <div className="flex items-center gap-5 text-[#5c5858] text-xs mb-6">
-                      <span className="flex items-center gap-1.5">
-                        <Calendar size={12} />
-                        {featuredPost.date}
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <Clock size={12} />
-                        {featuredPost.readTime}
-                      </span>
-                    </div>
-                    <h2 className="font-display text-2xl md:text-3xl font-bold text-black leading-tight mb-5 group-hover:text-black/80 transition-colors duration-300">
-                      {featuredPost.title}
-                    </h2>
-                    <p className="text-[#5c5858] leading-relaxed mb-8 text-base">
-                      {featuredPost.excerpt}
-                    </p>
-                    <span className="btn-primary self-start text-sm inline-flex items-center gap-2">
-                      Read Story <ArrowRight size={14} />
-                    </span>
-                  </div>
-                </motion.div>
-              </Link>
-            </ScrollReveal>
-          </div>
-        </section>
-
-        {/* ── Yellow divider strip ── */}
-        <div className="bg-primary py-4">
-          <div className="container-narrow flex items-center justify-between gap-4 flex-wrap">
-            <p className="text-black font-semibold text-sm tracking-wide uppercase">
-              All Articles
-            </p>
-            <span className="text-black/50 text-xs font-medium">
-              {filtered.length} article{filtered.length !== 1 ? "s" : ""} found
-            </span>
-          </div>
-        </div>
 
         {/* ── Filters + Search ── */}
         <section className="bg-[#f5f5f5] pt-10 pb-4 sticky top-0 z-20 border-b border-black/8 shadow-sm">
-          <div className="container-narrow flex flex-col md:flex-row md:items-center gap-5">
+          <div className="w-full mx-auto px-4 lg:px-12 xl:px-16 flex flex-col md:flex-row md:items-center gap-5">
             {/* Categories */}
             <div className="flex items-center gap-2 flex-wrap flex-1">
               {categories.map((cat) => (
@@ -353,7 +280,7 @@ const Blog = () => {
 
         {/* ── Posts Grid ── */}
         <section className="bg-[#f5f5f5] section-padding">
-          <div className="container-narrow">
+          <div className="w-full mx-auto px-4 lg:px-12 xl:px-16">
             <AnimatePresence mode="wait">
               {filtered.length === 0 ? (
                 <motion.div
@@ -409,10 +336,17 @@ const Blog = () => {
                               }}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-foreground/55 via-foreground/10 to-transparent group-hover:from-foreground/70 transition-all duration-500" />
-                            <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest px-3 py-1 bg-background/15 text-background backdrop-blur-sm">
-                              <Tag size={10} />
-                              {post.category}
-                            </span>
+                            <div className="absolute top-4 left-4 flex flex-col gap-1.5">
+                              {post.featured && (
+                                <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest px-3 py-1 bg-black text-[#FFF200]">
+                                  Featured Article
+                                </span>
+                              )}
+                              <span className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest px-3 py-1 ${post.featured ? "bg-[#FFF200] text-black" : "bg-background/15 text-background backdrop-blur-sm"}`}>
+                                <Tag size={10} />
+                                {post.category}
+                              </span>
+                            </div>
                           </div>
 
                           {/* Body */}

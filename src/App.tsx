@@ -45,17 +45,27 @@ const AnimatedRoutes = () => {
   );
 };
 
+const AppShell = () => {
+  const location = useLocation();
+  const isGallery = location.pathname === "/gallery";
+  return (
+    <>
+      <Navbar />
+      <AnimatedRoutes />
+      {!isGallery && <Footer />}
+      <InquiryCart />
+      <ScrollToTop />
+    </>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Navbar />
-        <AnimatedRoutes />
-        <Footer />
-        <InquiryCart />
-        <ScrollToTop />
+        <AppShell />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

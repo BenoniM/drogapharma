@@ -50,7 +50,7 @@ const Contact = () => {
 
   return (
     <PageTransition>
-      <div className="bg-background min-h-screen pb-10">
+      <div className="bg-[#f2f2f2] min-h-screen pb-10">
         {/* Dark Hero Section */}
         <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
           {/* Subtle curved lines background element (matching image) */}
@@ -131,7 +131,7 @@ const Contact = () => {
 
         {/* Map and Form Container (Overlapping Hero) */}
         <section className="relative z-20 px-4 md:px-8 -mt-24 mb-16 max-w-[1400px] mx-auto">
-          <div className="bg-white flex flex-col lg:flex-row w-full shadow-2xl rounded-sm overflow-hidden">
+          <div className="bg-white flex flex-col lg:flex-row w-full rounded-sm overflow-hidden">
 
             {/* Map Side */}
             <div className="w-full lg:w-[45%] h-[500px] lg:h-auto relative bg-gray-100 z-0">
@@ -226,7 +226,7 @@ const Contact = () => {
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mt-4">
                   <button
                     type="submit"
-                    className="bg-black text-white rounded-full px-8 py-3.5 font-medium text-[15px] inline-flex items-center justify-center gap-2 transition-all duration-200 flex-shrink-0 hover:bg-primary hover:text-black"
+                    className="bg-black text-white px-8 py-3.5 font-medium text-[15px] inline-flex items-center justify-center gap-2 transition-all duration-200 flex-shrink-0 hover:bg-primary hover:text-black"
                   >
                     Send <ArrowRight size={18} />
                   </button>
@@ -252,7 +252,7 @@ const Contact = () => {
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 className="flex flex-col gap-3"
               >
-                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-[#111317]">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-black bg-[#FFF200]">
                   <info.icon size={18} />
                 </div>
                 <div>

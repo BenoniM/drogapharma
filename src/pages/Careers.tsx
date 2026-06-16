@@ -169,7 +169,7 @@ const CareersPage = () => {
             </svg>
           </div>
         
-        <div className="container-wide relative z-10 px-6 lg:px-12">
+        <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
             <div className="flex flex-col">
               <motion.h1
@@ -198,7 +198,7 @@ const CareersPage = () => {
       </section>
 
       {/* Image overlapping the hero - moved to right edge */}
-      <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 w-full md:w-[90%] lg:w-[85%] ml-auto">
+      <section className="relative z-20 pl-4 lg:pl-12 xl:pl-16 pr-0 -mt-24 w-full md:w-[90%] lg:w-[85%] ml-auto">
         <div className="w-full h-[400px] md:h-[600px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
           <ImageSlider
             images={careersHeroImages}
@@ -208,7 +208,7 @@ const CareersPage = () => {
       </section>
 
 <section className="bg-[#fcfcfc] pt-20 pb-0 border-t border-black">
-  <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+  <div className="w-full mx-auto px-4 lg:px-12 xl:px-16 mb-12">
     <motion.p
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -244,8 +244,8 @@ const CareersPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5, delay: (rowIdx * 2 + colIdx) * 0.07 }}
-            className={`group flex flex-col hover:bg-[#FFF200] transition-colors duration-300 px-6 lg:px-10 py-10
-              ${colIdx === 0 ? "md:border-r border-black/10" : ""}
+            className={`group flex flex-col hover:bg-[#FFF200] transition-colors duration-300 py-10
+              ${colIdx === 0 ? "pl-4 lg:pl-12 xl:pl-16 pr-6 lg:pr-10 md:border-r border-black/10" : "pl-6 lg:pl-10 pr-4 lg:pr-12 xl:pr-16"}
             `}
           >
             <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-black/30 group-hover:text-black/50 transition-colors duration-300 mb-6">
@@ -267,7 +267,7 @@ const CareersPage = () => {
 
       {/* Open positions */}
       <section id="openings" className="bg-[#fcfcfc] pt-20 pb-20 border-t border-black">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div className="w-full mx-auto px-4 lg:px-12 xl:px-16 mb-12">
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -307,7 +307,7 @@ const CareersPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: idx * 0.08 }}
-                className="grid border-b border-black/10 group hover:bg-[#FFF200] transition-colors duration-300 cursor-pointer px-4 sm:px-6 lg:px-8"
+                className="grid border-b border-black/10 group hover:bg-[#FFF200] transition-colors duration-300 cursor-pointer px-4 lg:px-12 xl:px-16"
                 style={{ gridTemplateColumns: "180px 1fr 1fr" }}
                 onClick={() => window.location.href = `mailto:info@drogapharma.com?subject=Application for ${job.title}`}
               >
@@ -319,7 +319,7 @@ const CareersPage = () => {
                   <a
                     href={`mailto:info@drogapharma.com?subject=Application for ${job.title}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.07em] border border-black px-4 py-2 text-black bg-transparent group-hover:bg-black group-hover:text-[#FFF200] group-hover:border-black transition-all duration-300"
+                    className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.07em] border border-black px-4 py-2 text-black bg-transparent group-hover:bg-black group-hover:text-white group-hover:border-black transition-all duration-300"
                   >
                     Apply
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
