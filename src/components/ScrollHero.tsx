@@ -206,7 +206,7 @@ export default function ScrollHero() {
             <Link to="/about" className="inline-flex items-center gap-[10px] px-[20px] py-[10px] bg-white text-black font-semibold text-[13px] md:text-[14px] hover:bg-primary transition-colors" style={{ textDecoration: "none" }}>
               About Us →
             </Link>
-            <h1 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#fff", marginTop: "2rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
+            <h1 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#fff", marginTop: "1.5rem", marginBottom: "1rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
               <span style={{ display: "block" }}>Serving</span>
               <span style={{ display: "block" }}>the people !</span>
             </h1>
@@ -225,7 +225,7 @@ export default function ScrollHero() {
             <Link to="/about" className="inline-flex items-center gap-[10px] px-[20px] py-[10px] bg-white text-black font-semibold text-[13px] md:text-[14px] hover:bg-primary transition-colors" style={{ textDecoration: "none" }}>
               About Us →
             </Link>
-            <h2 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#fff", marginTop: "2rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
+            <h2 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#fff", marginTop: "1.5rem", marginBottom: "1rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
               <span style={{ display: "block" }}>Serving</span>
               <span style={{ display: "block" }}>the people !</span>
             </h2>
@@ -284,7 +284,7 @@ export default function ScrollHero() {
             <Link to="/about" className="inline-flex items-center gap-[10px] px-[20px] py-[10px] bg-black text-white font-semibold text-[13px] md:text-[14px] hover:bg-white hover:text-black transition-colors" style={{ textDecoration: "none" }}>
               About Us →
             </Link>
-            <h2 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#000", marginTop: "2rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
+            <h2 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#000", marginTop: "1.5rem", marginBottom: "1rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
               <span style={{ display: "block" }}>Serving</span>
               <span style={{ display: "block" }}>the people !</span>
             </h2>
