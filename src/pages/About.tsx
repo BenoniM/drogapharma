@@ -265,11 +265,11 @@ const qualityPolicyData = {
     ceoName: "Henok Teka",
     ceoTitle: "Group CEO",
     description: (
-      <div className="space-y-4">
+      <div className="space-y-8">
         <p className="text-base lg:text-lg text-slate-900 leading-snug font-light tracking-tight">
           <strong className="font-medium">Droga Group</strong> is established to sustainably provide quality, safe and effective pharmaceutical products, medical devices and services by its talented and motivated members to enhance health and create wealth for the nation.
         </p>
-        <div className="mt-4">
+        <div>
           <h3 className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-2">We will achieve this through:</h3>
           <ul className="space-y-1.5">
             {[
@@ -289,7 +289,7 @@ const qualityPolicyData = {
             ))}
           </ul>
         </div>
-        <p className="text-xs lg:text-sm text-slate-600 leading-snug font-light mt-4">
+        <p className="text-xs lg:text-sm text-slate-600 leading-snug font-light">
           The top management is committed to maintaining an effective quality management system that meets or exceeds the needs and expectations of customers and interested parties through compliance with all applicable regulations.
         </p>
       </div>
@@ -300,11 +300,11 @@ const qualityPolicyData = {
     ceoName: "ሔኖክ ተካ",
     ceoTitle: "ግሩፕ CEO",
     description: (
-      <div className="space-y-4">
+      <div className="space-y-8">
         <p className="text-base lg:text-lg text-slate-900 leading-snug font-light tracking-tight">
           <strong className="font-medium">ድሮጋ ግሩፕ</strong> ጥራት ያላቸው ፣ ደህንነታቸው የተጠበቀ እና ፈዋሽነታቸው የተረጋገጠ መድኃኒቶችን፣ የህክምና መገልገያዎችን እና አገልግሎቶችን ብቃትና ተነሳሽነት ባላቸው ባለሙያዎቹ ለማህበረሰብ ጤና መሻሻል እና ሀብትን ለመፍጠር የተቀቋቋመ የግል ድርጅት ነው፡፡
         </p>
-        <div className="mt-4">
+        <div>
           <h3 className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-2">ይህንንም ለማሳካት የሚከተሉትን መርሆዎች ይተገብራል፡</h3>
           <ul className="space-y-1.5">
             {[
@@ -324,7 +324,7 @@ const qualityPolicyData = {
             ))}
           </ul>
         </div>
-        <p className="text-xs lg:text-sm text-slate-600 leading-snug font-light mt-4">
+        <p className="text-xs lg:text-sm text-slate-600 leading-snug font-light">
           የድሮጋ ግሩፕ ከፍተኛ አመራርም የደንበኞችን ፍላጎት ዘርፉ የሚጠይቀውን መመሪያ በመተግበር በላቀ ደረጃ ለማሟላት ቁርጠኛ ነው፡፡
         </p>
       </div>
@@ -418,75 +418,12 @@ const About = () => {
 
   useGSAP(() => {
     const cards = gsap.utils.toArray<HTMLElement>('.story-card');
-    cards.forEach((card, index) => {
+    cards.forEach((card) => {
       const content = card.querySelector('.parallax-content');
-      const bg = card.querySelector('.hover-bg');
-      if (!content || !bg) return;
-
-      const isLeft = index === 0;
-
-      gsap.set(bg, {
-        clipPath: isLeft ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)",
-        opacity: 1,
-      });
-
-      // For the right card, collect all text/border elements to animate with GSAP
-      const isRight = index === 1;
-      const rightTextEls = isRight ? card.querySelectorAll<HTMLElement>('.gsap-text') : null;
-      const rightBorderEls = isRight ? card.querySelectorAll<HTMLElement>('.gsap-border') : null;
-
-      card.addEventListener('mouseenter', () => {
-        // Sweep the background in
-        gsap.to(bg, { clipPath: "inset(0 0% 0 0%)", duration: 0.8, ease: "power3.inOut" });
-
-        if (isRight && rightTextEls && rightBorderEls) {
-          // Stagger text color change to follow the sweep (bg takes 0.8s from right→left)
-          // Elements higher up in DOM get a shorter delay so the color wave follows the bg
-          rightTextEls.forEach((el, i) => {
-            const delay = 0.35 + i * 0.06;
-            gsap.to(el, {
-              color: el.dataset.hoverColor ?? '#ffffff',
-              duration: 0.35,
-              delay,
-              ease: "power2.out",
-            });
-          });
-          rightBorderEls.forEach((el) => {
-            gsap.to(el, {
-              borderColor: el.dataset.hoverBorder ?? 'rgba(255,255,255,0.2)',
-              duration: 0.35,
-              delay: 0.5,
-              ease: "power2.out",
-            });
-          });
-        }
-      });
+      if (!content) return;
 
       card.addEventListener('mouseleave', () => {
-        gsap.to(bg, {
-          clipPath: isLeft ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)",
-          duration: 0.6,
-          ease: "power3.inOut",
-        });
         gsap.to(content, { x: 0, y: 0, rotateX: 0, rotateY: 0, duration: 1, ease: "elastic.out(1, 0.3)" });
-
-        if (isRight && rightTextEls && rightBorderEls) {
-          rightTextEls.forEach((el, i) => {
-            gsap.to(el, {
-              color: el.dataset.baseColor ?? '',
-              duration: 0.3,
-              delay: i * 0.03,
-              ease: "power2.in",
-            });
-          });
-          rightBorderEls.forEach((el) => {
-            gsap.to(el, {
-              borderColor: el.dataset.baseBorder ?? '',
-              duration: 0.3,
-              ease: "power2.in",
-            });
-          });
-        }
       });
 
       card.addEventListener('mousemove', (e: MouseEvent) => {
@@ -625,37 +562,33 @@ const About = () => {
 
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0 relative">
 
-      {/* Left Card — Yellow Hover */}
-      <div className="lg:col-span-5 story-card group relative py-4 transition-colors duration-500 cursor-pointer">
-        {/* Sliding Yellow Background */}
-        <div className="hover-bg absolute top-0 bottom-0 bg-[#FFF200] z-0 transition-transform duration-500"
-          style={{ left: '-100vw', right: '-20%' }} />
-
+      {/* Left Card */}
+      <div className="lg:col-span-5 story-card group relative py-4 cursor-default">
         <div className="parallax-content relative z-10">
           <ScrollReveal>
             <div className="px-6 md:px-8 py-4 h-full flex flex-col">
-              <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-8 transition-colors duration-500">
+              <p className="text-base leading-relaxed text-slate-600 mb-8">
                 {storySlides[0].intro}
               </p>
               
               {/* Blockquote with Large Quote Marks */}
               <div className="mb-8 relative flex items-start gap-3">
-                <span className="font-serif text-5xl md:text-6xl text-[#FFF200] group-hover:text-black leading-none select-none transition-colors duration-500">
+                <span className="font-serif text-5xl md:text-6xl text-[#FFF200] leading-none select-none">
                   “
                 </span>
-                <p className="text-lg md:text-xl font-semibold leading-snug text-slate-900 group-hover:text-black italic transition-colors duration-500 pt-1">
+                <p className="text-lg md:text-xl font-semibold leading-snug text-slate-900 italic pt-1">
                   {storySlides[0].highlight}’’
                 </p>
               </div>
 
-              <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-10 transition-colors duration-500">
+              <p className="text-base leading-relaxed text-slate-600 mb-10">
                 {storySlides[0].outro}
               </p>
-              <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200 group-hover:border-black/20 transition-colors duration-500">
-                <p className="font-bold text-base text-slate-900 group-hover:text-black transition-colors duration-500">
+              <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200">
+                <p className="font-bold text-base text-slate-900">
                   {storySlides[0].signatureName}
                 </p>
-                <p className="text-sm mt-1 text-slate-500 group-hover:text-black/70 transition-colors duration-500">
+                <p className="text-sm mt-1 text-slate-500">
                   {storySlides[0].signatureRole}
                 </p>
               </div>
@@ -669,37 +602,33 @@ const About = () => {
         <div className="absolute left-1/2 top-0 bottom-0 w-px bg-slate-200 origin-top story-divider scale-y-100" />
       </div>
 
-      {/* Right Card — Yellow Hover */}
-      <div className="lg:col-span-5 story-card group relative py-4 cursor-pointer">
-        {/* Sliding Yellow Background */}
-        <div className="hover-bg absolute top-0 bottom-0 bg-[#FFF200] z-0 transition-transform duration-500"
-          style={{ left: '-20%', right: '-100vw' }} />
-
+      {/* Right Card */}
+      <div className="lg:col-span-5 story-card group relative py-4 cursor-default">
         <div className="parallax-content relative z-10 h-full">
           <ScrollReveal delay={0.2}>
             <div className="px-6 md:px-8 py-4 h-full flex flex-col">
-              <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-8 transition-colors duration-500">
+              <p className="text-base leading-relaxed text-slate-600 mb-8">
                 {storySlides[1].intro}
               </p>
               
               {/* Blockquote with Large Quote Marks */}
               <div className="mb-8 relative flex items-start gap-3">
-                <span className="font-serif text-5xl md:text-6xl text-[#FFF200] group-hover:text-black leading-none select-none transition-colors duration-500">
+                <span className="font-serif text-5xl md:text-6xl text-[#FFF200] leading-none select-none">
                   “
                 </span>
-                <p className="text-lg md:text-xl font-semibold leading-snug text-slate-900 group-hover:text-black italic transition-colors duration-500 pt-1">
+                <p className="text-lg md:text-xl font-semibold leading-snug text-slate-900 italic pt-1">
                   {storySlides[1].highlight}’’
                 </p>
               </div>
 
-              <p className="text-base leading-relaxed text-slate-600 group-hover:text-black mb-10 transition-colors duration-500">
+              <p className="text-base leading-relaxed text-slate-600 mb-10">
                 {storySlides[1].outro}
               </p>
-              <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200 group-hover:border-black/20 transition-colors duration-500">
-                <p className="font-bold text-base text-slate-900 group-hover:text-black transition-colors duration-500">
+              <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200">
+                <p className="font-bold text-base text-slate-900">
                   {storySlides[1].signatureName}
                 </p>
-                <p className="text-sm mt-1 text-slate-500 group-hover:text-black/70 transition-colors duration-500">
+                <p className="text-sm mt-1 text-slate-500">
                   {storySlides[1].signatureRole}
                 </p>
               </div>

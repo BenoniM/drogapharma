@@ -145,7 +145,7 @@ const TestimonialsSection = () => {
               {extendedData.map((item, index) => (
                 <div
                   key={`${item.id}-${index}`}
-                  className="bg-[#E6E6E6] p-8 md:p-10 flex-shrink-0 flex flex-col justify-between group hover:bg-[#d9d9d9] transition-colors duration-300"
+                  className="bg-[#F5F5F5] p-8 md:p-10 flex-shrink-0 flex flex-col justify-between group hover:bg-[#EBEBEB] transition-colors duration-300"
                   style={{
                     width: `${cardWidth}px`,
                     height: isMobile ? "320px" : "350px",

@@ -348,7 +348,7 @@ function HowItWorksBlind() {
                 backgroundColor: "#FFF200",
                 position: "relative",
                 overflow: "hidden",
-                borderRight: i < steps.length - 1 ? "2px solid rgba(0,0,0,0.08)" : "none",
+                borderRight: "none",
                 cursor: "default",
               }}
             >

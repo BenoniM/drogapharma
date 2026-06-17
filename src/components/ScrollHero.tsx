@@ -1,132 +1,211 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Link } from "react-router-dom";
 
 import supplyImg from "@/assets/ourexpert.jpg";
-import grp1  from "@/assets/HeroGroups/2.jpg";
-import grp2  from "@/assets/HeroGroups/photo_2026-06-04_09-09-38.jpg";
-import grp3  from "@/assets/HeroGroups/img_2004.jpg";
-import grp4  from "@/assets/HeroGroups/FullStore13.jpg";
-import grp5  from "@/assets/HeroGroups/IMG_3651.jpg";
-import grp6  from "@/assets/HeroGroups/teams.jpg";
+import grp1 from "@/assets/HeroGroups/2.jpg";
+import grp2 from "@/assets/HeroGroups/photo_2026-06-04_09-09-38.jpg";
+import grp3 from "@/assets/HeroGroups/img_2004.jpg";
+import grp4 from "@/assets/HeroGroups/FullStore13.jpg";
+import grp5 from "@/assets/HeroGroups/IMG_3651.jpg";
+import grp6 from "@/assets/HeroGroups/teams.jpg";
+import isoCert from "@/assets/iso-certificate.jpg";
+import wholesaleCert from "@/assets/drogawholesalecertificate.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ─── LAYOUT CONSTANTS ─────────────────────────────────────────────────────── */
-const FS    = 0.35;
-const TOTAL = +(100 / FS).toFixed(3);
-const SIDE  = +((TOTAL - 100) / 2).toFixed(3);
-const GAP   = 8;
-const GB    = "#0d0d0d";
-const YELLOW = "hsl(58 100% 50%)";
+const FS = 0.35;
+const TOTAL_H = +(100 / FS).toFixed(3);
+const SIDE_H = +((TOTAL_H - 100) / 2).toFixed(3);
+const TOTAL_W = +(62 / FS).toFixed(3);
+const SIDE_W = +((TOTAL_W - 100) / 2).toFixed(3);
+const GAP = 8;
+const GB = "#0d0d0d";
+const YELLOW = "#FFF200";
 
-/* ─── CELL HELPER ──────────────────────────────────────────────────────────── */
-function Cell({ style, imgSrc }: { style: React.CSSProperties; imgSrc: string }) {
+// All hero images — preload so GPU has textures ready before scroll starts
+const HERO_SRCS = [supplyImg, grp1, grp2, grp3, grp4, grp5, grp6];
+
+function preloadImages(srcs: string[]): Promise<void[]> {
+  return Promise.all(
+    srcs.map(
+      (src) =>
+        new Promise<void>((resolve) => {
+          const img = new window.Image();
+          img.onload = () => resolve();
+          img.onerror = () => resolve(); // never block on error
+          img.src = src;
+        }),
+    ),
+  );
+}
+
+function Cell({
+  style,
+  imgSrc,
+  fetchpriority,
+}: {
+  style: React.CSSProperties;
+  imgSrc: string;
+  fetchpriority?: "high" | "low" | "auto";
+}) {
   return (
-    <div style={{ position: "absolute", overflow: "hidden", willChange: "opacity", ...style }}>
+    <div style={{ position: "absolute", overflow: "hidden", ...style }}>
       <img
         src={imgSrc}
         draggable={false}
+        // Tell browser the decoded size ≈ its display size so it doesn't
+        // keep the full-res bitmap in GPU memory during compositing.
+        // These cells are displayed at ~30vw × ~30vh max.
+        width={600}
+        height={450}
+        fetchPriority={fetchpriority ?? "auto"}
+        decoding="async"
         className="brightness-[85%]"
-        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-      />
-      <div
-        className="img-yellow-overlay"
         style={{
-          position: "absolute", inset: "-2px",
-          background: YELLOW,
-          opacity: 0,
-          pointerEvents: "none",
-          willChange: "opacity",
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          display: "block",
+          // Smooth downscale — avoids aliasing artifacts during scale animation
+          imageRendering: "auto",
         }}
       />
     </div>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════ */
 export default function ScrollHero() {
-  const wrapRef         = useRef<HTMLDivElement>(null);
-  const mosaicRef       = useRef<HTMLDivElement>(null);
-  const centerImgRef    = useRef<HTMLImageElement>(null);
-  const centerYellowRef = useRef<HTMLDivElement>(null);
-  const gridBgRef       = useRef<HTMLDivElement>(null);
-  const baseBgRef       = useRef<HTMLDivElement>(null);
-  const text1Ref        = useRef<HTMLDivElement>(null);
-  const text2Ref        = useRef<HTMLDivElement>(null);
-  const text3Ref        = useRef<HTMLDivElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const mosaicRef = useRef<HTMLDivElement>(null);
+  const centerImgRef = useRef<HTMLImageElement>(null);
+  const gridBgRef = useRef<HTMLDivElement>(null);
+  const baseBgRef = useRef<HTMLDivElement>(null);
+
+  // Yellow panel: now uses clipPath instead of scaleX so NO counter-scale
+  // is needed and NO JS runs per scroll frame.
+  const yellowPanelRef = useRef<HTMLDivElement>(null);
+  const desc1Ref = useRef<HTMLDivElement>(null);
+  const desc2Ref = useRef<HTMLDivElement>(null);
+  const desc3Ref = useRef<HTMLDivElement>(null);
+  const certsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const wrap = wrapRef.current!;
-      const yellows = gsap.utils.toArray<HTMLElement>(".img-yellow-overlay");
+    // ── Preload all hero images FIRST so GPU textures are warm ──────────────
+    // We create the ScrollTrigger only after images are decoded. This prevents
+    // the mid-animation texture-upload stall that causes the first scroll jank.
+    preloadImages(HERO_SRCS).then(() => {
+      const ctx = gsap.context(() => {
+        const wrap = wrapRef.current!;
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: wrap,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1,           // tight follow — no lag buildup
-          fastScrollEnd: true,
-          preventOverlaps: true,
-        },
+        // Promote mosaic to its own GPU layer immediately
+        gsap.set(mosaicRef.current, { z: 0, force3D: true });
+
+        // ── Yellow panel: start clipped so only 38 vw shows on the right ──
+        // clipPath inset(top right bottom left)
+        // "62%" from the left = the leftmost 62vw is hidden, right 38vw is visible.
+        // This exactly matches the original visual.
+        // When we animate to inset(0 0 0 0%) the full panel is visible.
+        // clipPath is compositor-only (no layout, no JS per frame).
+        gsap.set(yellowPanelRef.current, {
+          clipPath: "inset(0 0 0 62%)",
+          force3D: true,
+        });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: wrap,
+            start: "top top",
+            end: "bottom bottom",
+            // scrub: 0.5 — 0.5 s lag smooths raw scroll-position jitter
+            // (mouse-wheel & trackpad both send quantized events that cause
+            // micro-stutters when scrub:true passes them through 1:1).
+            scrub: 0.5,
+          },
+        });
+
+        // ── 0→33: zoom out mosaic ──────────────────────────────────────────
+        tl.fromTo(
+          mosaicRef.current,
+          { scale: 1, x: 0 },
+          { scale: FS, x: "-19vw", ease: "none", duration: 33, force3D: true },
+          0,
+        );
+
+        // desc swap
+        tl.to(desc1Ref.current, { opacity: 0, ease: "power2.inOut", duration: 6 }, 24);
+        tl.fromTo(
+          desc2Ref.current,
+          { opacity: 0 },
+          { opacity: 1, ease: "power2.out", duration: 6 },
+          27,
+        );
+
+        // ── 33→66: panel expand via clipPath ──────────────────────────────
+        // Animating a percentage inset is pure compositor work —
+        // zero layout reflow, zero JS per frame.
+        tl.to(certsRef.current, { opacity: 0, ease: "power2.inOut", duration: 8 }, 35);
+
+        tl.fromTo(
+          yellowPanelRef.current,
+          { clipPath: "inset(0 0 0 62%)" },
+          {
+            clipPath: "inset(0 0 0 0%)",
+            ease: "power2.inOut",
+            duration: 18,
+            force3D: true,
+          },
+          38,
+        );
+
+        tl.to(desc2Ref.current, { opacity: 0, ease: "power2.inOut", duration: 6 }, 40);
+        tl.fromTo(
+          desc3Ref.current,
+          { opacity: 0 },
+          { opacity: 1, ease: "power2.out", duration: 8 },
+          46,
+        );
       });
 
-      /* ── 0 → 33%: zoom out — GPU composited via willChange on mosaicRef ── */
-      tl.fromTo(mosaicRef.current,
-        { scale: 1 },
-        { scale: FS, ease: "none", duration: 33 },
-        0,
-      );
-
-      /* Phase-1 text: ONLY opacity — no blur, no x. Blur = software repaint every frame */
-      tl.to(text1Ref.current, { opacity: 0, ease: "power2.inOut", duration: 10 }, 20);
-
-      /* Phase-2 text in */
-      tl.fromTo(text2Ref.current,
-        { opacity: 0 },
-        { opacity: 1, ease: "power2.out", duration: 10 },
-        23,
-      );
-
-      /* ── 33 → 66%: yellow transition ─────────────────────────────────── */
-      tl.to(centerImgRef.current,    { opacity: 0, ease: "none", duration: 12 }, 34);
-      tl.to(centerYellowRef.current, { opacity: 1, ease: "none", duration: 12 }, 34);
-      tl.to(gridBgRef.current,       { backgroundColor: YELLOW, ease: "none", duration: 14 }, 34);
-      tl.to(baseBgRef.current,       { backgroundColor: YELLOW, ease: "none", duration: 14 }, 34);
-      tl.to(yellows, { opacity: 1, ease: "none", duration: 14, stagger: 0.3 }, 34);
-
-      /* Phase-2 out */
-      tl.to(text2Ref.current, { opacity: 0, ease: "power2.inOut", duration: 10 }, 34);
-
-      /* Phase-3 in */
-      tl.fromTo(text3Ref.current,
-        { opacity: 0 },
-        { opacity: 1, ease: "power2.out", duration: 10 },
-        39,
-      );
+      return () => ctx.revert();
     });
-
-    return () => ctx.revert();
   }, []);
-  const textBase = "absolute z-[30] flex items-end justify-start px-6 md:px-16 pb-0 md:pb-0";
+
+  const headingStyle: React.CSSProperties = {
+    fontSize: "clamp(3.5rem, 7vw, 7.5rem)",
+    fontWeight: 900,
+    color: "#fff",
+    lineHeight: 0.85,
+    textTransform: "uppercase",
+    whiteSpace: "nowrap",
+    margin: 0,
+  };
 
   return (
     <div ref={wrapRef} style={{ height: "300vh", position: "relative" }}>
-      <div style={{ position: "sticky", top: 0, height: "100vh", width: "100%", overflow: "hidden" }}>
-
-        {/* Dark base */}
-        <div ref={baseBgRef} style={{ position: "absolute", inset: 0, backgroundColor: GB }} />
+      <div
+        style={{
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          width: "100%",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          ref={baseBgRef}
+          style={{ position: "absolute", inset: 0, backgroundColor: GB }}
+        />
 
         {/* ── Mosaic ── */}
         <div
           style={{
             position: "absolute",
-            left: `calc(50% - ${(TOTAL / 2).toFixed(3)}vw)`,
-            top:  `calc(50% - ${(TOTAL / 2).toFixed(3)}vh)`,
-            width: `${TOTAL}vw`,
-            height: `${TOTAL}vh`,
+            left: `calc(50% - ${(TOTAL_W / 2).toFixed(3)}vw)`,
+            top: `calc(50% - ${(TOTAL_H / 2).toFixed(3)}vh)`,
+            width: `${TOTAL_W}vw`,
+            height: `${TOTAL_H}vh`,
             zIndex: 10,
           }}
         >
@@ -136,26 +215,77 @@ export default function ScrollHero() {
               position: "absolute",
               inset: 0,
               transformOrigin: "center center",
-              willChange: "transform", // GPU layer for the scale — necessary
+              willChange: "transform",
             }}
           >
-            {/* Surrounding grid */}
-            <div ref={gridBgRef} style={{ position: "absolute", inset: 0, backgroundColor: GB }}>
-              <Cell imgSrc={grp1} style={{ left: 0, top: 0, width: `calc(50% - ${GAP/2}px)`, height: `calc(${SIDE}vh - ${GAP}px)` }} />
-              <Cell imgSrc={grp2} style={{ right: 0, top: 0, width: `calc(50% - ${GAP/2}px)`, height: `calc(${SIDE}vh - ${GAP}px)` }} />
-              <Cell imgSrc={grp5} style={{ left: 0, top: `${SIDE}vh`, width: `calc(${SIDE}vw - ${GAP}px)`, height: "100vh" }} />
-              <Cell imgSrc={grp6} style={{ right: 0, top: `${SIDE}vh`, width: `calc(${SIDE}vw - ${GAP}px)`, height: "100vh" }} />
-              <Cell imgSrc={grp3} style={{ left: 0, bottom: 0, width: `calc(50% - ${GAP/2}px)`, height: `calc(${SIDE}vh - ${GAP}px)` }} />
-              <Cell imgSrc={grp4} style={{ right: 0, bottom: 0, width: `calc(50% - ${GAP/2}px)`, height: `calc(${SIDE}vh - ${GAP}px)` }} />
+            <div
+              ref={gridBgRef}
+              style={{ position: "absolute", inset: 0, backgroundColor: GB }}
+            >
+              <Cell
+                imgSrc={grp1}
+                fetchpriority="high"
+                style={{
+                  left: 0,
+                  top: 0,
+                  width: `calc(50% - ${GAP / 2}px)`,
+                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
+                }}
+              />
+              <Cell
+                imgSrc={grp2}
+                fetchpriority="high"
+                style={{
+                  right: 0,
+                  top: 0,
+                  width: `calc(50% - ${GAP / 2}px)`,
+                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
+                }}
+              />
+              <Cell
+                imgSrc={grp5}
+                style={{
+                  left: 0,
+                  top: `${SIDE_H}vh`,
+                  width: `calc(${SIDE_W}vw - ${GAP}px)`,
+                  height: "100vh",
+                }}
+              />
+              <Cell
+                imgSrc={grp6}
+                style={{
+                  right: 0,
+                  top: `${SIDE_H}vh`,
+                  width: `calc(${SIDE_W}vw - ${GAP}px)`,
+                  height: "100vh",
+                }}
+              />
+              <Cell
+                imgSrc={grp3}
+                style={{
+                  left: 0,
+                  bottom: 0,
+                  width: `calc(50% - ${GAP / 2}px)`,
+                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
+                }}
+              />
+              <Cell
+                imgSrc={grp4}
+                style={{
+                  right: 0,
+                  bottom: 0,
+                  width: `calc(50% - ${GAP / 2}px)`,
+                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
+                }}
+              />
             </div>
 
-            {/* Hero centre cell */}
             <div
               style={{
                 position: "absolute",
                 zIndex: 2,
-                left: `${SIDE}vw`,
-                top: `${SIDE}vh`,
+                left: `${SIDE_W}vw`,
+                top: `${SIDE_H}vh`,
                 width: "100vw",
                 height: "100vh",
                 overflow: "hidden",
@@ -166,131 +296,257 @@ export default function ScrollHero() {
                 src={supplyImg}
                 alt="Our Experts"
                 draggable={false}
-                className="brightness-[85%]"
+                width={1200}
+                height={800}
+                fetchPriority="high"
+                decoding="async"
                 style={{
-                  position: "absolute", inset: 0,
-                  width: "100%", height: "100%", objectFit: "cover", display: "block",
-                  willChange: "opacity",
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  transform: "scale(1.12) translateY(-30px)",
+                  display: "block",
                 }}
               />
-              {/* Legibility gradient */}
-              <div style={{
-                position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-                background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 70%, transparent 100%)",
-              }} />
-              {/* Yellow for center */}
               <div
-                ref={centerYellowRef}
                 style={{
-                  position: "absolute", inset: "-2px", zIndex: 2,
-                  background: YELLOW,
-                  opacity: 0, pointerEvents: "none",
-                  willChange: "opacity",
+                  position: "absolute",
+                  inset: 0,
+                  zIndex: 1,
+                  pointerEvents: "none",
+                  background:
+                    "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 75%, transparent 100%)",
                 }}
               />
             </div>
-
           </div>
         </div>
 
-        {/* ── TEXT OVERLAYS — opacity only, no filter/blur ── */}
+        {/* ══ YELLOW PANEL
+            Uses clipPath instead of scaleX — no counter-scale wrapper needed,
+            no JS runs per scroll frame, pure compositor animation.
+            Panel is full 100vw; clipPath hides the left portion until revealed.
+        ══ */}
         <div
-          ref={text1Ref}
-          className={textBase}
-          style={{ inset: 0, position: "absolute", willChange: "opacity" }}
+          ref={yellowPanelRef}
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: "100vw",
+            height: "100%",
+            backgroundColor: YELLOW,
+            zIndex: 20,
+            willChange: "clip-path",
+            overflow: "hidden",
+          }}
         >
-          <div style={{ textAlign: "left", maxWidth: 800 }}>
-            <p style={{ color: "rgba(255,255,255,0.95)", fontSize: "clamp(0.85rem,1.2vw,1rem)", marginBottom: "1.75rem", lineHeight: 1.65, fontWeight: 400, maxWidth: "450px" }}>
-              Highly experienced pharmacists and manufacturing industry professionals that drive our partners' success.
+          {/* ── Inner content wrapper — same layout as original ── */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              width: "38vw",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+              padding: "0 3vw 6vh",
+            }}
+          >
+            <div style={{ position: "relative", minHeight: "18rem", flexShrink: 0 }}>
+              <div ref={desc1Ref} style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+                <p
+                  style={{
+                    color: "#000",
+                    fontSize: "clamp(1.2rem, 1.6vw, 1.8rem)",
+                    lineHeight: 1.4,
+                    fontWeight: 500,
+                    letterSpacing: "-0.01em",
+                    maxWidth: "95%",
+                  }}
+                >
+                  Highly experienced pharmacists and manufacturing industry professionals that drive
+                  our partners' success.
+                </p>
+              </div>
+
+              <div
+                ref={desc2Ref}
+                style={{ position: "absolute", bottom: 0, left: 0, right: 0, opacity: 0 }}
+              >
+                <p
+                  style={{
+                    color: "#000",
+                    fontSize: "clamp(1.2rem, 1.6vw, 1.8rem)",
+                    lineHeight: 1.4,
+                    fontWeight: 500,
+                    letterSpacing: "-0.01em",
+                    maxWidth: "95%",
+                  }}
+                >
+                  WHO-approved products from globally certified manufacturers ensuring the highest
+                  standards.
+                </p>
+              </div>
+
+              <div
+                ref={desc3Ref}
+                style={{ position: "absolute", top: "5rem", left: 0, right: 0, opacity: 0 }}
+              >
+                <p
+                  style={{
+                    color: "#000",
+                    fontSize: "clamp(1.2rem, 1.6vw, 1.8rem)",
+                    lineHeight: 1.4,
+                    fontWeight: 500,
+                    letterSpacing: "-0.01em",
+                    maxWidth: "95%",
+                  }}
+                >
+                  Droga Pharma Pvt.Ltd Co. is a private limited company based in Addis Ababa,
+                  Ethiopia, aiming on sustainable supply of quality medicines, sutures, orthopedic
+                  implants and medical devices.
+                </p>
+              </div>
+            </div>
+
+            <div
+              ref={certsRef}
+              style={{
+                display: "flex",
+                gap: "20px",
+                marginTop: "2rem",
+                width: "100%",
+                flexShrink: 0,
+                overflow: "hidden",
+              }}
+            >
+              {[
+                { src: isoCert, label: "ISO / Import" },
+                { src: wholesaleCert, label: "Wholesale License" },
+              ].map((cert) => (
+                <Link
+                  to="/about"
+                  key={cert.label}
+                  className="group"
+                  style={{
+                    flex: 1,
+                    position: "relative",
+                    cursor: "pointer",
+                    overflow: "hidden",
+                    display: "block",
+                  }}
+                >
+                  <img
+                    src={cert.src}
+                    alt={cert.label}
+                    width={400}
+                    height={400}
+                    decoding="async"
+                    style={{ width: "100%", aspectRatio: "1 / 1", display: "block", objectFit: "cover" }}
+                  />
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="black"
+                    strokeWidth="1.5"
+                    className="transition-transform duration-300 group-hover:rotate-90"
+                    style={{
+                      position: "absolute",
+                      bottom: "16px",
+                      right: "16px",
+                      width: "28px",
+                      height: "28px",
+                      zIndex: 2,
+                    }}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Phase-3 full-width black text overlay */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              width: "100vw",
+              height: "100%",
+              pointerEvents: "none",
+              zIndex: 35,
+            }}
+          >
+            <div style={{ position: "absolute", left: "4vw", bottom: "6vh" }}>
+              <p
+                style={{
+                  color: "#000",
+                  fontSize: "clamp(1.5rem, 2.5vw, 3rem)",
+                  fontWeight: 700,
+                  textTransform: "none",
+                  margin: 0,
+                  marginBottom: "0.2rem",
+                }}
+              >
+                Droga Pharma
+              </p>
+              <h1
+                style={{
+                  ...headingStyle,
+                  color: "#000",
+                  letterSpacing: "-0.05em",
+                }}
+              >
+                <span style={{ display: "block" }}>Serving The</span>
+                <span style={{ display: "block" }}>People !</span>
+              </h1>
+            </div>
+          </div>
+        </div>
+
+        {/* White text overlay */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: "100vw",
+            height: "100%",
+            zIndex: 15,
+            pointerEvents: "none",
+          }}
+        >
+          <div style={{ position: "absolute", left: "4vw", bottom: "6vh" }}>
+            <p
+              style={{
+                color: "#fff",
+                fontSize: "clamp(1.5rem, 2.5vw, 3rem)",
+                fontWeight: 700,
+                textTransform: "none",
+                margin: 0,
+                marginBottom: "0.2rem",
+              }}
+            >
+              Droga Pharma
             </p>
-            <Link to="/about" className="inline-flex items-center gap-[10px] px-[20px] py-[10px] bg-white text-black font-semibold text-[13px] md:text-[14px] hover:bg-primary transition-colors" style={{ textDecoration: "none" }}>
-              About Us →
-            </Link>
-            <h1 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#fff", marginTop: "1.5rem", marginBottom: "1rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
-              <span style={{ display: "block" }}>Serving</span>
-              <span style={{ display: "block" }}>the people!</span>
+            <h1
+              style={{
+                ...headingStyle,
+                letterSpacing: "-0.05em",
+              }}
+            >
+              <span style={{ display: "block" }}>Serving The</span>
+              <span style={{ display: "block" }}>People !</span>
             </h1>
           </div>
         </div>
-
-        <div
-          ref={text2Ref}
-          className={textBase}
-          style={{ inset: 0, position: "absolute", opacity: 0, willChange: "opacity" }}
-        >
-          <div style={{ textAlign: "left", maxWidth: 800 }}>
-            <p style={{ color: "rgba(255,255,255,0.95)", fontSize: "clamp(0.85rem,1.2vw,1rem)", marginBottom: "1.75rem", lineHeight: 1.65, fontWeight: 400, maxWidth: "450px" }}>
-              WHO-approved products from globally certified manufacturers ensuring the highest standards.
-            </p>
-            <Link to="/about" className="inline-flex items-center gap-[10px] px-[20px] py-[10px] bg-white text-black font-semibold text-[13px] md:text-[14px] hover:bg-primary transition-colors" style={{ textDecoration: "none" }}>
-              About Us →
-            </Link>
-            <h2 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#fff", marginTop: "1.5rem", marginBottom: "1rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
-              <span style={{ display: "block" }}>Serving</span>
-              <span style={{ display: "block" }}>the people !</span>
-            </h2>
-          </div>
-        </div>
-
-        <div
-          ref={text3Ref}
-          className={textBase}
-          style={{ inset: 0, position: "absolute", opacity: 0, willChange: "opacity" }}
-        >
-          {/* Animated Text from About Page placed Top Right */}
-          <div className="absolute -top-20 md:-top-32 right-0 w-[40vw] md:w-[35vw] h-[50vh] pointer-events-none overflow-visible flex items-start justify-start z-[-1]">
-            <style>
-              {`
-                .hero-anim-bg-text {
-                  fill: rgba(0, 0, 0, 0);
-                  stroke: #000000;
-                  stroke-width: 4px;
-                  stroke-dasharray: 4000 4000;
-                  animation: heroStrokeDashBg 5s ease-in-out infinite alternate;
-                }
-                @keyframes heroStrokeDashBg {
-                  from { stroke-dashoffset: 0; }
-                  to { stroke-dashoffset: 4000; }
-                }
-              `}
-            </style>
-            <svg
-              className="absolute w-[200%] h-[200%]"
-              viewBox="0 0 1600 600"
-              preserveAspectRatio="xMinYMin meet"
-              style={{ transform: "translate(0, 0)" }}
-            >
-              <text
-                x="0"
-                y="0"
-                textAnchor="start"
-                dominantBaseline="hanging"
-                className="hero-anim-bg-text uppercase"
-                style={{
-                  fontSize: "55rem",
-                  fontWeight: 900,
-                  letterSpacing: "0.02em",
-                }}
-              >
-                DROGA
-              </text>
-            </svg>
-          </div>
-
-          <div style={{ textAlign: "left", maxWidth: 800 }}>
-            <p style={{ color: "rgba(0,0,0,0.95)", fontSize: "clamp(0.85rem,1.2vw,1rem)", marginBottom: "1.75rem", lineHeight: 1.65, fontWeight: 400, maxWidth: "450px" }}>
-              Droga Pharma Pvt.Ltd Co. is a private limited company based in Addis Ababa, Ethiopia, aiming on sustainable supply of quality medicines, sutures, orthopedic implants and medical devices.
-            </p>
-            <Link to="/about" className="inline-flex items-center gap-[10px] px-[20px] py-[10px] bg-black text-white font-semibold text-[13px] md:text-[14px] hover:bg-white hover:text-black transition-colors" style={{ textDecoration: "none" }}>
-              About Us →
-            </Link>
-            <h2 style={{ fontSize: "clamp(4rem,7vw,7rem)", fontWeight: 900, color: "#000", marginTop: "1.5rem", marginBottom: "1rem", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
-              <span style={{ display: "block" }}>Serving</span>
-              <span style={{ display: "block" }}>the people !</span>
-            </h2>
-          </div>
-        </div>
-
       </div>
     </div>
   );

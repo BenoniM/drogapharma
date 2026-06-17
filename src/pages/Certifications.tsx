@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -98,6 +98,10 @@ const types = ["All", "ISO", "GMP", "WHO", "Regulatory", "GDP"];
 const years = ["All", "2015-2018", "2019-2021", "2022+"];
 
 const Certifications = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [selectedType, setSelectedType] = useState("All");
   const [selectedYear, setSelectedYear] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
