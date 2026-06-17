@@ -98,9 +98,6 @@ const types = ["All", "ISO", "GMP", "WHO", "Regulatory", "GDP"];
 const years = ["All", "2015-2018", "2019-2021", "2022+"];
 
 const Certifications = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const [selectedType, setSelectedType] = useState("All");
   const [selectedYear, setSelectedYear] = useState("All");

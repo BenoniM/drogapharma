@@ -1,16 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { ArrowUp } from "lucide-react";
-import { useLocation } from "react-router-dom";
 
 const ScrollToTop = () => {
   const [visible, setVisible] = useState(false);
   const { scrollY } = useScroll();
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setVisible(latest > 400);
@@ -38,3 +32,4 @@ const ScrollToTop = () => {
 };
 
 export default ScrollToTop;
+
