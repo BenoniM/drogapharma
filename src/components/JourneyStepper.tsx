@@ -37,7 +37,7 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
       } else {
         emblaApi.scrollNext();
       }
-    }, 3000); // 5000ms = 5 seconds
+    }, 7000); // 5000ms = 5 seconds
 
     return () => clearInterval(autoplay);
   }, [emblaApi]);

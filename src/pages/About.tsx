@@ -178,7 +178,7 @@ const RippleTarget = () => (
   <>
     <style>{`
       @keyframes ripple {
-        0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+        0%   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
       }
       .ripple-ring {
@@ -216,7 +216,7 @@ const coreValuesCards = [
   {
     category: "Care",
     titles: ["Care For Us (Employee & Terms)", "Care For Community", "Care For The Planet"],
-    icon: <Heart className="w-10 h-10 text-black" strokeWidth={2.5} />,
+    icon: <Heart className="w-10 h-10 text-black" strokeWidth={1.75} />,
     animation: { scale: [1, 1.2, 1], transition: { duration: 1.2, repeat: Infinity, ease: "easeInOut" } }
   }
 ];
