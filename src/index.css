@@ -265,6 +265,32 @@
     border: none;
   }
 
+  .page-hero-section {
+    @apply relative bg-[#FFF200] overflow-hidden;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-top: 120px;
+    padding-bottom: 96px;
+  }
+
+  @media (min-width: 768px) {
+    .page-hero-section {
+      min-height: 520px;
+      padding-top: 140px;
+      padding-bottom: 112px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page-hero-section {
+      min-height: 560px;
+      padding-top: 160px;
+      padding-bottom: 120px;
+    }
+  }
+
   .section-label {
     @apply text-xs font-semibold tracking-[0.2em] uppercase;
     color: hsl(var(--primary));

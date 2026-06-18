@@ -141,7 +141,7 @@ const Certifications = () => {
     <PageTransition>
       <div>
         {/* Dark Hero Section */}
-        <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
+        <section className="page-hero-section">
           {/* Subtle curved lines background element (matching image) */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
             <style>

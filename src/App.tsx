@@ -67,13 +67,11 @@ const AnimatedRoutes = () => {
 
 
 const AppShell = () => {
-  const location = useLocation();
-  const isGallery = location.pathname === "/gallery";
   return (
     <>
       <Navbar />
       <AnimatedRoutes />
-      {!isGallery && <Footer />}
+      <Footer />
       <InquiryCart />
       <ScrollToTop />
     </>

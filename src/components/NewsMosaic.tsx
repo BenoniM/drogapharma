@@ -182,13 +182,14 @@ const NewsMosaic = () => {
                 }}
               >
                 {/* Visual gap spacer so the title begins clean beneath the static tag line */}
-                <div className="h-7 md:h-9" />
+                {hoveredIndex !== 2 && <div className="h-7 md:h-9" />}
                 <h3 className="font-display text-lg md:text-2xl font-bold text-black mb-3 leading-tight tracking-tight">
                   {items[hoveredIndex].title}
                 </h3>
                 <p className="text-black/70 text-xs md:text-sm leading-relaxed font-semibold">
                   {items[hoveredIndex].desc}
                 </p>
+                {hoveredIndex === 2 && <div className="h-7 md:h-9" />}
               </motion.div>
               
               {/* Central Full Image (Slightly smaller sizing) */}

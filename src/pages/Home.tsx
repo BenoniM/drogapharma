@@ -222,15 +222,7 @@ const clients = [
 
 const Home = () => {
   const ourPartnersLogoModules = import.meta.glob(
-    "@/assets/OurPartners/*.{png,jpg,jpeg,webp,svg}",
-    {
-      eager: true,
-      import: "default",
-    },
-  ) as Record<string, string>;
-
-  const clientsFolderLogoModules = import.meta.glob(
-    "@/assets/Clients/*.{png,jpg,jpeg,webp,svg}",
+    "@/assets/OurPartners/New/*.{png,jpg,jpeg,webp,svg}",
     {
       eager: true,
       import: "default",
@@ -239,7 +231,6 @@ const Home = () => {
 
   const clientLogoModules = {
     ...ourPartnersLogoModules,
-    ...clientsFolderLogoModules,
   };
 
   const clients = Object.entries(clientLogoModules)

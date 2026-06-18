@@ -108,7 +108,7 @@ const Navbar = () => {
         onMouseLeave={() => setHoveredItem(null)}
       >
         {/* Navbar Background (Separate layer to allow children to blur independently) */}
-        <div className="absolute inset-0 bg-white/70 backdrop-blur-md shadow-sm pointer-events-none -z-10" />
+        <div className="absolute inset-0 bg-white/40 backdrop-blur-xl backdrop-saturate-150 border-b border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.08)] pointer-events-none -z-10" />
 
         {/* ── Nav Bar Row ── */}
         <nav ref={navRef} className="relative w-full flex h-[60px] px-4 lg:px-12 xl:px-16">
@@ -173,7 +173,7 @@ const Navbar = () => {
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-                  className="absolute top-full left-[-1px] right-[-1px] bg-white/70 backdrop-blur-3xl overflow-hidden shadow-2xl"
+                  className="absolute top-full left-[-1px] right-[-1px] bg-white/40 backdrop-blur-xl backdrop-saturate-150 border-t border-white/40 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
                 >
                   <div className={`grid ${activeHoverItem?.label === "Group" ? "grid-cols-4" :
                     activeHoverItem?.label === "Products" ? "grid-cols-3" :
@@ -234,7 +234,7 @@ const Navbar = () => {
       >
         <motion.nav
           layout
-          className={`w-full flex flex-col overflow-hidden transition-colors duration-300 shadow-sm ${isMobileOpen ? "bg-primary" : "bg-white/80 backdrop-blur-md"
+          className={`w-full flex flex-col overflow-hidden transition-colors duration-300 shadow-sm ${isMobileOpen ? "bg-primary" : "bg-white/40 backdrop-blur-xl backdrop-saturate-150 border-b border-white/40"
             }`}
           style={{ borderRadius: "0" }}
         >

@@ -52,7 +52,7 @@ const Contact = () => {
     <PageTransition>
       <div className="bg-[#f2f2f2] min-h-screen pb-10">
         {/* Dark Hero Section */}
-        <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
+        <section className="page-hero-section">
           {/* Subtle curved lines background element (matching image) */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
@@ -107,7 +107,7 @@ const Contact = () => {
             </svg>
           </div>
 
-          <div className="container-wide relative z-10 px-6 lg:px-12">
+          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}

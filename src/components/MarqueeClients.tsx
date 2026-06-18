@@ -73,46 +73,62 @@ const MarqueeClients = ({
     );
   }
 
-  const marqueeRows = [clients, clients].map(
-    (rowClients, rowIndex) => ({
-      id: rowIndex,
-      reverse: rowIndex === 1,
-      items: [...rowClients, ...rowClients],
-    }),
-  );
+  const half = Math.ceil(clients.length / 2);
+  const row1Base = clients.slice(0, half);
+  const row2Base = clients.slice(half);
+
+  // Duplicate the base array so the repeating block is wide enough for large screens.
+  const row1Block = [...row1Base, ...row1Base];
+  const row2Block = [...row2Base, ...row2Base];
+
+  const marqueeRows = [
+    {
+      id: 0,
+      reverse: false,
+      items: [...row1Block, ...row1Block],
+    },
+    {
+      id: 1,
+      reverse: true,
+      items: [...row2Block, ...row2Block],
+    },
+  ];
 
   return (
-    <div className="relative overflow-hidden py-2 space-y-4">
+    <div className="relative overflow-hidden py-0">
       {/* Fade edges */}
       <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none" />
 
-      {marqueeRows.map((row) => (
-        <div
-          key={row.id}
-          className="flex animate-marquee-fast"
-          style={row.reverse ? { animationDirection: "reverse", animationDuration: "12s" } : { animationDuration: "12s" }}
-        >
-          {row.items.map((client, i) => (
-            <div
-              key={`${row.id}-${client.src}-${i}`}
-              className="flex-shrink-0 mx-4"
-            >
-              <motion.div
-                whileHover={{ scale: 1.05, y: -2 }}
-                className="bg-[#E6E6E6]/50 py-4 px-5 cursor-default min-w-[200px] h-[120px] flex items-center justify-center transition-all duration-300"
+      <div className="flex flex-col">
+        {marqueeRows.map((row, rowIndex) => (
+          <div
+            key={row.id}
+            className="flex w-max animate-marquee-fast"
+            style={row.reverse ? { animationDirection: "reverse", animationDuration: "25s" } : { animationDuration: "25s" }}
+          >
+            {row.items.map((client, i) => (
+              <div
+                key={`${row.id}-${client.src}-${i}`}
+                className="flex-shrink-0"
               >
-                <img
-                  src={client.src}
-                  alt={client.alt}
-                  loading="lazy"
-                  className="max-h-20 w-auto max-w-[160px] object-contain"
-                />
-              </motion.div>
-            </div>
-          ))}
-        </div>
-      ))}
+                <div
+                  className={`bg-[#fbfbfb] cursor-default w-[220px] h-[140px] md:w-[280px] md:h-[180px] flex items-center justify-center border-r border-black/5 group transition-all duration-300 ${
+                    rowIndex === 0 ? "border-t border-b" : "border-b"
+                  } border-black/5`}
+                >
+                  <img
+                    src={client.src}
+                    alt={client.alt}
+                    loading="lazy"
+                    className="max-h-[60px] md:max-h-[80px] w-auto max-w-[140px] md:max-w-[180px] object-contain grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

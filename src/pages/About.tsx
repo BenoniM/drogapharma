@@ -84,12 +84,10 @@ const coreValueGroups = Object.values(
   }, {}),
 );
 
-const ourPartnersLogoModules = import.meta.glob("@/assets/OurPartners/*.{png,jpg,jpeg,webp,svg}", { eager: true, import: "default" }) as Record<string, string>;
-const clientsFolderLogoModules = import.meta.glob("@/assets/Clients/*.{png,jpg,jpeg,webp,svg}", { eager: true, import: "default" }) as Record<string, string>;
+const ourPartnersLogoModules = import.meta.glob("@/assets/OurPartners/New/*.{png,jpg,jpeg,webp,svg}", { eager: true, import: "default" }) as Record<string, string>;
 
 const clientLogoModules = {
   ...ourPartnersLogoModules,
-  ...clientsFolderLogoModules,
 };
 
 const clients = Object.entries(clientLogoModules)
@@ -451,7 +449,7 @@ const About = () => {
     <PageTransition>
       <div>
         {/* Dark Hero Section */}
-        <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
+        <section className="page-hero-section">
           {/* Subtle curved lines background element (matching image) */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
@@ -506,7 +504,7 @@ const About = () => {
             </svg>
           </div>
           
-          <div className="container-wide relative z-10 px-6 lg:px-12">
+          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
               <div className="flex flex-col">
                 <span className="section-label text-black block mb-4">About Us</span>

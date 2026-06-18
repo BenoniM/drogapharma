@@ -5,6 +5,41 @@ import ImageSlider from "@/components/ImageSlider";
 import PageTransition from "@/components/PageTransition";
 import { Search, Plus, Minus, ShoppingBag, ChevronLeft, ChevronRight } from "lucide-react";
 
+const FormattedProductName = ({ name }: { name: string }) => {
+  const match = name.match(/(\s\(|,\s|\swith\s|\sfor\s|\s\d+(?:\.\d+)?\s?(?:mg|ml|cm|mm|x|\/|\*|%|\s)|-\d+(?:\.\d+)?)/i);
+  
+  let mainPart = name;
+  let subPart = "";
+  
+  if (match && match.index !== undefined && match.index > 0) {
+    mainPart = name.substring(0, match.index);
+    subPart = name.substring(match.index);
+  }
+
+  const renderWithTrademarks = (text: string, isMain: boolean) => {
+    const parts = text.split(/(®|™)/);
+    return parts.map((part, i) => {
+      if (part === '®' || part === '™') {
+        return <sup key={i} className={isMain ? "text-[0.6em] relative align-baseline top-[-0.5em]" : "text-[0.6em] relative align-baseline top-[-0.5em]"}>{part}</sup>;
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
+
+  return (
+    <span className="inline-block">
+      <span className="font-bold text-black text-xl md:text-2xl">
+        {renderWithTrademarks(mainPart, true)}
+      </span>
+      {subPart && (
+        <span className="font-medium text-zinc-600 text-sm md:text-base">
+          {renderWithTrademarks(subPart, false)}
+        </span>
+      )}
+    </span>
+  );
+};
+
 import productsImg from "@/assets/products.jpg";
 import medicinesImg from "@/assets/medicines.jpg";
 import medDevicesImg from "@/assets/medical-devices.jpg";
@@ -143,7 +178,7 @@ const Products = () => {
     <PageTransition>
       <div className="bg-white min-h-screen">
         {/* Dark Hero Section */}
-        <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
+        <section className="page-hero-section">
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
@@ -179,7 +214,7 @@ const Products = () => {
             </svg>
           </div>
 
-          <div className="container-wide relative z-10 px-6 lg:px-12">
+          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
               <div className="flex flex-col">
                 <span className="section-label text-black block mb-4">Our Catalog</span>
@@ -223,26 +258,10 @@ const Products = () => {
               />
             </div>
           </section>
-
-          {/* Inquiry banner */}
-          <motion.section
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="bg-black w-full relative"
-          >
-            <div className="pl-4 md:pl-8 pr-0 py-4 flex items-center gap-3 text-sm">
-              <ShoppingBag size={18} className="text-[#FFF200]" />
-              <span className="text-white font-semibold">
-                Select products you're interested in and send us an inquiry — we'll get back within 24 hours.
-              </span>
-            </div>
-          </motion.section>
-
         </div>
 
         {/* Filters & Grid */}
-        <section className="bg-white py-20 min-h-screen">
+        <section id="filters-section" className="bg-white py-20 min-h-screen">
           <div className="container-wide px-6 lg:px-12 mx-auto">
 
             {/* Filter Section */}
@@ -309,12 +328,7 @@ const Products = () => {
                         className="w-full py-8 flex items-center justify-between text-left hover:bg-zinc-50 transition-colors px-4"
                       >
                         <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 w-full pr-4">
-                          <span className="font-normal text-black text-lg md:text-xl uppercase tracking-wide">
-                            {product.name}
-                          </span>
-                          <span className="text-sm font-normal text-zinc-600">
-                            ({product.desc})
-                          </span>
+                          <FormattedProductName name={product.name} />
                           <span className="text-[10px] bg-[#FFF200] px-2 py-1 font-bold text-black uppercase tracking-wider w-max ml-0 md:ml-4">
                             {product.category}
                           </span>
@@ -386,9 +400,9 @@ const Products = () => {
                   disabled={currentPage === 1} 
                   onClick={() => {
                     setCurrentPage(prev => prev - 1);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    document.getElementById('filters-section')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="p-3 bg-zinc-100 hover:bg-[#FFF200] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="p-3 bg-zinc-100 hover:bg-[#FFF200] disabled:opacity-50 disabled:cursor-not-allowed transition-colors rounded-full"
                 >
                   <ChevronLeft className="text-black" />
                 </button>
@@ -397,7 +411,7 @@ const Products = () => {
                   disabled={currentPage === totalPages} 
                   onClick={() => {
                     setCurrentPage(prev => prev + 1);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    document.getElementById('filters-section')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className="p-3 bg-zinc-100 hover:bg-[#FFF200] disabled:opacity-50 disabled:cursor-not-allowed transition-colors rounded-full"
                 >

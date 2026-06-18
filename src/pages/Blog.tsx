@@ -143,7 +143,7 @@ const Blog = () => {
     <PageTransition>
       <div className="min-h-screen bg-background">
         {/* Dark Hero Section */}
-        <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
+        <section className="page-hero-section">
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
@@ -250,10 +250,10 @@ const Blog = () => {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`text-xs font-semibold uppercase tracking-widest px-4 py-2 border transition-all duration-200 ${
+                  className={`text-xs font-semibold uppercase tracking-widest px-4 py-2 transition-all duration-200 ${
                     activeCategory === cat
-                      ? "bg-black text-white border-black"
-                      : "bg-white text-black border-black/15 hover:border-black/40"
+                      ? "bg-[#FFF200] text-black"
+                      : "bg-zinc-200 text-black hover:bg-zinc-300"
                   }`}
                 >
                   {cat}
@@ -265,14 +265,14 @@ const Blog = () => {
             <div className="relative flex-shrink-0 w-full md:w-64">
               <Search
                 size={14}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-black/40 pointer-events-none"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-black"
               />
               <input
                 type="text"
-                placeholder="Search articles…"
+                placeholder="Search Articles…"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 text-sm border border-black/15 bg-white focus:border-primary focus:outline-none transition-colors duration-200 text-black placeholder:text-black/35"
+                className="w-full pl-11 pr-4 py-3 bg-zinc-300 text-black text-xs font-bold capitalize tracking-widest focus:outline-none focus:bg-[#FFF200] transition-all placeholder:text-black/40"
               />
             </div>
           </div>

@@ -7,23 +7,44 @@ const crsImageModules = import.meta.glob(
   { eager: true, import: "default" }
 ) as Record<string, string>;
 
+const CSR_CATEGORIES = ["Environment", "Education", "Health", "Community", "Philanthropy"];
+
 const initiatives = Object.entries(crsImageModules)
   .sort(([a], [b]) => a.localeCompare(b))
-  .map(([path, image]) => {
+  .map(([path, image], index) => {
     const filename = path.split("/").pop() ?? "";
-    const title = filename.replace(/\.[^.]+$/, "");
+    const rawTitle = filename.replace(/\.[^.]+$/, "");
+    const title = rawTitle
+      .replace(/[-_]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .split(" ")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+
     return {
-      category: "Community",
+      category: CSR_CATEGORIES[index % CSR_CATEGORIES.length],
       title,
-      description: `${title} activity under our CRS program.`,
+      description: [
+        `${title} stands as one of the cornerstone initiatives within our Corporate Social Responsibility program, reflecting a deliberate, ongoing investment in the wellbeing of the communities we serve.`,
+        `Through ${title}, we work directly alongside local communities to identify pressing needs and respond with solutions that are practical, sustainable, and built to last well beyond a single project cycle.`,
+        `Looking ahead, our commitment to expanding ${title} and initiatives like it remains central to how we define corporate responsibility — not as an obligation to be fulfilled, but as a promise we intend to keep.`,
+      ],
       image,
-      readTime: "4min Read",
+      readTime: "4 min read",
       gallery: [image, image, image, image],
     };
   });
 
 export default function CRS() {
   const [selected, setSelected] = useState<(typeof initiatives)[0] | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string>("All");
+
+  const filterOptions = ["All", ...CSR_CATEGORIES];
+  const filteredInitiatives =
+    activeFilter === "All"
+      ? initiatives
+      : initiatives.filter((item) => item.category === activeFilter);
 
   useEffect(() => {
     if (selected) {
@@ -40,7 +61,7 @@ export default function CRS() {
     <div className="min-h-screen" style={{ background: "#ffffff" }}>
 
       {/* Header */}
-      <section className="relative bg-[#FFF200] pt-40 pb-48 overflow-hidden">
+      <section className="page-hero-section">
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
           <style>
             {`
@@ -121,8 +142,24 @@ export default function CRS() {
       {/* Card Grid */}
       <section style={{ paddingBottom: 80 }}>
         <div className="w-full mx-auto px-4 lg:px-12 xl:px-16">
+          <div className="flex flex-wrap gap-3 mb-10">
+            {filterOptions.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveFilter(cat)}
+                className={`px-5 py-2 text-sm font-semibold uppercase tracking-wide transition-colors duration-300 ${
+                  activeFilter === cat
+                    ? "bg-[#FFF200] border-[#FFF200] text-black"
+                    : "bg-zinc-100 text-black hover:bg-zinc-200"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-            {initiatives.map((item, index) => (
+            {filteredInitiatives.map((item, index) => (
               <motion.article
                 key={item.title}
                 initial={{ opacity: 0, y: 24 }}
@@ -306,20 +343,42 @@ export default function CRS() {
                 />
               </div>
 
-              <div id="panel-body" style={{ padding: "36px 52px 60px" }}>
-                <p
-                  style={{
-                    fontSize: "1rem",
-                    lineHeight: 1.75,
-                    color: "rgba(0,0,0,0.65)",
-                    margin: 0,
-                  }}
-                >
-                  {selected.description} Learn more about the impact this
-                  initiative has had on the communities we serve and how our
-                  ongoing commitment to social responsibility drives meaningful
-                  change at every level.
-                </p>
+              <style>
+                {`
+                  .crs-article p { hyphens: auto; }
+                  .crs-dropcap::first-letter {
+                    font-weight: 800;
+                    font-size: 3.2em;
+                    line-height: 0.78;
+                    float: left;
+                    margin: 0.04em 0.09em -0.05em 0;
+                    color: #000000;
+                  }
+                `}
+              </style>
+
+              <div
+                id="panel-body"
+                className="crs-article"
+                style={{ padding: "36px 52px 60px", maxWidth: 760, margin: "0 auto" }}
+              >
+
+                {selected.description.map((paragraph, i) => (
+                  <p
+                    key={i}
+                    className={i === 0 ? "crs-dropcap" : undefined}
+                    style={{
+                      fontSize: "1rem",
+                      lineHeight: 1.8,
+                      color: "rgba(0,0,0,0.7)",
+                      margin: i === 0 ? 0 : "22px 0 0",
+                      textIndent: i === 0 ? 0 : "2em",
+                      textAlign: "justify",
+                    }}
+                  >
+                    {paragraph}
+                  </p>
+                ))}
 
                 <a
                   href="/contact"
