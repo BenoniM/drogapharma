@@ -138,7 +138,6 @@ const categories = [
   "Medicine",
   "Diagnostics",
   "Surgical",
-  "Orthopedics",
 ];
 
 const Products = () => {
@@ -152,7 +151,10 @@ const Products = () => {
 
   useEffect(() => {
     const urlCategory = searchParams.get("category");
-    if (urlCategory && categories.includes(urlCategory)) {
+    if (urlCategory === "Orthopedics") {
+      // Orthopedics is now merged under Surgical
+      setCategory("Surgical");
+    } else if (urlCategory && categories.includes(urlCategory)) {
       setCategory(urlCategory);
     } else {
       setCategory("All");
@@ -171,7 +173,9 @@ const Products = () => {
   };
 
   const filtered = allProducts.filter((p) => {
-    if (category !== "All" && p.category !== category) return false;
+    // When Surgical is selected, also include Orthopedics products
+    if (category === "Surgical" && (p.category !== "Surgical" && p.category !== "Orthopedics")) return false;
+    if (category !== "All" && category !== "Surgical" && p.category !== category) return false;
     if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
@@ -227,19 +231,21 @@ const Products = () => {
             </svg>
           </div>
 
-          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
-              <div className="flex flex-col">
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
-                >
-                  Products
-                </motion.h1>
-              </div>
+          {/* Title pinned to top of hero */}
+          <div className="absolute top-[140px] md:top-[275px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+            >
+              Products
+            </motion.h1>
+          </div>
 
+          {/* Description stays at bottom via flex-end */}
+          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
+            <div className="flex justify-end">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

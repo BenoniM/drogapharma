@@ -29,8 +29,7 @@ const navLinks: NavItem[] = [
     children: [
       { label: "Medicine", path: "/products?category=Medicine", description: "Pharmaceuticals and treatments" },
       { label: "Diagnostics", path: "/products?category=Diagnostics", description: "Diagnostic and monitoring equipment" },
-      { label: "Surgical", path: "/products?category=Surgical", description: "Surgical sutures and supplies" },
-      { label: "Orthopedics", path: "/products?category=Orthopedics", description: "Orthopedic instruments and implants" },
+      { label: "Surgical", path: "/products?category=Surgical", description: "Surgical sutures, orthopedic instruments & implants" },
     ],
   },
   { label: "Services", path: "/services" },
@@ -176,10 +175,7 @@ const Navbar = () => {
                   transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                   className="absolute top-full left-[-1px] right-[-1px] bg-white/40 backdrop-blur-xl backdrop-saturate-150 border-t border-white/40 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
                 >
-                  <div className={`grid ${activeHoverItem?.label === "Group" ? "grid-cols-4" :
-                    activeHoverItem?.label === "Products" ? "grid-cols-4" :
-                      "grid-cols-3"
-                    }`}>
+                  <div className={`grid ${activeHoverItem?.label === "Group" ? "grid-cols-4" : "grid-cols-3"}`}>
                     {activeHoverItem?.children?.map((child, idx) => {
                       const inner = (
                         <motion.div

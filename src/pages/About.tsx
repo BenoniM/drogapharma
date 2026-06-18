@@ -513,19 +513,21 @@ const About = () => {
             </svg>
           </div>
           
-          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
-              <div className="flex flex-col">
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
-                >
-                  About Us
-                </motion.h1>
-              </div>
+          {/* Title pinned to top of hero */}
+          <div className="absolute top-[140px] md:top-[275px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+            >
+              About Us
+            </motion.h1>
+          </div>
 
+          {/* Description stays at bottom via flex-end */}
+          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
+            <div className="flex justify-end">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

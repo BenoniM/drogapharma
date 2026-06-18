@@ -33,25 +33,40 @@ const Gallery = () => {
   return (
     <PageTransition>
       <div className="bg-white min-h-screen">
-        {/* Hero Section */}
-        <section className="page-hero-section relative">
+        {/* Dark Hero Section */}
+      <section className="page-hero-section">
+        {/* Subtle curved lines background element (matching image) */}
           <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
-                .anim-bg-text-gallery {
+                .anim-bg-text {
                   fill: rgba(0, 0, 0, 0);
                   stroke: #000;
                   stroke-width: 2px;
+
+                  /* Long visible line + long gap */
                   stroke-dasharray: 3000 1000;
+
+                  /* Smooth infinite movement */
                   animation: strokeDashBg 20s linear infinite;
+
                   opacity: 0.55;
+
+                  
                 }
+
                 @keyframes strokeDashBg {
-                  from { stroke-dashoffset: 0; }
-                  to { stroke-dashoffset: -4000; }
+                  from {
+                    stroke-dashoffset: 0;
+                  }
+                  to {
+                    /* -(3000 + 1000) */
+                    stroke-dashoffset: -4000;
+                  }
                 }
               `}
             </style>
+
             <svg
               className="absolute w-full h-full"
               viewBox="0 0 1600 300"
@@ -62,7 +77,7 @@ const Gallery = () => {
                 y="-50%"
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="anim-bg-text-gallery uppercase"
+                className="anim-bg-text uppercase"
                 style={{
                   fontSize: "90rem",
                   fontWeight: 900,
@@ -73,20 +88,22 @@ const Gallery = () => {
               </text>
             </svg>
           </div>
-          
-          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
-              <div className="flex flex-col">
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
-                >
-                  Gallery
-                </motion.h1>
-              </div>
+        
+          {/* Title pinned to top of hero */}
+          <div className="absolute top-[140px] md:top-[275px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+            >
+              Gallery
+            </motion.h1>
+          </div>
 
+          {/* Description stays at bottom via flex-end */}
+          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
+            <div className="flex justify-end">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -99,7 +116,7 @@ const Gallery = () => {
               </motion.div>
             </div>
           </div>
-        </section>
+      </section>
 
         {/* Image overlapping the hero */}
         <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
