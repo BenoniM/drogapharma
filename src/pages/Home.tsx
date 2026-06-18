@@ -496,7 +496,7 @@ const Home = () => {
                     <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-[20px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] z-20">
                       <div className="flex flex-col shadow-lg">
                         <div className="bg-primary p-5">
-                          <h3 className="font-display font-bold text-lg text-black uppercase tracking-wider">{cat.title}</h3>
+                          <h3 className="font-display font-bold text-lg text-black uppercase tracking">{cat.title}</h3>
                           <p className="text-sm text-black/70 mt-2 line-clamp-2">{cat.desc}</p>
                         </div>
                         <div className="bg-white px-5 py-4 flex items-center justify-between">

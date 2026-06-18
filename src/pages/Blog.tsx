@@ -252,7 +252,7 @@ const Blog = () => {
                   onClick={() => setActiveCategory(cat)}
                   className={`text-xs font-semibold uppercase tracking-widest px-4 py-2 border transition-all duration-200 ${
                     activeCategory === cat
-                      ? "bg-black text-primary border-black"
+                      ? "bg-black text-white border-black"
                       : "bg-white text-black border-black/15 hover:border-black/40"
                   }`}
                 >
@@ -338,7 +338,7 @@ const Blog = () => {
                             <div className="absolute inset-0 bg-gradient-to-t from-foreground/55 via-foreground/10 to-transparent group-hover:from-foreground/70 transition-all duration-500" />
                             <div className="absolute top-4 left-4 flex flex-col gap-1.5">
                               {post.featured && (
-                                <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest px-3 py-1 bg-black text-[#FFF200]">
+                                <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest px-3 py-1 bg-black text-white">
                                   Featured Article
                                 </span>
                               )}

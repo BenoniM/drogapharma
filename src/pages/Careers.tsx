@@ -207,7 +207,7 @@ const CareersPage = () => {
         </div>
       </section>
 
-<section className="bg-[#fcfcfc] pt-20 pb-0 border-t border-black">
+<section className="bg-[#fcfcfc] pt-20 pb-0">
   <div className="w-full mx-auto px-4 lg:px-12 xl:px-16 mb-12">
     <motion.p
       initial={{ opacity: 0, y: 10 }}
@@ -227,29 +227,29 @@ const CareersPage = () => {
     </motion.h2>
   </div>
 
-  <div className="border-t border-black">
-    {[
-      [whyDrogaItems[0], whyDrogaItems[1]],
-      [whyDrogaItems[2], whyDrogaItems[3]],
-      [whyDrogaItems[4], whyDrogaItems[5]],
-    ].map((pair, rowIdx) => (
-      <div
-        key={rowIdx}
-        className="grid grid-cols-1 md:grid-cols-2 border-b border-black/10"
-      >
-        {pair.map((item, colIdx) => (
+  <div className="w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2">
+      {whyDrogaItems.map((item, idx) => {
+        const isLeftCol = idx % 2 === 0;
+        const row = Math.floor(idx / 2);
+        const col = idx % 2;
+        const isGreyDesktop = (row + col) % 2 === 0;
+        const isGreyMobile = idx % 2 === 0;
+        return (
           <motion.div
             key={item.label}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: (rowIdx * 2 + colIdx) * 0.07 }}
-            className={`group flex flex-col hover:bg-[#FFF200] transition-colors duration-300 py-10
-              ${colIdx === 0 ? "pl-4 lg:pl-12 xl:pl-16 pr-6 lg:pr-10 md:border-r border-black/10" : "pl-6 lg:pl-10 pr-4 lg:pr-12 xl:pr-16"}
+            transition={{ duration: 0.5, delay: idx * 0.07 }}
+            className={`group flex flex-col hover:bg-[#FFF200] transition-colors duration-300 py-12 px-4
+              ${isLeftCol ? "md:pl-12 md:pr-10 xl:pl-16 xl:pr-10" : "md:pl-10 md:pr-12 xl:pl-10 xl:pr-16"}
+              ${isGreyMobile ? "bg-zinc-200/50" : "bg-transparent"}
+              ${isGreyDesktop ? "md:bg-zinc-200/50" : "md:bg-transparent"}
             `}
           >
             <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-black/30 group-hover:text-black/50 transition-colors duration-300 mb-6">
-              {["Product", "Technology", "Operations", "Logistics", "Standards", "Partnerships"][rowIdx * 2 + colIdx]}
+              {["Product", "Technology", "Operations", "Logistics", "Standards", "Partnerships"][idx]}
             </span>
             <h3 className="font-display text-2xl md:text-3xl font-bold text-black tracking-tight leading-tight mb-4">
               {item.label}
@@ -258,15 +258,15 @@ const CareersPage = () => {
               {item.description}
             </p>
           </motion.div>
-        ))}
-      </div>
-    ))}
+        );
+      })}
+    </div>
   </div>
 </section>
 
 
       {/* Open positions */}
-      <section id="openings" className="bg-[#fcfcfc] pt-20 pb-20 border-t border-black">
+      <section id="openings" className="bg-[#fcfcfc] pt-20 pb-20">
         <div className="w-full mx-auto px-4 lg:px-12 xl:px-16 mb-12">
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -291,7 +291,7 @@ const CareersPage = () => {
           </div>
         </div>
 
-        <div className="border-t border-black">
+        <div className="w-full flex flex-col">
           {openings.map((job, idx) => {
             const icons = [
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
@@ -307,19 +307,19 @@ const CareersPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: idx * 0.08 }}
-                className="grid border-b border-black/10 group hover:bg-[#FFF200] transition-colors duration-300 cursor-pointer px-4 lg:px-12 xl:px-16"
+                className="flex flex-col md:grid group hover:bg-[#FFF200] transition-colors duration-300 cursor-pointer p-6 md:p-8 md:py-10 gap-6 md:gap-0 px-4 lg:px-12 xl:px-16 odd:bg-zinc-200/50 even:bg-transparent"
                 style={{ gridTemplateColumns: "180px 1fr 1fr" }}
                 onClick={() => window.location.href = `mailto:info@drogapharma.com?subject=Application for ${job.title}`}
               >
                 {/* Left: icon + apply */}
-                <div className="flex flex-col justify-center items-start gap-4 py-8 pr-8">
+                <div className="flex flex-row md:flex-col justify-between md:justify-center items-center md:items-start gap-4 md:pr-6">
                   <div className="w-[52px] h-[52px] flex items-center justify-center shrink-0 text-black">
                     {icons[idx]}
                   </div>
                   <a
                     href={`mailto:info@drogapharma.com?subject=Application for ${job.title}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.07em] border border-black px-4 py-2 text-black bg-transparent group-hover:bg-black group-hover:text-white group-hover:border-black transition-all duration-300"
+                    className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.07em] px-4 py-2 text-black bg-black/10 group-hover:bg-black group-hover:text-white transition-all duration-300"
                   >
                     Apply
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -327,13 +327,13 @@ const CareersPage = () => {
                 </div>
 
                 {/* Center: title + tags */}
-                <div className="flex flex-col justify-center gap-3 py-8 px-8">
+                <div className="flex flex-col justify-center gap-3 md:px-6">
                   <h3 className="font-display text-xl md:text-2xl font-bold text-black leading-tight tracking-tight">
                     {job.title}
                   </h3>
                   <div className="flex flex-wrap gap-[5px]">
                     {[job.department, job.location, job.type].map((tag) => (
-                      <span key={tag} className="text-[10px] font-semibold uppercase tracking-[0.09em] px-[10px] py-1 border border-black/20 text-black/50 group-hover:border-black/35 group-hover:text-black transition-colors duration-300">
+                      <span key={tag} className="text-[10px] font-semibold uppercase tracking-[0.09em] px-[10px] py-1 bg-black/5 text-black/50 group-hover:bg-black/10 group-hover:text-black transition-colors duration-300">
                         {tag}
                       </span>
                     ))}
@@ -341,7 +341,7 @@ const CareersPage = () => {
                 </div>
 
                 {/* Right: description */}
-                <div className="flex items-center py-8 pl-8 border-l border-black/10 group-hover:border-black/20 transition-colors duration-300">
+                <div className="flex items-center md:pl-6">
                   <p className="text-sm leading-relaxed text-black/55 group-hover:text-black transition-colors duration-300">
                     {job.description}
                   </p>
