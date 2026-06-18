@@ -585,8 +585,6 @@ const Home = () => {
             />
           </div>
         </section>
-
-        <CMSBanner />
       </div>
     </PageTransition>
   );

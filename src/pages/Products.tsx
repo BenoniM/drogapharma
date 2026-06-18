@@ -113,12 +113,24 @@ const allProducts = [
   { name: "Surgicryl PGA 4/0 Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
   { name: "Surgicryl PGA 5/0 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
   { name: "Surgicryl PGA 6/0 Cutting & Round", category: "Surgical", manufacturer: "SMI", origin: "Belgium", desc: "Surgical Supplies" },
+
+  // Orthopedics
+  { name: "All types of Orthopedics Instruments sets", category: "Orthopedics", manufacturer: "Nebula Surgical", origin: "India", desc: "Orthopedic Supplies" },
+  { name: "Plating System(Screw and Plates)", category: "Orthopedics", manufacturer: "Nebula Surgical", origin: "India", desc: "Orthopedic Supplies" },
+  { name: "Nailing System(Bolt and Nails)", category: "Orthopedics", manufacturer: "Nebula Surgical", origin: "India", desc: "Orthopedic Supplies" },
+  { name: "Spine System(Pedical Screws,rods and Instruments)", category: "Orthopedics", manufacturer: "Nebula Surgical", origin: "India", desc: "Orthopedic Supplies" },
+  { name: "Amputation Set Large and Small", category: "Orthopedics", manufacturer: "Nebula Surgical", origin: "India", desc: "Orthopedic Supplies" },
+  { name: "Lowman and Hohman", category: "Orthopedics", manufacturer: "Nebula Surgical", origin: "India", desc: "Orthopedic Supplies" },
+  { name: "7 Gigli saw wire with handle", category: "Orthopedics", manufacturer: "Nebula Surgical", origin: "India", desc: "Orthopedic Supplies" },
+  { name: "Maxilofacial Instrument set and implants", category: "Orthopedics", manufacturer: "Nebula Surgical", origin: "India", desc: "Orthopedic Supplies" },
+  { name: "POP Cutter,Rod Cutter,and Wire Cutter", category: "Orthopedics", manufacturer: "Nebula Surgical", origin: "India", desc: "Orthopedic Supplies" },
 ];
 
 const categoryImages: Record<string, string> = {
   Medicine: medicinesImg,
   Diagnostics: labImg,
   Surgical: productsImg,
+  Orthopedics: medDevicesImg,
 };
 
 const categories = [
@@ -126,6 +138,7 @@ const categories = [
   "Medicine",
   "Diagnostics",
   "Surgical",
+  "Orthopedics",
 ];
 
 const Products = () => {
@@ -179,7 +192,7 @@ const Products = () => {
       <div className="bg-white min-h-screen">
         {/* Dark Hero Section */}
         <section className="page-hero-section">
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+          <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text {
@@ -215,9 +228,8 @@ const Products = () => {
           </div>
 
           <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
               <div className="flex flex-col">
-                <span className="section-label text-black block mb-4">Our Catalog</span>
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}

@@ -30,6 +30,7 @@ const navLinks: NavItem[] = [
       { label: "Medicine", path: "/products?category=Medicine", description: "Pharmaceuticals and treatments" },
       { label: "Diagnostics", path: "/products?category=Diagnostics", description: "Diagnostic and monitoring equipment" },
       { label: "Surgical", path: "/products?category=Surgical", description: "Surgical sutures and supplies" },
+      { label: "Orthopedics", path: "/products?category=Orthopedics", description: "Orthopedic instruments and implants" },
     ],
   },
   { label: "Services", path: "/services" },
@@ -176,7 +177,7 @@ const Navbar = () => {
                   className="absolute top-full left-[-1px] right-[-1px] bg-white/40 backdrop-blur-xl backdrop-saturate-150 border-t border-white/40 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
                 >
                   <div className={`grid ${activeHoverItem?.label === "Group" ? "grid-cols-4" :
-                    activeHoverItem?.label === "Products" ? "grid-cols-3" :
+                    activeHoverItem?.label === "Products" ? "grid-cols-4" :
                       "grid-cols-3"
                     }`}>
                     {activeHoverItem?.children?.map((child, idx) => {
@@ -214,12 +215,12 @@ const Navbar = () => {
           </div>
 
           {/* Get In Touch */}
-          <div className="shrink-0 flex items-center h-full -mr-4 lg:-mr-12 xl:-mr-16">
+          <div className="shrink-0 flex items-center h-full">
             <Link
               to="/contact"
-              className="flex items-center pl-8 pr-4 lg:pr-12 xl:pr-16 h-full group hover:bg-primary transition-colors duration-300"
+              className="flex items-center px-6 h-full bg-primary text-black font-medium transition-opacity hover:opacity-90 duration-200"
             >
-              <span className="text-[13px] font-normal tracking-wide capitalize text-black">
+              <span className="text-[13px] font-medium tracking-wide capitalize text-black">
                 Get In Touch
               </span>
             </Link>

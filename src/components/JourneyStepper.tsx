@@ -64,15 +64,18 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: "flex-end",
           padding: "12px 0px",
           flexShrink: 0,
         }}
       >
-        <span style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase" }}>
-          Our history
-        </span>
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div className="text-left">
+          <span className="section-label block text-black/60">Our Journey</span>
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-900 mt-2">
+            Company Evolution
+          </h2>
+        </div>
+        <div style={{ display: "flex", gap: "10px", paddingBottom: "4px" }}>
           <button
             onClick={scrollPrev}
             aria-label="Previous"

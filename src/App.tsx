@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import InquiryCart from "./components/InquiryCart";
+import CMSBanner from "./components/CMSBanner";
 import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -29,9 +30,9 @@ const ScrollToTopOnMount = ({ children }: { children: React.ReactNode }) => {
     // Disable smooth scrolling temporarily to prevent scrolling animation on page transition
     const originalStyle = document.documentElement.style.scrollBehavior;
     document.documentElement.style.scrollBehavior = "auto";
-    
+
     window.scrollTo({ top: 0, behavior: "auto" });
-    
+
     // In case there is any delayed paint/layout that alters scroll, we use a small timeout to restore it
     const timer = setTimeout(() => {
       document.documentElement.style.scrollBehavior = originalStyle;
@@ -71,6 +72,7 @@ const AppShell = () => {
     <>
       <Navbar />
       <AnimatedRoutes />
+      <CMSBanner />
       <Footer />
       <InquiryCart />
       <ScrollToTop />

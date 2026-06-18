@@ -46,12 +46,12 @@ const Certifications = () => {
 
           {/* Title — z-10, cards will render above it at z-20 */}
           <div className="pointer-events-none flex flex-col items-center z-10 relative">
-            <span className="text-xs font-semibold tracking-[0.2em] uppercase text-black/40 mb-3">
+            <span className="section-label block text-black/60">
               Certifications
             </span>
             <h2
               id="cert-heading"
-              className="font-display text-5xl md:text-6xl font-bold text-slate-900 tracking-tight text-center"
+              className="font-display text-4xl md:text-5xl font-bold text-slate-900 mt-2 text-center"
             >
               ISO Certificates
             </h2>

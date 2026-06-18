@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import MagneticButton from "@/components/MagneticButton";
@@ -7,7 +6,6 @@ import { staggerContainer, staggerItem } from "@/lib/variants";
 import cmsQrImage from "@/assets/cms.png";
 
 const CMSBanner = () => {
-  const [hoverArea, setHoverArea] = useState<"cms" | "number" | null>(null);
 
   return (
     <section className="bg-primary py-16 md:py-20 overflow-hidden border-t border-black/10">
@@ -40,72 +38,27 @@ const CMSBanner = () => {
             </MagneticButton>
           </motion.div>
 
-          {/* Center: Interactive CMS Text */}
+          {/* Center: CMS and 6637 horizontally divided by a vertical line */}
           <motion.div 
             variants={staggerItem} 
-            className="w-full md:w-1/3 flex flex-col items-center justify-center z-10 min-h-[160px]"
-            onMouseLeave={() => setHoverArea(null)}
+            className="w-full md:w-1/3 flex items-center justify-center gap-6 md:gap-8 min-h-[80px]"
           >
-            
-            {/* Top Area */}
-            <div 
-              className="flex items-end justify-center w-full pb-2 cursor-pointer h-[70px]"
-              onMouseEnter={() => setHoverArea("cms")}
-            >
-              <AnimatePresence mode="wait">
-                {hoverArea === "number" ? (
-                  <motion.p 
-                    key="text-toll-free"
-                    initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.15 }}
-                    className="text-sm md:text-base font-bold text-black uppercase tracking-wider text-center leading-relaxed"
-                  >
-                    Reach us at our toll free number
-                  </motion.p>
-                ) : (
-                  <motion.h2 
-                    key="text-cms"
-                    initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.15 }}
-                    className="text-5xl md:text-6xl font-bold text-black font-display tracking-tight leading-none hover:scale-105 transition-transform duration-300"
-                  >
-                    CMS
-                  </motion.h2>
-                )}
-              </AnimatePresence>
+            {/* Left Side: CMS */}
+            <div className="flex-1 flex justify-center md:justify-end">
+              <h2 className="text-4xl md:text-5xl font-bold text-black font-display tracking-tight leading-none hover:scale-105 transition-transform duration-300">
+                CMS
+              </h2>
             </div>
             
-            {/* Divider */}
-            <div className="h-[2px] w-24 bg-black pointer-events-none my-1" />
+            {/* Vertical Divider */}
+            <div className="h-12 w-[2px] bg-black/30 self-center flex-shrink-0" />
             
-            {/* Bottom Area */}
-            <div 
-              className="flex items-start justify-center w-full pt-2 cursor-pointer h-[70px]"
-              onMouseEnter={() => setHoverArea("number")}
-            >
-              <AnimatePresence mode="wait">
-                {hoverArea === "cms" ? (
-                  <motion.p 
-                    key="text-cms-desc"
-                    initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 5 }}
-                    transition={{ duration: 0.15 }}
-                    className="text-sm md:text-base font-bold text-black uppercase tracking-[0.1em] text-center leading-relaxed"
-                  >
-                    Complaint Management System
-                  </motion.p>
-                ) : (
-                  <motion.p 
-                    key="text-6637"
-                    initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 5 }}
-                    transition={{ duration: 0.15 }}
-                    className="text-4xl md:text-5xl font-bold text-black font-display tracking-widest hover:scale-105 transition-transform duration-300"
-                  >
-                    6637
-                  </motion.p>
-                )}
-              </AnimatePresence>
+            {/* Right Side: 6637 */}
+            <div className="flex-1 flex justify-center md:justify-start">
+              <h2 className="text-4xl md:text-5xl font-bold text-black font-display leading-none hover:scale-105 transition-transform duration-300">
+                6637
+              </h2>
             </div>
-
           </motion.div>
 
           {/* Right: QR Code */}

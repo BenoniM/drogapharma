@@ -291,130 +291,6 @@ function HowItWorksBlind() {
 
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
-
-  return (
-    <section ref={sectionRef} style={{ overflow: "hidden", backgroundColor: "#FFF200" }}>
-      {/* Header */}
-      <div style={{ textAlign: "center", padding: "5rem 1rem 3rem" }}>
-        <span
-          style={{
-            display: "block",
-            fontSize: "0.65rem",
-            fontWeight: 600,
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: "rgba(0,0,0,0.4)",
-            marginBottom: "0.75rem",
-          }}
-        >
-          How It Works
-        </span>
-        <h2
-          className="font-display"
-          style={{
-            fontSize: "clamp(1.8rem, 3vw, 2.6rem)",
-            fontWeight: 700,
-            color: "#000000",
-            margin: 0,
-          }}
-        >
-          Our Import Process
-        </h2>
-      </div>
-
-      {/* 4 cards */}
-      <div style={{ display: "flex", width: "100%" }}>
-        {steps.map((item, i) => {
-          const isOdd = i % 2 === 0;
-
-          // Yellow base colors (sitting on #FFF200)
-          const baseNumberColor = "rgba(0,0,0,0.4)";
-          const baseTitleColor  = "#000000";
-          const baseDescColor   = "rgba(0,0,0,0.5)";
-
-          // Hover colors — adapt to the revealed bg
-          // odd  → white bg  → dark text
-          // even → black bg  → light text
-          const hoverNumberColor = isOdd ? "rgba(0,0,0,0.4)"         : "rgba(255,255,255,0.4)";
-          const hoverTitleColor  = isOdd ? "#000000"                   : "#ffffff";
-          const hoverDescColor   = isOdd ? "rgba(0,0,0,0.5)"          : "rgba(255,255,255,0.6)";
-
-          return (
-            <div
-              key={item.step}
-              ref={(el) => { if (el) cardsRef.current[i] = el; }}
-              style={{
-                flex: "1 1 25%",
-                backgroundColor: "#FFF200",
-                position: "relative",
-                overflow: "hidden",
-                borderRight: "none",
-                cursor: "default",
-              }}
-            >
-
-              {/* Content */}
-              <div
-                className="hiw-content"
-                style={{
-                  position: "relative",
-                  zIndex: 1,
-                  padding: "4rem 2rem",
-                  textAlign: "center",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <div
-                  className="hiw-text"
-                  data-base-color={baseNumberColor}
-                  data-hover-color={hoverNumberColor}
-                  style={{
-                    fontSize: "clamp(3rem, 5vw, 4.5rem)",
-                    fontWeight: 900,
-                    color: baseNumberColor,
-                    lineHeight: 1,
-                  }}
-                >
-                  {item.step}
-                </div>
-                <h3
-                  className="hiw-text"
-                  data-base-color={baseTitleColor}
-                  data-hover-color={hoverTitleColor}
-                  style={{
-                    fontSize: "clamp(1rem, 1.4vw, 1.15rem)",
-                    fontWeight: 700,
-                    color: baseTitleColor,
-                    margin: 0,
-                  }}
-                >
-                  {item.title}
-                </h3>
-                <p
-                  className="hiw-text"
-                  data-base-color={baseDescColor}
-                  data-hover-color={hoverDescColor}
-                  style={{
-                    fontSize: "0.82rem",
-                    color: baseDescColor,
-                    lineHeight: 1.65,
-                    maxWidth: "12rem",
-                    margin: 0,
-                  }}
-                >
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
 }
 
 // ─── Page ────────────────────────────────────────────────────────────────────
@@ -425,7 +301,7 @@ const Services = () => {
       <div>
         {/* Dark Hero Section */}
         <section className="page-hero-section">
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+          <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text {
@@ -462,9 +338,8 @@ const Services = () => {
           </div>
 
           <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
               <div className="flex flex-col">
-                <span className="section-label text-black block mb-4">What We Do</span>
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -504,9 +379,6 @@ const Services = () => {
 
         {/* Scroll-driven services */}
         <ServicesScroll />
-
-        {/* How It Works */}
-        <HowItWorksBlind />
       </div>
     </PageTransition>
   );

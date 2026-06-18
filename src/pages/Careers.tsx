@@ -8,7 +8,7 @@ import medDevicesImg from "@/assets/medical-devices.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
 import labImg from "@/assets/lab-research.jpg";
-import { Briefcase, MapPin, Clock, ArrowRight } from "lucide-react";
+import { Briefcase, MapPin, Clock, ArrowRight, Pill, TrendingUp, Truck, FileCheck } from "lucide-react";
 import TickerBanner from "@/components/TickerBanner";
 import CyclingWave from "@/components/CyclingWave";
 import TextPressure from "@/components/TextPressure";
@@ -33,41 +33,41 @@ const careersHeroImages = [
 
 const openings = [
   {
-    title: "Senior Software Engineer",
-    department: "Engineering",
+    title: "Retail Pharmacist",
+    department: "Retail Pharmacy",
     location: "Addis Ababa",
     type: "Full-time",
     image: teamImg,
     description:
-      "Build scalable enterprise applications using modern tech stacks.",
+      "Dispense medications, offer patient counseling, and ensure strict compliance with pharmacy laws in our retail network.",
   },
   {
-    title: "UI/UX Designer",
-    department: "Product Design",
-    location: "Addis Ababa",
+    title: "Pharmaceutical Sales Representative",
+    department: "Sales & Marketing",
+    location: "Regional Offices",
     type: "Full-time",
     image: healthcareTeamImg,
     description:
-      "Design intuitive user experiences for web and mobile platforms.",
+      "Promote our WHO-approved medicine portfolio to physicians, hospitals, and pharmacies, and manage client accounts.",
   },
   {
-    title: "Digital Marketing Specialist",
-    department: "Marketing",
-    location: "Addis Ababa / Remote",
+    title: "Logistics & Warehousing Coordinator",
+    department: "Supply Chain",
+    location: "Addis Ababa",
     type: "Full-time",
     image:
       "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1200&q=80",
     description:
-      "Drive data-driven marketing campaigns and build brand presence.",
+      "Coordinate day-to-day warehouse operations, monitor cold-chain logistics, and ensure accurate distribution of medical devices.",
   },
   {
-    title: "IT Support Engineer",
-    department: "IT Services",
+    title: "Quality Assurance Officer",
+    department: "Compliance",
     location: "Addis Ababa",
     type: "Full-time",
     image: healthcareTeamImg,
     description:
-      "Provide technical support and manage infrastructure for enterprise clients.",
+      "Validate cold-chain operations, maintain regulatory compliance documentation, and implement standard GMP guidelines.",
   },
 ];
 
@@ -116,7 +116,7 @@ const CareersPage = () => {
       {/* Dark Hero Section */}
       <section className="page-hero-section">
         {/* Subtle curved lines background element (matching image) */}
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+          <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text {
@@ -170,7 +170,7 @@ const CareersPage = () => {
           </div>
         
         <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
             <div className="flex flex-col">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
@@ -286,7 +286,7 @@ const CareersPage = () => {
               Open Positions
             </motion.h2>
             <span className="text-xs text-black/40 tracking-wide hidden md:block">
-              4 roles · Addis Ababa
+              4 roles · Ethiopia
             </span>
           </div>
         </div>
@@ -294,10 +294,10 @@ const CareersPage = () => {
         <div className="w-full flex flex-col">
           {openings.map((job, idx) => {
             const icons = [
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>,
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>,
+              <Pill size={26} strokeWidth={1.5} />,
+              <TrendingUp size={26} strokeWidth={1.5} />,
+              <Truck size={26} strokeWidth={1.5} />,
+              <FileCheck size={26} strokeWidth={1.5} />,
             ];
 
             return (

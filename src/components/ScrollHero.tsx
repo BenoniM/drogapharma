@@ -419,7 +419,8 @@ export default function ScrollHero() {
               ref={certsRef}
               style={{
                 display: "flex",
-                gap: "20px",
+                justifyContent: "center",
+                gap: "60px",
                 marginTop: "2rem",
                 width: "100%",
                 flexShrink: 0,
@@ -435,11 +436,14 @@ export default function ScrollHero() {
                   key={cert.label}
                   className="group"
                   style={{
-                    flex: 1,
+                    width: "200px",
                     position: "relative",
                     cursor: "pointer",
                     overflow: "hidden",
                     display: "block",
+                    backgroundColor: "#fff",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+                    border: "1px solid rgba(0,0,0,0.05)",
                   }}
                 >
                   <img
@@ -448,7 +452,20 @@ export default function ScrollHero() {
                     width={400}
                     height={400}
                     decoding="async"
-                    style={{ width: "100%", aspectRatio: "1 / 1", display: "block", objectFit: "cover" }}
+                    style={{ width: "100%", height: "auto", display: "block" }}
+                  />
+                  {/* White gradient at the bottom so the black plus sign is visible */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: "44px",
+                      background: "linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 100%)",
+                      pointerEvents: "none",
+                      zIndex: 1,
+                    }}
                   />
                   <svg
                     viewBox="0 0 24 24"
@@ -458,10 +475,10 @@ export default function ScrollHero() {
                     className="transition-transform duration-300 group-hover:rotate-90"
                     style={{
                       position: "absolute",
-                      bottom: "16px",
-                      right: "16px",
-                      width: "28px",
-                      height: "28px",
+                      bottom: "12px",
+                      right: "12px",
+                      width: "24px",
+                      height: "24px",
                       zIndex: 2,
                     }}
                   >
@@ -492,7 +509,7 @@ export default function ScrollHero() {
                   fontWeight: 700,
                   textTransform: "none",
                   margin: 0,
-                  marginBottom: "0.2rem",
+                  marginBottom: "1.25rem",
                 }}
               >
                 Droga Pharma
@@ -531,7 +548,7 @@ export default function ScrollHero() {
                 fontWeight: 700,
                 textTransform: "none",
                 margin: 0,
-                marginBottom: "0.2rem",
+                marginBottom: "1.25rem",
               }}
             >
               Droga Pharma

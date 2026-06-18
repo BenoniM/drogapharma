@@ -131,16 +131,6 @@ const missionVisionSlides = [
 
 const storySlides = [
   {
-    image: teamImg,
-    alt: "Team",
-    title: "Founder's Message",
-    intro: "Welcome to Droga Pharma, where our journey began with a simple yet profound vision: to make healthcare accessible, sustainable, and reliable for everyone",
-    highlight: "The Heart of Droga Pharma lies in our unwavering commitment to making healthcare accessible.",
-    outro: "Thank you for trusting us with your health and well-being. Together, we are building a brighter and healthier future.",
-    signatureName: "Dr. Abdi Ermolo",
-    signatureRole: "Deputy CEO, Founder",
-  },
-  {
     image: healthcareTeamImg,
     alt: "Healthcare",
     title: "Experienced Healthcare Professionals",
@@ -150,6 +140,16 @@ const storySlides = [
     signatureName: "Mr. Henok Teka",
     signatureRole: "Group CEO",
   },
+  {
+  image: teamImg,
+  alt: "Team",
+  title: "Founder's Message",
+  intro: "Welcome to Droga Pharma, where our journey began with a simple yet profound vision: to make healthcare accessible, sustainable, and reliable for everyone",
+  highlight: "The Heart of Droga Pharma lies in our unwavering commitment to making healthcare accessible.",
+  outro: "Thank you for trusting us with your health and well-being. Together, we are building a brighter and healthier future.",
+  signatureName: "Dr. Abdi Ermolo",
+  signatureRole: "Deputy CEO, Founder",
+},
 ];
 
 const BalanceScale = () => (
@@ -224,7 +224,13 @@ const coreValuesCards = [
 function CoreValuesSection() {
   return (
     <section className="py-20 bg-white">
-      <div className="container-wide">
+      <div className="w-full px-4 md:px-8 lg:px-12 xl:px-16">
+        <div className="mb-12 text-left">
+          <span className="section-label block text-black/60">Our Beliefs</span>
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-900 mt-2">
+            Core Values
+          </h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
           {coreValuesCards.map((cv, i) => (
             <div key={i} className="bg-[#FFF200] p-8 md:p-10 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300">
@@ -354,9 +360,12 @@ function QualityPolicySection() {
               exit="exit"
               className="flex-1 flex flex-col justify-between"
             >
-              <h2 className="text-4xl md:text-5xl font-medium text-slate-900 leading-[1.1] tracking-tight max-w-lg">
-                {qualityPolicyData[lang].title}
-              </h2>
+              <div>
+                <span className="section-label block text-black/60">Quality Assurance</span>
+                <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-900 leading-[1.1] tracking-tight max-w-lg mt-2">
+                  {qualityPolicyData[lang].title}
+                </h2>
+              </div>
 
               <div className="mt-12 lg:mt-auto pt-4">
                 <div className="text-lg font-medium text-slate-900">
@@ -388,7 +397,7 @@ function QualityPolicySection() {
               <div className="mt-auto pt-4 flex justify-end">
                 <button
                   onClick={() => setLang(lang === 'ENG' ? 'AMH' : 'ENG')}
-                  className="bg-[#1C1C1C] text-white px-6 py-2.5 rounded-md text-xs font-semibold shadow-lg hover:bg-[#FFF200] hover:text-black hover:scale-105 transition-all duration-300 flex items-center gap-2 group"
+                  className="bg-[#FFF200] text-black px-6 py-2.5 rounded-md text-xs font-semibold shadow-lg hover:bg-[#FFF200] hover:text-black hover:scale-105 transition-all duration-300 flex items-center gap-2 group"
                 >
                   {lang === 'ENG' ? 'አማ' : 'ENG'}
                   <svg 
@@ -451,7 +460,7 @@ const About = () => {
         {/* Dark Hero Section */}
         <section className="page-hero-section">
           {/* Subtle curved lines background element (matching image) */}
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+          <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text {
@@ -505,16 +514,15 @@ const About = () => {
           </div>
           
           <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
               <div className="flex flex-col">
-                <span className="section-label text-black block mb-4">About Us</span>
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
                   className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
                 >
-                  Company
+                  About Us
                 </motion.h1>
               </div>
 
@@ -548,12 +556,12 @@ const About = () => {
 
         {/* Story section */}
         <section ref={storyRef} className="bg-white py-16 md:py-24 relative overflow-hidden border-t border-slate-100">
-  <div className="container-wide relative px-6 md:px-12 z-10">
+  <div className="w-full relative px-4 md:px-8 lg:px-12 xl:px-16 z-10">
     
-    {/* Centered Top Header */}
-    <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
-      <div className="mx-auto mb-4 h-[3px] w-12 bg-[#FFF200]" />
-      <h2 className="font-display text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
+    {/* Left Top Header */}
+    <div className="text-left mb-16 md:mb-20">
+      <span className="section-label block text-black/60">Leadership</span>
+      <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-900 mt-2">
         Founders' Message
       </h2>
     </div>
@@ -643,19 +651,8 @@ const About = () => {
         <CoreValuesSection />
 
         {/* Timeline / Journey */}
-        <section className="pt-10 border-y border-slate-100">
-          <div className="container-narrow">
-            <ScrollReveal>
-              <div className="text-center">
-                <span className="section-label block text-black/60">Our Journey</span>
-                <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-900 mt-2">
-                  Company Evolution
-                </h2>
-              </div>
-            </ScrollReveal>
-          </div>
-
-          <div className="w-full px-4 md:px-8 lg:px-12">
+        <section className="py-20 border-y border-slate-100 bg-white">
+          <div className="w-full px-4 md:px-8 lg:px-12 xl:px-16">
             <JourneyStepper timeline={timeline} />
           </div>
         </section>

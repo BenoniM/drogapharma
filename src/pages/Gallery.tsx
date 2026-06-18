@@ -35,7 +35,7 @@ const Gallery = () => {
       <div className="bg-white min-h-screen">
         {/* Hero Section */}
         <section className="page-hero-section relative">
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+          <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text-gallery {
@@ -74,19 +74,29 @@ const Gallery = () => {
             </svg>
           </div>
           
-          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16 pb-20">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
               <div className="flex flex-col">
-                <span className="section-label text-black block mb-4">Gallery</span>
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
                   className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
                 >
-                  Our Work
+                  Gallery
                 </motion.h1>
               </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="max-w-sm"
+              >
+                <p className="text-black font-normal text-lg leading-relaxed">
+                  A visual journey showing our team, modern facilities, cold-chain distribution network, and community engagement initiatives across Ethiopia.
+                </p>
+              </motion.div>
             </div>
           </div>
         </section>

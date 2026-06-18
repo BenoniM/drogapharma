@@ -62,7 +62,7 @@ export default function CRS() {
 
       {/* Header */}
       <section className="page-hero-section">
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden flex items-center justify-center">
+        <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
           <style>
             {`
               .anim-bg-text {
@@ -99,9 +99,8 @@ export default function CRS() {
         </div>
 
         <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
             <div className="flex flex-col">
-              <span className="section-label text-black block mb-4">CRS</span>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
