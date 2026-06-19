@@ -20,32 +20,28 @@ const TOTAL_H = +(100 / FS).toFixed(3);
 const SIDE_H = +((TOTAL_H - 100) / 2).toFixed(3);
 const TOTAL_W = +(62 / FS).toFixed(3);
 const SIDE_W = +((TOTAL_W - 100) / 2).toFixed(3);
+// Mobile scale: makes the mosaic exactly 100vw wide → no horizontal black bars
+const MOBILE_FS = +(100 / TOTAL_W).toFixed(4);
 const GAP = 8;
 const GB = "#0d0d0d";
 const YELLOW = "#FFF200";
-
-// All hero images — preload so GPU has textures ready before scroll starts
-const HERO_SRCS = [supplyImg, grp1, grp2, grp3, grp4, grp5, grp6];
-
-// (Preload removed — delaying ScrollTrigger creation until network responses finish causes a massive scroll disconnect on initial load)
 
 function Cell({
   style,
   imgSrc,
   fetchpriority,
+  className,
 }: {
   style: React.CSSProperties;
   imgSrc: string;
   fetchpriority?: "high" | "low" | "auto";
+  className?: string;
 }) {
   return (
-    <div style={{ position: "absolute", overflow: "hidden", backgroundColor: "#000", ...style }}>
+    <div className={className} style={{ position: "absolute", overflow: "hidden", backgroundColor: "#000", ...style }}>
       <img
         src={imgSrc}
         draggable={false}
-        // Tell browser the decoded size ≈ its display size so it doesn't
-        // keep the full-res bitmap in GPU memory during compositing.
-        // These cells are displayed at ~30vw × ~30vh max.
         width={600}
         height={450}
         fetchPriority={fetchpriority ?? "auto"}
@@ -55,9 +51,7 @@ function Cell({
           height: "100%",
           objectFit: "cover",
           display: "block",
-          // Override the global `img { transition: opacity 500ms }` rule.
           transition: "none",
-          // Use opacity instead of CSS filter: brightness() for huge performance gain
           opacity: 0.85,
         }}
       />
@@ -72,8 +66,6 @@ export default function ScrollHero() {
   const gridBgRef = useRef<HTMLDivElement>(null);
   const baseBgRef = useRef<HTMLDivElement>(null);
 
-  // Yellow panel: now uses clipPath instead of scaleX so NO counter-scale
-  // is needed and NO JS runs per scroll frame.
   const yellowPanelRef = useRef<HTMLDivElement>(null);
   const desc1Ref = useRef<HTMLDivElement>(null);
   const desc2Ref = useRef<HTMLDivElement>(null);
@@ -81,21 +73,59 @@ export default function ScrollHero() {
   const certsRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    // We create the ScrollTrigger immediately so it perfectly syncs with the
-    // user's scroll from frame 1. Delaying it behind an image preload causes
-    // the scroll to feel disconnected or stuck on initial load.
     const ctx = gsap.context(() => {
       const wrap = wrapRef.current!;
+      const isMobile = window.innerWidth < 768;
 
-      // Promote mosaic to its own GPU layer immediately
       gsap.set(mosaicRef.current, { z: 0, force3D: true });
 
-        // ── Yellow panel: start clipped so only 38 vw shows on the right ──
-        // clipPath inset(top right bottom left)
-        // "62%" from the left = the leftmost 62vw is hidden, right 38vw is visible.
-        // This exactly matches the original visual.
-        // When we animate to inset(0 0 0 0%) the full panel is visible.
-        // clipPath is compositor-only (no layout, no JS per frame).
+      if (isMobile) {
+        // ── MOBILE: yellow panel starts clipped from the BOTTOM ──
+        // inset(top right bottom left). Start with ~38vh strip visible at bottom.
+        gsap.set(yellowPanelRef.current, {
+          clipPath: "inset(62% 0 0 0)",
+          force3D: true,
+        });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: wrap,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 2,
+          },
+        });
+
+        // 0→33: zoom out mosaic using MOBILE_FS so it fills 100vw, translate UP
+        tl.fromTo(
+          mosaicRef.current,
+          { scale: 1, y: 0 },
+          { scale: MOBILE_FS, y: "-15vh", ease: "none", duration: 33, force3D: true },
+          0,
+        );
+
+        // 33→66: yellow panel expands UPWARDS (top inset shrinks to 0)
+        tl.fromTo(
+          yellowPanelRef.current,
+          { clipPath: "inset(62% 0 0 0)" },
+          {
+            clipPath: "inset(0% 0 0 0)",
+            ease: "power2.inOut",
+            duration: 22,
+            force3D: true,
+          },
+          38,
+        );
+
+        // desc3 fades in on phase 3 (mobile: no desc1/desc2)
+        tl.fromTo(
+          desc3Ref.current,
+          { opacity: 0 },
+          { opacity: 1, ease: "power2.out", duration: 8 },
+          50,
+        );
+      } else {
+        // ── DESKTOP: original behaviour ──
         gsap.set(yellowPanelRef.current, {
           clipPath: "inset(0 0 0 62%)",
           force3D: true,
@@ -106,16 +136,10 @@ export default function ScrollHero() {
             trigger: wrap,
             start: "top top",
             end: "bottom bottom",
-            // scrub: 1.5 creates a 1.5-second smoothing lag.
-            // This is CRITICAL for performance. It decouples the heavy GSAP
-            // animation calculations from the browser's raw scroll events.
-            // If the main thread drops a frame, the animation still glides
-            // smoothly to the target instead of snapping/stuttering.
             scrub: 2,
           },
         });
 
-        // ── 0→33: zoom out mosaic ──────────────────────────────────────────
         tl.fromTo(
           mosaicRef.current,
           { scale: 1, x: 0 },
@@ -123,7 +147,6 @@ export default function ScrollHero() {
           0,
         );
 
-        // desc swap
         tl.to(desc1Ref.current, { opacity: 0, ease: "power2.inOut", duration: 6 }, 24);
         tl.fromTo(
           desc2Ref.current,
@@ -132,9 +155,6 @@ export default function ScrollHero() {
           27,
         );
 
-        // ── 33→66: panel expand via clipPath ──────────────────────────────
-        // Animating a percentage inset is pure compositor work —
-        // zero layout reflow, zero JS per frame.
         tl.to(certsRef.current, { opacity: 0, ease: "power2.inOut", duration: 8 }, 35);
 
         tl.fromTo(
@@ -156,6 +176,7 @@ export default function ScrollHero() {
           { opacity: 1, ease: "power2.out", duration: 8 },
           46,
         );
+      }
     });
 
     return () => ctx.revert();
@@ -315,11 +336,7 @@ export default function ScrollHero() {
           </div>
         </div>
 
-        {/* ══ YELLOW PANEL
-            Uses clipPath instead of scaleX — no counter-scale wrapper needed,
-            no JS runs per scroll frame, pure compositor animation.
-            Panel is full 100vw; clipPath hides the left portion until revealed.
-        ══ */}
+        {/* ══ YELLOW PANEL ══ */}
         <div
           ref={yellowPanelRef}
           style={{
@@ -332,11 +349,13 @@ export default function ScrollHero() {
             zIndex: 20,
             willChange: "clip-path",
             overflow: "hidden",
+            // Default (desktop) initial clip — JS overrides for mobile
             clipPath: "inset(0 0 0 62%)",
           }}
         >
-          {/* ── Inner content wrapper — same layout as original ── */}
+          {/* ── DESKTOP inner content ── */}
           <div
+            className="scroll-hero-desktop-content"
             style={{
               position: "absolute",
               top: 0,
@@ -445,7 +464,6 @@ export default function ScrollHero() {
                     decoding="async"
                     style={{ width: "100%", height: "auto", display: "block" }}
                   />
-                  {/* White gradient at the bottom so the black plus sign is visible */}
                   <div
                     style={{
                       position: "absolute",
@@ -453,7 +471,8 @@ export default function ScrollHero() {
                       left: 0,
                       right: 0,
                       height: "44px",
-                      background: "linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 100%)",
+                      background:
+                        "linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 100%)",
                       pointerEvents: "none",
                       zIndex: 1,
                     }}
@@ -480,8 +499,153 @@ export default function ScrollHero() {
             </div>
           </div>
 
-          {/* Phase-3 full-width black text overlay */}
+          {/* ── MOBILE inner content: description + certs ── */}
           <div
+            className="scroll-hero-mobile-content"
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+              padding: "1.5rem 1.5rem 2.5rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#000",
+                fontSize: "clamp(0.9rem, 4vw, 1.2rem)",
+                lineHeight: 1.5,
+                fontWeight: 500,
+                textAlign: "center",
+                maxWidth: "90%",
+                margin: 0,
+              }}
+            >
+              Highly experienced pharmacists and manufacturing industry professionals
+              that drive our partners' success.
+            </p>
+            {/* Certifications */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "1rem",
+                width: "100%",
+              }}
+            >
+              {[
+                { src: isoCert, label: "ISO / Import" },
+                { src: wholesaleCert, label: "Wholesale License" },
+              ].map((cert) => (
+                <Link
+                  to="/about"
+                  key={cert.label}
+                  className="group"
+                  style={{
+                    width: "110px",
+                    position: "relative",
+                    cursor: "pointer",
+                    overflow: "hidden",
+                    display: "block",
+                    backgroundColor: "#fff",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                    border: "1px solid rgba(0,0,0,0.06)",
+                    flexShrink: 0,
+                  }}
+                >
+                  <img
+                    src={cert.src}
+                    alt={cert.label}
+                    width={400}
+                    height={400}
+                    decoding="async"
+                    style={{ width: "100%", height: "auto", display: "block" }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: "32px",
+                      background: "linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 100%)",
+                      pointerEvents: "none",
+                      zIndex: 1,
+                    }}
+                  />
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="black"
+                    strokeWidth="1.5"
+                    className="transition-transform duration-300 group-hover:rotate-90"
+                    style={{
+                      position: "absolute",
+                      bottom: "7px",
+                      right: "7px",
+                      width: "16px",
+                      height: "16px",
+                      zIndex: 2,
+                    }}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* ── MOBILE: black title overlay inside yellow panel (phase-3) ── */}
+          <div
+            className="scroll-hero-mobile-phase3"
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              zIndex: 35,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              paddingBottom: "40vh",
+            }}
+          >
+            <p
+              style={{
+                color: "#000",
+                fontSize: "clamp(1.3rem, 5vw, 2rem)",
+                fontWeight: 700,
+                margin: 0,
+                marginBottom: "1rem",
+                textAlign: "center",
+              }}
+            >
+              Droga Pharma
+            </p>
+            <h2
+              style={{
+                fontSize: "clamp(3.5rem, 14vw, 6rem)",
+                fontWeight: 900,
+                color: "#000",
+                lineHeight: 0.88,
+                textTransform: "uppercase",
+                margin: 0,
+                textAlign: "center",
+                letterSpacing: "-0.04em",
+              }}
+            >
+              <span style={{ display: "block" }}>Serving The</span>
+              <span style={{ display: "block" }}>People !</span>
+            </h2>
+          </div>
+
+          {/* Phase-3 full-width black text overlay (desktop) */}
+          <div
+            className="scroll-hero-desktop-phase3"
             style={{
               position: "absolute",
               top: 0,
@@ -519,8 +683,9 @@ export default function ScrollHero() {
           </div>
         </div>
 
-        {/* White text overlay */}
+        {/* White text overlay (desktop) */}
         <div
+          className="scroll-hero-desktop-heading"
           style={{
             position: "absolute",
             top: 0,
@@ -555,7 +720,81 @@ export default function ScrollHero() {
             </h1>
           </div>
         </div>
+
+        {/* ── MOBILE: centered heading (white) ── */}
+        <div
+          className="scroll-hero-mobile-heading"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 15,
+            pointerEvents: "none",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            paddingBottom: "40vh", // just above the yellow box strip
+          }}
+        >
+          <p
+            style={{
+              color: "#fff",
+              fontSize: "clamp(1.3rem, 5vw, 2rem)",
+              fontWeight: 700,
+              textTransform: "none",
+              margin: 0,
+              marginBottom: "1rem",
+              textAlign: "center",
+            }}
+          >
+            Droga Pharma
+          </p>
+          <h1
+            style={{
+              fontSize: "clamp(3.5rem, 14vw, 6rem)",
+              fontWeight: 900,
+              color: "#fff",
+              lineHeight: 0.88,
+              textTransform: "uppercase",
+              margin: 0,
+              textAlign: "center",
+              letterSpacing: "-0.04em",
+            }}
+          >
+            <span style={{ display: "block" }}>Serving The</span>
+            <span style={{ display: "block" }}>People !</span>
+          </h1>
+        </div>
       </div>
+
+      {/* ── Responsive CSS ── */}
+      <style>{`
+        /* Desktop: show desktop elements, hide mobile elements */
+        @media (min-width: 768px) {
+          .scroll-hero-desktop-content { display: flex !important; }
+          .scroll-hero-desktop-phase3 { display: block !important; }
+          .scroll-hero-desktop-heading { display: block !important; }
+          .scroll-hero-mobile-content { display: none !important; }
+          .scroll-hero-mobile-heading { display: none !important; }
+        }
+
+        /* Mobile: hide desktop elements, show mobile elements */
+        @media (max-width: 767px) {
+          .scroll-hero-desktop-content { display: none !important; }
+          .scroll-hero-desktop-phase3 { display: none !important; }
+          .scroll-hero-desktop-heading { display: none !important; }
+          .scroll-hero-mobile-content { display: flex !important; }
+          .scroll-hero-mobile-heading { display: flex !important; }
+          .scroll-hero-mobile-phase3 { display: flex !important; }
+        }
+
+        @media (min-width: 768px) {
+          .scroll-hero-mobile-phase3 { display: none !important; }
+        }
+      `}</style>
     </div>
   );
 }

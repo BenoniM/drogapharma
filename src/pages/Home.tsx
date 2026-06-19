@@ -309,7 +309,8 @@ const Home = () => {
             <div className="absolute inset-0 bg-black/5" />
           </div>
 
-          <div className="relative z-10 w-full px-4 md:px-8 lg:px-12 xl:px-16">
+          {/* ── Desktop layout ── */}
+          <div className="hidden lg:block relative z-10 w-full px-4 md:px-8 lg:px-12 xl:px-16">
             <ScrollReveal>
               <div className="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-16">
                 <div className="flex items-start gap-4 md:gap-8 lg:w-[45%] xl:w-[40%]">
@@ -334,18 +335,13 @@ const Home = () => {
                       to="/about"
                       className="mt-4 relative self-start inline-flex items-center text-base lg:text-lg text-white group"
                     >
-                      {/* Left Arrow (sliding in from left) */}
                       <div className="flex items-center justify-end overflow-hidden w-0 group-hover:w-[28px] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
                         <ArrowRight size={20} className="mr-2 shrink-0" />
                       </div>
-
-                      {/* Text */}
                       <span className="relative whitespace-nowrap font-bold">
                         More About Droga Pharma
                         <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-primary transform scale-x-0 origin-left transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100" />
                       </span>
-
-                      {/* Right Arrow (sliding out to right) */}
                       <div className="flex items-center justify-start overflow-hidden w-[28px] group-hover:w-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
                         <ArrowRight size={20} className="ml-2 shrink-0" />
                       </div>
@@ -353,7 +349,7 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Headquarters Image - placed flush at very bottom, increased size */}
+                {/* Headquarters Image - desktop: flush bottom with transforms */}
                 <div className="w-full lg:w-[55%] xl:w-[60%] flex justify-end">
                   <img
                     src={Headquarters}
@@ -363,6 +359,51 @@ const Home = () => {
                 </div>
               </div>
             </ScrollReveal>
+          </div>
+
+          {/* ── Mobile layout ── */}
+          <div className="lg:hidden relative z-10 w-full min-h-[700px] flex flex-col overflow-hidden">
+            {/* Text — top left */}
+            <div className="px-5 pt-2 pb-4 flex items-start gap-3">
+              <div className="flex-shrink-0 pt-0.5">
+                <span className="text-xs font-medium text-white/70 uppercase tracking-widest">
+                  About Us
+                </span>
+              </div>
+              <div className="flex flex-col gap-3">
+                <p className="text-sm leading-relaxed text-white font-normal">
+                  Established in 2015, we are working in the pharmaceuticals
+                  import, wholesale and retail business, targeting the public
+                  as well as the private health sector of Ethiopia.
+                </p>
+                <p className="text-sm leading-relaxed text-white font-normal">
+                  Our team is made up of highly experienced pharmacists and
+                  manufacturing industry professionals who utilize their
+                  unique knowledge to create and implement cutting-edge
+                  management systems.
+                </p>
+                <Link
+                  to="/about"
+                  className="mt-1 relative self-start inline-flex items-center text-sm text-white group"
+                >
+                  <span className="relative whitespace-nowrap font-bold pb-1">
+                    More About Droga Pharma
+                    {/* Always-visible yellow underline on mobile */}
+                    <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-primary" />
+                  </span>
+                  <ArrowRight size={16} className="ml-1.5 shrink-0" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Building — very large, pushed far right, cut off at bottom */}
+            <div className="absolute bottom-0 right-[-50%] w-[170%] translate-y-[25%]">
+              <img
+                src={Headquarters}
+                alt="Droga Pharma headquarters"
+                className="w-full h-auto object-contain rounded-t-lg drop-shadow-2xl brightness-[90%]"
+              />
+            </div>
           </div>
         </section>
 

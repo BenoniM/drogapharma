@@ -142,142 +142,193 @@ const NewsMosaic = () => {
   const pos = getTextPosition(hoveredIndex);
 
   return (
-    <section id="news" className="bg-[#fcfcfc] min-h-[80vh] relative flex items-center justify-center overflow-hidden py-24">
-
-      {/* Corner Labels */}
-      <div className="absolute top-10 left-10 md:left-16 z-30">
-        <span className="font-display text-lg md:text-2xl text-black/90 font-bold tracking-tight uppercase">AWARD</span>
-      </div>
-      <div className="absolute top-10 right-10 md:right-16 z-30">
-        <span className="font-display text-lg md:text-2xl text-black/90 font-bold tracking-tight uppercase">RECOGNITION</span>
-      </div>
-      <div className="absolute bottom-10 left-10 md:left-16 z-30">
-        <span className="font-display text-lg md:text-2xl text-black/90 font-bold tracking-tight uppercase">RESEARCH</span>
-      </div>
-      <div className="absolute bottom-10 right-10 md:right-16 z-30">
-        <Link to="/blog" className="font-display text-lg md:text-2xl text-black/90 font-bold tracking-tight uppercase hover:text-primary transition-colors flex items-center gap-2">
-          SEE ALL NEWS <ArrowUpRight size={20} className="hidden md:block" />
-        </Link>
-      </div>
-
-      {/* Hover Content */}
-      <div className="absolute inset-0 pointer-events-none z-40">
-        <AnimatePresence>
-          {hoveredIndex !== null && hoveredIndex !== 3 && (
-            <>
-              {/* Corner Text (Replaces/Overlays onto background border texts smoothly) */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="absolute w-[80%] sm:w-[50%] md:w-auto md:min-w-[280px] max-w-[280px] md:max-w-[340px] flex flex-col z-50 pointer-events-auto"
-                style={{ 
-                  top: pos.top, 
-                  bottom: pos.bottom, 
-                  left: window.innerWidth >= 768 ? pos.mdLeft : pos.left, 
-                  right: window.innerWidth >= 768 ? pos.mdRight : pos.right, 
-                  textAlign: pos.textAlign, 
-                  alignItems: pos.alignItems 
-                }}
-              >
-                {/* Visual gap spacer so the title begins clean beneath the static tag line */}
-                {hoveredIndex !== 2 && <div className="h-7 md:h-9" />}
-                <h3 className="font-display text-lg md:text-2xl font-bold text-black mb-3 leading-tight tracking-tight">
-                  {items[hoveredIndex].title}
-                </h3>
-                <p className="text-black/70 text-xs md:text-sm leading-relaxed font-semibold">
-                  {items[hoveredIndex].desc}
-                </p>
-                {hoveredIndex === 2 && <div className="h-7 md:h-9" />}
-              </motion.div>
-              
-              {/* Central Full Image (Slightly smaller sizing) */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.85 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className="absolute inset-0 flex items-center justify-center pointer-events-none z-40"
-              >
+    <>
+      {/* ══ MOBILE LAYOUT (hidden on md+) ══════════════════════════════ */}
+      <section id="news" className="md:hidden bg-[#fcfcfc] py-12 px-4">
+        <div className="mb-8 text-center">
+          <span className="font-display text-2xl font-semibold text-black uppercase tracking-tight">
+            News & Awards
+          </span>
+        </div>
+        <div className="flex flex-col gap-4">
+          {items.slice(0, 3).map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.4, delay: i * 0.1, ease: "easeOut" }}
+              className="flex gap-4 bg-white border border-black/8 rounded-sm overflow-hidden shadow-sm"
+            >
+              <div className="w-28 h-28 flex-shrink-0 overflow-hidden">
                 <img
-                  src={items[hoveredIndex].img!}
-                  alt={items[hoveredIndex].title}
-                  className="w-auto h-auto max-w-[60%] md:max-w-[55%] max-h-[50%] md:max-h-[55%] object-contain shadow-2xl rounded-sm bg-white"
+                  src={item.img!}
+                  alt={item.tag}
+                  className="w-full h-full object-cover"
                 />
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-      </div>
+              </div>
+              <div className="flex flex-col justify-center py-3 pr-4 flex-1 min-w-0">
+                <span className="text-[12px] font-normal uppercase tracking-widest mb-1">
+                  {item.tag}
+                </span>
+                <h3 className="font-display text-sm font-semibold text-black leading-snug line-clamp-2">
+                  {item.title}
+                </h3>
+                <p className="text-black/60 text-xs leading-relaxed mt-1 line-clamp-2">
+                  {item.desc}
+                </p>
+              </div>
+            </motion.div>
+          ))}
 
-      {/* ── 2×2 cluster expanding from centre ─────────────────────── */}
-      <div className="relative z-20" style={{ width: CONT, height: CONT }}>
-        <div
-          ref={containerRef}
-          style={{ position: "absolute", inset: 0 }}
-        >
-          {items.map((item, i) => {
-            const initPos = boxPos(i, BASE);
+          {/* See All News button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.35, ease: "easeOut" }}
+          >
+            <Link
+              to="/blog"
+              className="flex items-center justify-center gap-2 bg-black text-white py-4 font-display font-bold text-sm uppercase tracking-widest hover:bg-primary hover:text-black transition-colors duration-300 w-full"
+            >
+              See All News <ArrowUpRight size={16} />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
 
-            const commonStyle: React.CSSProperties = {
-              position: "absolute",
-              left: initPos.left,
-              top:  initPos.top,
-              width:  BASE,
-              height: BASE,
-              overflow: "hidden",
-            };
+      {/* ══ DESKTOP LAYOUT (hidden below md) ══════════════════════════ */}
+      <section id="news-desktop" className="hidden md:flex bg-[#fcfcfc] min-h-[80vh] relative items-center justify-center overflow-hidden py-24">
 
-            const imgClass = `w-full h-full object-cover transition-all duration-700 ${
-              hoveredIndex !== null
-                ? "blur-[4px] grayscale opacity-30 scale-100"
-                : "grayscale-0 scale-100"
-            }`;
+        {/* Corner Labels */}
+        <div className="absolute top-10 left-10 md:left-16 z-30">
+          <span className="font-display text-lg md:text-2xl text-black/90 font-bold tracking-tight uppercase">AWARD</span>
+        </div>
+        <div className="absolute top-10 right-10 md:right-16 z-30">
+          <span className="font-display text-lg md:text-2xl text-black/90 font-bold tracking-tight uppercase">RECOGNITION</span>
+        </div>
+        <div className="absolute bottom-10 left-10 md:left-16 z-30">
+          <span className="font-display text-lg md:text-2xl text-black/90 font-bold tracking-tight uppercase">RESEARCH</span>
+        </div>
+        <div className="absolute bottom-10 right-10 md:right-16 z-30">
+          <Link to="/blog" className="font-display text-lg md:text-2xl text-black/90 font-bold tracking-tight uppercase hover:text-primary transition-colors flex items-center gap-2">
+            SEE ALL NEWS <ArrowUpRight size={20} className="hidden md:block" />
+          </Link>
+        </div>
 
-            if (i === 3) {
+        {/* Hover Content */}
+        <div className="absolute inset-0 pointer-events-none z-40">
+          <AnimatePresence>
+            {hoveredIndex !== null && hoveredIndex !== 3 && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="absolute w-[80%] sm:w-[50%] md:w-auto md:min-w-[280px] max-w-[280px] md:max-w-[340px] flex flex-col z-50 pointer-events-auto"
+                  style={{ 
+                    top: pos.top, 
+                    bottom: pos.bottom, 
+                    left: window.innerWidth >= 768 ? pos.mdLeft : pos.left, 
+                    right: window.innerWidth >= 768 ? pos.mdRight : pos.right, 
+                    textAlign: pos.textAlign, 
+                    alignItems: pos.alignItems 
+                  }}
+                >
+                  {hoveredIndex !== 2 && <div className="h-7 md:h-9" />}
+                  <h3 className="font-display text-lg md:text-2xl font-bold text-black mb-3 leading-tight tracking-tight">
+                    {items[hoveredIndex].title}
+                  </h3>
+                  <p className="text-black/70 text-xs md:text-sm leading-relaxed font-semibold">
+                    {items[hoveredIndex].desc}
+                  </p>
+                  {hoveredIndex === 2 && <div className="h-7 md:h-9" />}
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.85 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="absolute inset-0 flex items-center justify-center pointer-events-none z-40"
+                >
+                  <img
+                    src={items[hoveredIndex].img!}
+                    alt={items[hoveredIndex].title}
+                    className="w-auto h-auto max-w-[60%] md:max-w-[55%] max-h-[50%] md:max-h-[55%] object-contain shadow-2xl rounded-sm bg-white"
+                  />
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* 2×2 cluster expanding from centre */}
+        <div className="relative z-20" style={{ width: CONT, height: CONT }}>
+          <div
+            ref={containerRef}
+            style={{ position: "absolute", inset: 0 }}
+          >
+            {items.map((item, i) => {
+              const initPos = boxPos(i, BASE);
+
+              const commonStyle: React.CSSProperties = {
+                position: "absolute",
+                left: initPos.left,
+                top:  initPos.top,
+                width:  BASE,
+                height: BASE,
+                overflow: "hidden",
+              };
+
+              const imgClass = `w-full h-full object-cover transition-all duration-700 ${
+                hoveredIndex !== null
+                  ? "blur-[4px] grayscale opacity-30 scale-100"
+                  : "grayscale-0 scale-100"
+              }`;
+
+              if (i === 3) {
+                return (
+                  <Link
+                    key={i}
+                    to="/blog"
+                    ref={(el) => { squareRefs.current[i] = el as unknown as HTMLElement; }}
+                    onMouseEnter={() => setHoveredIndex(i)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    className={`bg-black flex flex-col items-center justify-center group duration-300 transition-opacity ${
+                      hoveredIndex !== null && hoveredIndex !== 3 
+                        ? "opacity-30 blur-[4px]" 
+                        : "opacity-100 hover:bg-primary"
+                    }`}
+                    style={commonStyle}
+                  >
+                    <span className="font-display text-base md:text-xl font-bold text-white group-hover:text-black transition-colors duration-300 text-center px-4 leading-tight">
+                      SEE ALL<br />NEWS
+                    </span>
+                    <ArrowUpRight className="text-white group-hover:text-black transition-colors duration-300 mt-2" size={24} strokeWidth={2} />
+                  </Link>
+                );
+              }
+              
               return (
-                <Link
+                <div
                   key={i}
-                  to="/blog"
-                  // HTML nodes need an HTMLElement ref type, casting if strict
-                  ref={(el) => { squareRefs.current[i] = el as unknown as HTMLElement; }}
+                  ref={(el) => { squareRefs.current[i] = el; }}
                   onMouseEnter={() => setHoveredIndex(i)}
                   onMouseLeave={() => setHoveredIndex(null)}
-                  // REMOVED: transition-all duration-500
-                  // ADDED: transition-colors, transition-opacity, and isolated duration classes
-                  className={`bg-black flex flex-col items-center justify-center group duration-300 transition-opacity ${
-                    hoveredIndex !== null && hoveredIndex !== 3 
-                      ? "opacity-30 blur-[4px]" 
-                      : "opacity-100 hover:bg-primary"
-                  }`}
-                  style={commonStyle}
+                  style={{ ...commonStyle, cursor: "pointer" }}
                 >
-                  {/* Handled background text transitions cleanly */}
-                  <span className="font-display text-base md:text-xl font-bold text-white group-hover:text-black transition-colors duration-300 text-center px-4 leading-tight">
-                    SEE ALL<br />NEWS
-                  </span>
-                  <ArrowUpRight className="text-white group-hover:text-black transition-colors duration-300 mt-2" size={24} strokeWidth={2} />
-                </Link>
+                  <img src={item.img!} alt={item.tag} className={imgClass} />
+                </div>
               );
-            }
-            
-            return (
-              <div
-                key={i}
-                ref={(el) => { squareRefs.current[i] = el; }}
-                onMouseEnter={() => setHoveredIndex(i)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                style={{ ...commonStyle, cursor: "pointer" }}
-              >
-                <img src={item.img!} alt={item.tag} className={imgClass} />
-              </div>
-            );
-          })}
+            })}
+          </div>
         </div>
-      </div>
 
-    </section>
+      </section>
+    </>
   );
 };
 
