@@ -1,6 +1,6 @@
 import { useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { motion, useAnimationFrame } from "framer-motion";
+import { motion, useAnimationFrame, useInView } from "framer-motion";
 import {
   ArrowRight,
   Pill,
@@ -75,6 +75,8 @@ const WaveStatRow = ({
   stat: (typeof WAVE_STATS)[number];
   index: number;
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef);
   const textRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   // Width cached by ResizeObserver — NEVER read in RAF to avoid layout thrashing
@@ -93,7 +95,7 @@ const WaveStatRow = ({
   }, [waveLength, amplitude]);
 
   useAnimationFrame((t) => {
-    if (!textRef.current || !pathRef.current || wRef.current === 0) return;
+    if (!isInView || !textRef.current || !pathRef.current || wRef.current === 0) return;
     const W = wRef.current;
     const loop = W + 600;
     const raw = ((t * speed) + stat.delayFraction * loop) % loop;
@@ -110,6 +112,8 @@ const WaveStatRow = ({
     <div
       ref={(el) => {
         if (!el) return;
+        // Assign to containerRef for useInView
+        (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
         const ro = new ResizeObserver(() => { wRef.current = el.offsetWidth; });
         ro.observe(el);
         wRef.current = el.offsetWidth;

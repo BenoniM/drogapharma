@@ -7,10 +7,10 @@ import { Search, Plus, Minus, ShoppingBag, ChevronLeft, ChevronRight } from "luc
 
 const FormattedProductName = ({ name }: { name: string }) => {
   const match = name.match(/(\s\(|,\s|\swith\s|\sfor\s|\s\d+(?:\.\d+)?\s?(?:mg|ml|cm|mm|x|\/|\*|%|\s)|-\d+(?:\.\d+)?)/i);
-  
+
   let mainPart = name;
   let subPart = "";
-  
+
   if (match && match.index !== undefined && match.index > 0) {
     mainPart = name.substring(0, match.index);
     subPart = name.substring(match.index);
@@ -243,14 +243,14 @@ const Products = () => {
             </motion.h1>
           </div>
 
-          {/* Description stays at bottom via flex-end */}
-          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
+          {/* Description aligned with title on desktop */}
+          <div className="w-full relative md:absolute md:top-[255px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
             <div className="flex justify-end">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="max-w-sm"
+                className="max-w-sm pointer-events-auto md:pt-6 lg:pt-10"
               >
                 <p className="text-black font-normal text-lg leading-relaxed">
                   Quality medicines, sutures, orthopedic implants, medical devices
@@ -293,11 +293,10 @@ const Products = () => {
                       <button
                         key={c}
                         onClick={() => handleCategoryChange(c)}
-                        className={`px-8 py-3 text-sm font-bold uppercase tracking-widest transition-colors ${
-                          isActive
+                        className={`px-8 py-3 text-sm font-bold uppercase tracking-widest transition-colors ${isActive
                             ? "bg-[#FFF200] text-black"
                             : "bg-zinc-100 text-black hover:bg-zinc-200"
-                        }`}
+                          }`}
                       >
                         {c}
                       </button>
@@ -334,14 +333,14 @@ const Products = () => {
                     {showHeader && (
                       <div className="mt-8 mb-2">
                         <h2 className="text-3xl md:text-4xl font-bold text-black pb-4">
-                          {product.category}
+                          {product.category === "Surgical" ? "Suture" : product.category}
                         </h2>
                         <div className="h-[1px] w-full bg-zinc-200" />
                       </div>
                     )}
-                    
+
                     <div className="bg-white group">
-                      <button 
+                      <button
                         onClick={() => setExpandedId(expandedId === product.name ? null : product.name)}
                         className="w-full py-8 flex items-center justify-between text-left hover:bg-zinc-50 transition-colors px-4"
                       >
@@ -357,7 +356,7 @@ const Products = () => {
                           </div>
                         </div>
                       </button>
-                      
+
                       <AnimatePresence>
                         {expandedId === product.name && (
                           <motion.div
@@ -386,10 +385,10 @@ const Products = () => {
                                 </ul>
                               </div>
                               <div className="w-[200px] aspect-[4/3] bg-white p-2 flex items-center justify-center shrink-0">
-                                <img 
-                                  src={categoryImages[product.category] || productsImg} 
-                                  alt={product.name} 
-                                  className="max-w-full max-h-full object-contain mix-blend-multiply" 
+                                <img
+                                  src={categoryImages[product.category] || productsImg}
+                                  alt={product.name}
+                                  className="max-w-full max-h-full object-contain mix-blend-multiply"
                                 />
                               </div>
                             </div>
@@ -414,8 +413,8 @@ const Products = () => {
             {/* Pagination Controls */}
             {totalPages > 1 && (
               <div className="flex justify-center items-center gap-6 mt-16">
-                <button 
-                  disabled={currentPage === 1} 
+                <button
+                  disabled={currentPage === 1}
                   onClick={() => {
                     setCurrentPage(prev => prev - 1);
                     document.getElementById('filters-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -425,8 +424,8 @@ const Products = () => {
                   <ChevronLeft className="text-black" />
                 </button>
                 <span className="text-sm font-bold uppercase tracking-widest">Page {currentPage} of {totalPages}</span>
-                <button 
-                  disabled={currentPage === totalPages} 
+                <button
+                  disabled={currentPage === totalPages}
                   onClick={() => {
                     setCurrentPage(prev => prev + 1);
                     document.getElementById('filters-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -437,7 +436,7 @@ const Products = () => {
                 </button>
               </div>
             )}
-            
+
           </div>
         </section>
 

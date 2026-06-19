@@ -525,14 +525,14 @@ const About = () => {
             </motion.h1>
           </div>
 
-          {/* Description stays at bottom via flex-end */}
-          <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
+          {/* Description aligned with title on desktop */}
+          <div className="w-full relative md:absolute md:top-[255px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
             <div className="flex justify-end">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="max-w-sm"
+                className="max-w-sm pointer-events-auto md:pt-6 lg:pt-10"
               >
                 <p className="text-black font-normal text-lg leading-relaxed">
                   Established in 2015, serving Ethiopia's healthcare needs.

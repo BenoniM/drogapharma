@@ -109,10 +109,11 @@
     @apply border-border;
   }
 
-  html {
-    scroll-behavior: smooth;
+  html,
+  body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Removed scroll-behavior: smooth as it severely conflicts with GSAP ScrollTrigger */
   }
 
   body {

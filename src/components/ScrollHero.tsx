@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -27,19 +27,7 @@ const YELLOW = "#FFF200";
 // All hero images — preload so GPU has textures ready before scroll starts
 const HERO_SRCS = [supplyImg, grp1, grp2, grp3, grp4, grp5, grp6];
 
-function preloadImages(srcs: string[]): Promise<void[]> {
-  return Promise.all(
-    srcs.map(
-      (src) =>
-        new Promise<void>((resolve) => {
-          const img = new window.Image();
-          img.onload = () => resolve();
-          img.onerror = () => resolve(); // never block on error
-          img.src = src;
-        }),
-    ),
-  );
-}
+// (Preload removed — delaying ScrollTrigger creation until network responses finish causes a massive scroll disconnect on initial load)
 
 function Cell({
   style,
@@ -51,7 +39,7 @@ function Cell({
   fetchpriority?: "high" | "low" | "auto";
 }) {
   return (
-    <div style={{ position: "absolute", overflow: "hidden", ...style }}>
+    <div style={{ position: "absolute", overflow: "hidden", backgroundColor: "#000", ...style }}>
       <img
         src={imgSrc}
         draggable={false}
@@ -62,14 +50,15 @@ function Cell({
         height={450}
         fetchPriority={fetchpriority ?? "auto"}
         decoding="async"
-        className="brightness-[85%]"
         style={{
           width: "100%",
           height: "100%",
           objectFit: "cover",
           display: "block",
-          // Smooth downscale — avoids aliasing artifacts during scale animation
-          imageRendering: "auto",
+          // Override the global `img { transition: opacity 500ms }` rule.
+          transition: "none",
+          // Use opacity instead of CSS filter: brightness() for huge performance gain
+          opacity: 0.85,
         }}
       />
     </div>
@@ -91,16 +80,15 @@ export default function ScrollHero() {
   const desc3Ref = useRef<HTMLDivElement>(null);
   const certsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // ── Preload all hero images FIRST so GPU textures are warm ──────────────
-    // We create the ScrollTrigger only after images are decoded. This prevents
-    // the mid-animation texture-upload stall that causes the first scroll jank.
-    preloadImages(HERO_SRCS).then(() => {
-      const ctx = gsap.context(() => {
-        const wrap = wrapRef.current!;
+  useLayoutEffect(() => {
+    // We create the ScrollTrigger immediately so it perfectly syncs with the
+    // user's scroll from frame 1. Delaying it behind an image preload causes
+    // the scroll to feel disconnected or stuck on initial load.
+    const ctx = gsap.context(() => {
+      const wrap = wrapRef.current!;
 
-        // Promote mosaic to its own GPU layer immediately
-        gsap.set(mosaicRef.current, { z: 0, force3D: true });
+      // Promote mosaic to its own GPU layer immediately
+      gsap.set(mosaicRef.current, { z: 0, force3D: true });
 
         // ── Yellow panel: start clipped so only 38 vw shows on the right ──
         // clipPath inset(top right bottom left)
@@ -118,10 +106,12 @@ export default function ScrollHero() {
             trigger: wrap,
             start: "top top",
             end: "bottom bottom",
-            // scrub: 0.5 — 0.5 s lag smooths raw scroll-position jitter
-            // (mouse-wheel & trackpad both send quantized events that cause
-            // micro-stutters when scrub:true passes them through 1:1).
-            scrub: 0.5,
+            // scrub: 1.5 creates a 1.5-second smoothing lag.
+            // This is CRITICAL for performance. It decouples the heavy GSAP
+            // animation calculations from the browser's raw scroll events.
+            // If the main thread drops a frame, the animation still glides
+            // smoothly to the target instead of snapping/stuttering.
+            scrub: 2,
           },
         });
 
@@ -166,10 +156,9 @@ export default function ScrollHero() {
           { opacity: 1, ease: "power2.out", duration: 8 },
           46,
         );
-      });
-
-      return () => ctx.revert();
     });
+
+    return () => ctx.revert();
   }, []);
 
   const headingStyle: React.CSSProperties = {
@@ -309,6 +298,7 @@ export default function ScrollHero() {
                   objectPosition: "center",
                   transform: "scale(1.12) translateY(-30px)",
                   display: "block",
+                  transition: "none",
                 }}
               />
               <div
@@ -342,6 +332,7 @@ export default function ScrollHero() {
             zIndex: 20,
             willChange: "clip-path",
             overflow: "hidden",
+            clipPath: "inset(0 0 0 62%)",
           }}
         >
           {/* ── Inner content wrapper — same layout as original ── */}

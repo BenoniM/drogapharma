@@ -98,33 +98,35 @@ export default function CRS() {
           </svg>
         </div>
 
-        <div className="w-full relative z-10 px-4 lg:px-12 xl:px-16">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
-            <div className="flex flex-col">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
-              >
-                Charities and<br />Foundations
-              </motion.h1>
-            </div>
-
-            <motion.div
+          {/* Title pinned to top of hero */}
+          <div className="absolute top-[140px] md:top-[255px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="max-w-sm"
+              transition={{ duration: 0.6 }}
+              className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
             >
-              <p className="text-black font-normal text-lg leading-relaxed">
-                Our corporate social responsibility work focuses on health,
-                education, community support, and sustainable access across the
-                ecosystems we serve.
-              </p>
-            </motion.div>
+              Charities and<br />Foundations
+            </motion.h1>
           </div>
-        </div>
+
+          {/* Description aligned with title on desktop */}
+          <div className="w-full relative md:absolute md:top-[235px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
+            <div className="flex justify-end">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="max-w-sm pointer-events-auto md:pt-6 lg:pt-10"
+              >
+                <p className="text-black font-normal text-lg leading-relaxed">
+                  Our corporate social responsibility work focuses on health,
+                  education, community support, and sustainable access across the
+                  ecosystems we serve.
+                </p>
+              </motion.div>
+            </div>
+          </div>
       </section>
 
       {/* Image overlapping the hero */}
