@@ -58,7 +58,7 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
   if (!timeline?.length) return null;
 
   return (
-    <div className="w-full h-screen flex flex-col">
+    <div className="w-full h-[95vh] md:h-screen flex flex-col">
       {/* Header — fixed at top */}
       <div
         style={{
@@ -177,9 +177,8 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
             return (
               <div
                 key={item.year}
-                className="flex-none flex flex-col h-full"
+                className="flex-none flex flex-col h-full w-[85vw] md:w-[clamp(200px,22vw,340px)]"
                 style={{
-                  width: "clamp(200px, 22vw, 340px)",
                   padding: "28px 24px",
                   backgroundColor: isEven ? "transparent" : "#E6E6E6",
                 }}
@@ -188,8 +187,8 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
                   <>
                     {item.image && (
                       <div
+                        className="w-[85%] md:w-[60%]"
                         style={{
-                          width: "60%",
                           aspectRatio: "4/3",
                           marginBottom: "16px",
                           overflow: "hidden",
@@ -206,12 +205,11 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
                       </div>
                     )}
                     <p
+                      className="text-[17px] md:text-[12px] max-w-[90%] md:max-w-[240px]"
                       style={{
-                        fontSize: "12px",
                         lineHeight: "1.6",
                         color: "#555",
                         whiteSpace: "pre-wrap",
-                        maxWidth: "240px",
                         marginBottom: "auto",
                         flexShrink: 0,
                       }}
@@ -251,8 +249,8 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
                     </p>
                     {item.image && (
                       <div
+                        className="w-[85%] md:w-[60%]"
                         style={{
-                          width: "60%",
                           aspectRatio: "4/3",
                           marginBottom: "16px",
                           overflow: "hidden",
@@ -269,12 +267,11 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
                       </div>
                     )}
                     <p
+                      className="text-[17px] md:text-[12px] max-w-[90%] md:max-w-[240px]"
                       style={{
-                        fontSize: "12px",
                         lineHeight: "1.6",
                         color: "#000000ff",
                         whiteSpace: "pre-wrap",
-                        maxWidth: "240px",
                         flexShrink: 0,
                       }}
                     >

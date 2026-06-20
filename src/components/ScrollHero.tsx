@@ -83,7 +83,7 @@ export default function ScrollHero() {
         // ── MOBILE: yellow panel starts clipped from the BOTTOM ──
         // inset(top right bottom left). Start with ~38vh strip visible at bottom.
         gsap.set(yellowPanelRef.current, {
-          clipPath: "inset(62% 0 0 0)",
+          clipPath: "inset(55% 0 0 0)",
           force3D: true,
         });
 
@@ -107,7 +107,7 @@ export default function ScrollHero() {
         // 33→66: yellow panel expands UPWARDS (top inset shrinks to 0)
         tl.fromTo(
           yellowPanelRef.current,
-          { clipPath: "inset(62% 0 0 0)" },
+          { clipPath: "inset(55% 0 0 0)" },
           {
             clipPath: "inset(0% 0 0 0)",
             ease: "power2.inOut",
@@ -507,19 +507,20 @@ export default function ScrollHero() {
               bottom: 0,
               left: 0,
               width: "100%",
-              padding: "1.5rem 1.5rem 2.5rem",
+              height: "45vh",
+              padding: "2.5rem 1.5rem 2.5rem",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: "1.25rem",
+              justifyContent: "space-between",
             }}
           >
             <p
               style={{
                 color: "#000",
-                fontSize: "clamp(0.9rem, 4vw, 1.2rem)",
+                fontSize: "clamp(0.95rem, 4vw, 1.25rem)",
                 lineHeight: 1.5,
-                fontWeight: 500,
+                fontWeight: 600,
                 textAlign: "center",
                 maxWidth: "90%",
                 margin: 0,
@@ -533,7 +534,7 @@ export default function ScrollHero() {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                gap: "1rem",
+                gap: "1.5rem",
                 width: "100%",
               }}
             >
@@ -546,7 +547,7 @@ export default function ScrollHero() {
                   key={cert.label}
                   className="group"
                   style={{
-                    width: "110px",
+                    width: "160px",
                     position: "relative",
                     cursor: "pointer",
                     overflow: "hidden",
@@ -610,8 +611,9 @@ export default function ScrollHero() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "flex-end",
-              paddingBottom: "40vh",
+              justifyContent: "center",
+              paddingBottom: "45vh",
+              paddingTop: "64px",
             }}
           >
             <p
@@ -735,8 +737,9 @@ export default function ScrollHero() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "flex-end",
-            paddingBottom: "40vh", // just above the yellow box strip
+            justifyContent: "center",
+            paddingBottom: "45vh", // height of yellow box
+            paddingTop: "64px", // space for navbar
           }}
         >
           <p

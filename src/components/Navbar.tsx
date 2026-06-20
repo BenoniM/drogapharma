@@ -22,16 +22,7 @@ type NavItem = {
 const navLinks: NavItem[] = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
-  {
-    label: "Products",
-    path: "/products",
-    mega: true,
-    children: [
-      { label: "Medicine", path: "/products?category=Medicine", description: "Pharmaceuticals and treatments" },
-      { label: "Diagnostics", path: "/products?category=Diagnostics", description: "Diagnostic and monitoring equipment" },
-      { label: "Surgical", path: "/products?category=Surgical", description: "Surgical sutures, orthopedic instruments & implants" },
-    ],
-  },
+  { label: "Products", path: "/products" },
   { label: "Services", path: "/services" },
   {
     label: "Group",
@@ -85,9 +76,27 @@ const Navbar = () => {
   useEffect(() => {
     setHoveredItem(null);
     setIsMobileOpen(false);
-    setMobileExp(null);
+    
+    const activeParent = navLinks.find(item => {
+      if (!item.children) return false;
+      return item.children.some(c => !c.external && location.pathname === c.path.split("?")[0]);
+    });
+    setMobileExp(activeParent ? activeParent.label : null);
+    
     // window.scrollTo(0, 0); // Removed as it might interfere with scroll restoration
   }, [location.pathname]);
+
+  /* Lock body scroll when mobile menu is open */
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileOpen]);
 
   const isActive = (item: NavItem) => {
     if (item.path === "/" && location.pathname === "/") return true;
@@ -226,131 +235,148 @@ const Navbar = () => {
 
       {/* ── Mobile Navbar (Remains sticky top but styled similarly) ── */}
       <header
-        className={`lg:hidden fixed top-0 left-0 w-full z-50 transition-transform duration-500 ease-in-out ${hidden ? "-translate-y-[150%]" : "translate-y-0"
-          }`}
+        className={`lg:hidden fixed top-0 left-0 w-full z-50 transition-transform duration-500 ease-in-out ${
+          hidden ? "-translate-y-[150%]" : "translate-y-0"
+        }`}
       >
-        <motion.nav
-          layout
-          className={`w-full flex flex-col overflow-hidden transition-colors duration-300 shadow-sm ${isMobileOpen ? "bg-primary" : "bg-white/40 backdrop-blur-xl backdrop-saturate-150 border-b border-white/40"
-            }`}
-          style={{ borderRadius: "0" }}
-        >
-          <div className="flex items-center justify-between h-[56px] px-6">
+        <div className="w-full flex flex-col transition-colors duration-300">
+          <div className={`relative z-50 flex items-center justify-between h-[72px] px-6 transition-colors duration-300 ${
+            isMobileOpen ? "bg-white" : "bg-white/45 backdrop-blur-xl border-b border-black/5"
+          }`}>
             <Link to="/" className="flex items-center" onClick={() => setIsMobileOpen(false)}>
-              <img src={logo} alt="Droga Pharma" className="h-8 w-auto" style={{ mixBlendMode: isMobileOpen ? "multiply" : "normal" }} />
+              <img src={logo} alt="Droga Pharma" className="h-10 w-auto" />
             </Link>
 
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className="w-10 h-10 flex items-center justify-center text-black"
+              className="w-12 h-12 flex items-center justify-center text-black"
             >
-              <AnimatePresence mode="wait">
-                {isMobileOpen ? (
-                  <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                    <X size={24} />
-                  </motion.div>
-                ) : (
-                  <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                    <Menu size={24} />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {isMobileOpen ? <X size={32} /> : <Menu size={32} />}
             </button>
           </div>
 
           <AnimatePresence>
             {isMobileOpen && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
-                className="border-t border-black bg-primary"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="relative w-full bg-white/95 backdrop-blur-3xl border-t border-black/5 flex flex-col shadow-2xl overflow-hidden z-40"
               >
-                <div className="px-6 py-6 flex flex-col gap-2">
-                  {navLinks.map((item) => (
-                    <div key={item.label}>
-                      {item.children ? (
-                        <>
-                          <button
-                            onClick={() => setMobileExp(mobileExp === item.label ? null : item.label)}
-                            className="text-lg font-bold py-2 w-full text-left flex items-center justify-between text-black uppercase tracking-wide"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className={`w-2 h-2 rounded-full ${isActive(item) ? "bg-blue-600" : "bg-transparent"}`} />
+                <div className="w-full py-8 px-6 flex flex-col items-center gap-5">
+                  {navLinks.map((item) => {
+                    const active = isActive(item);
+                    return (
+                      <div key={item.label} className="w-full flex flex-col items-center">
+                        {item.children ? (
+                          <>
+                            <button
+                              onClick={() => setMobileExp(mobileExp === item.label ? null : item.label)}
+                              className={`w-full py-3.5 text-center text-2xl font-semibold uppercase tracking-widest transition-all duration-300 ${
+                                active ? "text-black bg-[#FFF200]" : "text-black"
+                              }`}
+                            >
                               {item.label}
-                            </div>
-                            <span className="text-2xl leading-none">{mobileExp === item.label ? "-" : "+"}</span>
-                          </button>
-                          <AnimatePresence>
-                            {mobileExp === item.label && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                className="overflow-hidden"
+                            </button>
+                            <AnimatePresence>
+                              {mobileExp === item.label && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  className="overflow-hidden w-full"
+                                >
+                                  <div className="py-5 flex flex-col items-center gap-6">
+                                    {item.children.map((child) => {
+                                      const childActive = !child.external && location.pathname === child.path.split("?")[0];
+                                      return child.external ? (
+                                        <a
+                                          key={child.label}
+                                          href={child.path}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-lg font-semibold uppercase tracking-widest text-black/55 hover:text-black transition-colors flex items-center gap-2"
+                                        >
+                                          {child.label} <ArrowUpRight size={16} />
+                                        </a>
+                                      ) : (
+                                        <Link
+                                          key={child.label}
+                                          to={child.path}
+                                          onClick={() => setIsMobileOpen(false)}
+                                          className="transition-colors flex items-center justify-center"
+                                        >
+                                          {childActive ? (
+                                            <div className="flex items-center gap-3">
+                                              <span className="h-[2px] w-8 bg-black" />
+                                              <span className="text-lg font-semibold uppercase tracking-widest text-black">{child.label}</span>
+                                            </div>
+                                          ) : (
+                                            <span className="text-lg font-semibold uppercase tracking-widest text-black/55 hover:text-black">{child.label}</span>
+                                          )}
+                                        </Link>
+                                      );
+                                    })}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </>
+                        ) : (
+                          <div className={`w-full text-center transition-all duration-300`}>
+                            {active ? (
+                              <div className="w-full bg-[#FFF200] py-3.5 text-center">
+                                <Link
+                                  to={item.path!}
+                                  onClick={() => setIsMobileOpen(false)}
+                                  className="text-2xl font-semibold uppercase tracking-widest text-black block w-full"
+                                >
+                                  {item.label}
+                                </Link>
+                              </div>
+                            ) : (
+                              <Link
+                                to={item.path!}
+                                onClick={() => setIsMobileOpen(false)}
+                                className="text-2xl font-semibold uppercase tracking-widest text-black/80 hover:text-black block w-full py-3"
                               >
-                                <div className="pl-6 pb-4 pt-2 flex flex-col gap-3 border-l-2 border-black/20 ml-2">
-                                  {item.children.map((child) =>
-                                    child.external ? (
-                                      <a
-                                        key={child.label}
-                                        href={child.path}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-sm font-semibold text-black/70 hover:text-black transition-colors"
-                                      >
-                                        {child.label} <ArrowUpRight size={14} />
-                                      </a>
-                                    ) : (
-                                      <Link
-                                        key={child.label}
-                                        to={child.path}
-                                        onClick={() => setIsMobileOpen(false)}
-                                        className="text-sm font-semibold text-black/70 hover:text-black transition-colors"
-                                      >
-                                        {child.label}
-                                      </Link>
-                                    )
-                                  )}
-                                </div>
-                              </motion.div>
+                                {item.label}
+                              </Link>
                             )}
-                          </AnimatePresence>
-                        </>
-                      ) : (
-                        <Link
-                          to={item.path!}
-                          onClick={() => setIsMobileOpen(false)}
-                          className="text-lg font-bold py-2 flex items-center gap-3 text-black uppercase tracking-wide"
-                        >
-                          <div className={`w-2 h-2 rounded-full ${isActive(item) ? "bg-blue-600" : "bg-transparent"}`} />
-                          {item.label}
-                        </Link>
-                      )}
-                    </div>
-                  ))}
-
-                  <div className="mt-8 pt-6 border-t border-black/20 flex flex-col gap-6">
-                    <Link
-                      to="/contact"
-                      onClick={() => setIsMobileOpen(false)}
-                      className="text-center py-4 bg-black text-primary font-bold uppercase tracking-wider rounded-xl"
-                    >
-                      Get in Touch
-                    </Link>
-                    <div className="flex items-center justify-center gap-6 text-black">
-                      <a href="tel:+251112734554" className="hover:text-black/60"><Phone size={20} /></a>
-                      <a href="https://www.facebook.com/DrogaPharma" target="_blank" rel="noopener noreferrer" className="hover:text-black/60"><Facebook size={20} /></a>
-                      <a href="https://www.linkedin.com/company/droga-pharma" target="_blank" rel="noopener noreferrer" className="hover:text-black/60"><Linkedin size={20} /></a>
-                    </div>
-                  </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
+
+                <Link
+                  to="/contact"
+                  onClick={() => setIsMobileOpen(false)}
+                  className="w-full text-center py-6 bg-black text-white hover:bg-[#FFF200] hover:text-black font-semibold uppercase tracking-widest transition-colors duration-200 block shrink-0 text-2xl"
+                >
+                  Get in Touch
+                </Link>
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.nav>
+        </div>
       </header>
+
+      {/* Backdrop Blur Overlay (placed outside both headers to bypass any transformed containing blocks) */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="lg:hidden fixed inset-0 bg-black/45 backdrop-blur-md z-40 pointer-events-auto"
+            onClick={() => setIsMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 };

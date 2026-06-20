@@ -67,13 +67,36 @@ const services = [
   },
 ];
 
-const PANEL_HEIGHT = 100;
+// ─── Responsive helper ─────────────────────────────────────────────────────
+
+const MOBILE_BREAKPOINT = 768; // matches Tailwind's `md`
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < MOBILE_BREAKPOINT : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return isMobile;
+}
+
+const PANEL_HEIGHT_DESKTOP = 100; // vh per panel on desktop
+const PANEL_HEIGHT_MOBILE = 70;   // vh per panel on mobile (shorter image, less scroll distance)
+const MOBILE_IMAGE_HEIGHT = "45vh"; // decreased image height on mobile
 
 function ServicesScroll() {
   const sectionRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const isMobile = useIsMobile();
 
-  const totalVh = services.length * PANEL_HEIGHT;
+  const panelHeight = isMobile ? PANEL_HEIGHT_MOBILE : PANEL_HEIGHT_DESKTOP;
+  const totalVh = services.length * panelHeight;
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -91,6 +114,137 @@ function ServicesScroll() {
   const service = services[activeIndex];
   const Icon = service.icon;
 
+  // On mobile, each "page" of the stacked images is MOBILE_IMAGE_HEIGHT tall
+  // (not 100vh like desktop), so the translateY distance is computed from that.
+  const mobileImageY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [`0vh`, `-${(services.length - 1) * parseFloat(MOBILE_IMAGE_HEIGHT)}vh`]
+  );
+
+  if (isMobile) {
+    return (
+      <div ref={sectionRef} style={{ height: `${totalVh}vh`, position: "relative" }}>
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: "1.5rem",
+          }}
+        >
+          {/* Top text block (same content/role as desktop's left column) */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex + "-top"}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              style={{ marginBottom: "1.25rem" }}
+            >
+              <span
+                style={{
+                  display: "block",
+                  fontSize: "0.65rem",
+                  fontWeight: 600,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "rgba(0,0,0,0.9)",
+                  marginBottom: "0.75rem",
+                }}
+              >
+                {service.tag}
+              </span>
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  backgroundColor: "#FFF200",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "0.75rem",
+                }}
+              >
+                <Icon size={16} color="black" />
+              </div>
+              <h2
+                className="font-display font-bold text-black"
+                style={{
+                  fontSize: "1.5rem",
+                  lineHeight: 1.15,
+                }}
+              >
+                {service.title}
+              </h2>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Centered, shortened image stack — same distribute/scroll pattern as desktop, just shorter, no wrapping box */}
+          <div style={{ position: "relative", width: "100%", height: MOBILE_IMAGE_HEIGHT, overflow: "hidden" }}>
+            <motion.div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                y: mobileImageY,
+              }}
+            >
+              {services.map((s, i) => (
+                <div
+                  key={i}
+                  style={{
+                    height: MOBILE_IMAGE_HEIGHT,
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <img
+                    src={s.image}
+                    alt={s.title}
+                    loading={i === 0 ? "eager" : "lazy"}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Bottom text block (same content/role as desktop's right column) */}
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={activeIndex + "-bottom"}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+              style={{
+                fontSize: "0.9rem",
+                lineHeight: 1.65,
+                color: "rgba(0,0,0,0.52)",
+                marginTop: "1.25rem",
+              }}
+            >
+              {service.desc}
+            </motion.p>
+          </AnimatePresence>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Desktop layout (unchanged) ──
   return (
     <div ref={sectionRef} style={{ height: `${totalVh}vh`, position: "relative" }}>
       <div
@@ -171,15 +325,15 @@ function ServicesScroll() {
             }}
           >
             {services.map((s, i) => (
-              <div 
-                key={i} 
-                style={{ 
-                  height: "100vh", 
-                  width: "100%", 
-                  display: "flex", 
-                  alignItems: "center", 
+              <div
+                key={i}
+                style={{
+                  height: "100vh",
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
                   justifyContent: "center",
-                  padding: "2rem 0" 
+                  padding: "2rem 0"
                 }}
               >
                 <img
@@ -232,10 +386,10 @@ function ServicesScroll() {
 // ─── How It Works ─────────────────────────────────────────────────────────────
 
 const steps = [
-  { step: "01", title: "Sourcing",           desc: "Identify WHO-approved manufacturers" },
-  { step: "02", title: "Procurement",        desc: "Negotiate terms and place orders" },
+  { step: "01", title: "Sourcing", desc: "Identify WHO-approved manufacturers" },
+  { step: "02", title: "Procurement", desc: "Negotiate terms and place orders" },
   { step: "03", title: "Import & Clearance", desc: "Handle shipping and customs" },
-  { step: "04", title: "Distribution",       desc: "Deliver to healthcare providers" },
+  { step: "04", title: "Distribution", desc: "Deliver to healthcare providers" },
 ];
 
 function HowItWorksBlind() {
@@ -247,7 +401,7 @@ function HowItWorksBlind() {
 
     // ── Entrance: slide in from right, staggered ──
     const reset = () => gsap.set(cards, { xPercent: 110 });
-    const play  = () =>
+    const play = () =>
       gsap.to(cards, {
         xPercent: 0,
         duration: 0.75,
@@ -260,14 +414,14 @@ function HowItWorksBlind() {
     ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top 80%",
-      onEnter:     () => { reset(); play(); },
+      onEnter: () => { reset(); play(); },
       onEnterBack: () => { reset(); play(); },
     });
 
     // ── Per-card hover + parallax ──
     cards.forEach((card, index) => {
       if (!card) return;
-      const isOdd   = index % 2 === 0; // 0,2 = white reveal; 1,3 = black reveal
+      const isOdd = index % 2 === 0; // 0,2 = white reveal; 1,3 = black reveal
       const content = card.querySelector<HTMLElement>('.hiw-content');
       const textEls = card.querySelectorAll<HTMLElement>('.hiw-text');
 
@@ -285,7 +439,7 @@ function HowItWorksBlind() {
           transformPerspective: 1000,
         });
       };
-      
+
       card.addEventListener('mousemove', onMove);
     });
 
@@ -301,16 +455,22 @@ const Services = () => {
       <div>
         {/* Dark Hero Section */}
         <section className="page-hero-section">
-          <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
+          <div className="absolute top-[40px] md:top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text {
                   fill: rgba(0, 0, 0, 0);
                   stroke: #000;
-                  stroke-width: 2px;
+                  stroke-width: 5px;
+
+                  /* Long visible line + long gap */
                   stroke-dasharray: 3000 1000;
+
+                  /* Smooth infinite movement */
                   animation: strokeDashBg 20s linear infinite;
-                  opacity: 0.55;
+
+                  opacity: 0.85;
+
                   
                 }
                 @keyframes strokeDashBg {
@@ -338,7 +498,7 @@ const Services = () => {
           </div>
 
           {/* Title pinned to top of hero */}
-          <div className="absolute top-[140px] md:top-[275px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
+          <div className="relative md:absolute md:top-[275px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -350,8 +510,8 @@ const Services = () => {
           </div>
 
           {/* Description aligned with title on desktop */}
-          <div className="w-full relative md:absolute md:top-[255px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
-            <div className="flex justify-end">
+          <div className="w-full relative mt-6 md:mt-0 md:absolute md:top-[255px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
+            <div className="flex justify-start md:justify-end">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

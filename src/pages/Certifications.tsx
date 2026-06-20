@@ -143,13 +143,13 @@ const Certifications = () => {
         {/* Dark Hero Section */}
         <section className="page-hero-section">
           {/* Subtle curved lines background element (matching image) */}
-          <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
+          <div className="absolute top-[40px] md:top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text {
                   fill: rgba(0, 0, 0, 0);
                   stroke: #000;
-                  stroke-width: 2px;
+                  stroke-width: 5px;
 
                   /* Long visible line + long gap */
                   stroke-dasharray: 3000 1000;
@@ -157,7 +157,7 @@ const Certifications = () => {
                   /* Smooth infinite movement */
                   animation: strokeDashBg 20s linear infinite;
 
-                  opacity: 0.55;
+                  opacity: 0.85;
 
                   
                 }
@@ -197,7 +197,7 @@ const Certifications = () => {
           </div>
           
           {/* Title pinned to top of hero */}
-          <div className="absolute top-[140px] md:top-[275px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
+          <div className="relative md:absolute md:top-[275px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -209,8 +209,8 @@ const Certifications = () => {
           </div>
 
           {/* Description aligned with title on desktop */}
-          <div className="w-full relative md:absolute md:top-[255px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
-            <div className="flex justify-end">
+          <div className="w-full relative mt-12 md:mt-0 md:absolute md:top-[255px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
+            <div className="flex justify-start md:justify-end">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -384,33 +384,6 @@ const Certifications = () => {
                 </p>
               </div>
             )}
-          </div>
-        </section>
-
-        {/* Image */}
-        <section className="relative h-[450px]">
-          <ImageSlider
-            images={[
-              { src: supplyImg, alt: "Quality" },
-              { src: labImg, alt: "Lab" },
-            ]}
-            className="h-full"
-            overlay
-          />
-          <div className="absolute inset-0 z-10 flex items-center justify-center">
-            <ScrollReveal>
-              <div className="text-center px-6">
-                <h2 className="font-display text-3xl md:text-5xl font-bold text-background">
-                  Quality Made for Ethiopia
-                </h2>
-                <p className="text-background/60 mt-4 max-w-lg mx-auto text-lg">
-                  Every product meets international quality benchmarks.
-                </p>
-                <Link to="/contact" className="btn-primary mt-8 inline-flex">
-                  Contact us <ArrowRight size={14} />
-                </Link>
-              </div>
-            </ScrollReveal>
           </div>
         </section>
       </div>

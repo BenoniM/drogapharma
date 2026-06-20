@@ -116,13 +116,13 @@ const CareersPage = () => {
       {/* Dark Hero Section */}
       <section className="page-hero-section">
         {/* Subtle curved lines background element (matching image) */}
-          <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
+          <div className="absolute top-[40px] md:top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text {
                   fill: rgba(0, 0, 0, 0);
                   stroke: #000;
-                  stroke-width: 2px;
+                  stroke-width: 5px;
 
                   /* Long visible line + long gap */
                   stroke-dasharray: 3000 1000;
@@ -130,7 +130,7 @@ const CareersPage = () => {
                   /* Smooth infinite movement */
                   animation: strokeDashBg 20s linear infinite;
 
-                  opacity: 0.55;
+                  opacity: 0.85;
 
                   
                 }
@@ -170,7 +170,7 @@ const CareersPage = () => {
           </div>
         
           {/* Title pinned to top of hero */}
-          <div className="absolute top-[140px] md:top-[275px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
+          <div className="relative md:absolute md:top-[275px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -182,8 +182,8 @@ const CareersPage = () => {
           </div>
 
           {/* Description aligned with title on desktop */}
-          <div className="w-full relative md:absolute md:top-[255px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
-            <div className="flex justify-end">
+          <div className="w-full relative mt-6 md:mt-0 md:absolute md:top-[255px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
+            <div className="flex justify-start md:justify-end">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -201,7 +201,7 @@ const CareersPage = () => {
 
       {/* Image overlapping the hero - moved to right edge */}
       <section className="relative z-20 pl-4 lg:pl-12 xl:pl-16 pr-0 -mt-24 w-full md:w-[90%] lg:w-[85%] ml-auto">
-        <div className="w-full h-[400px] md:h-[600px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
+        <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
           <ImageSlider
             images={careersHeroImages}
             className="absolute inset-0 z-0"
@@ -209,66 +209,8 @@ const CareersPage = () => {
         </div>
       </section>
 
-<section className="bg-[#fcfcfc] pt-20 pb-0">
-  <div className="w-full mx-auto px-4 lg:px-12 xl:px-16 mb-12">
-    <motion.p
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="text-xs font-semibold uppercase tracking-[0.12em] text-black/40 mb-3"
-    >
-      Our environment
-    </motion.p>
-    <motion.h2
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="font-display text-4xl md:text-5xl font-bold text-black tracking-tight leading-none"
-    >
-      Why Droga Pharma?
-    </motion.h2>
-  </div>
-
-  <div className="w-full">
-    <div className="grid grid-cols-1 md:grid-cols-2">
-      {whyDrogaItems.map((item, idx) => {
-        const isLeftCol = idx % 2 === 0;
-        const row = Math.floor(idx / 2);
-        const col = idx % 2;
-        const isGreyDesktop = (row + col) % 2 === 0;
-        const isGreyMobile = idx % 2 === 0;
-        return (
-          <motion.div
-            key={item.label}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: idx * 0.07 }}
-            className={`group flex flex-col hover:bg-[#FFF200] transition-colors duration-300 py-12 px-4
-              ${isLeftCol ? "md:pl-12 md:pr-10 xl:pl-16 xl:pr-10" : "md:pl-10 md:pr-12 xl:pl-10 xl:pr-16"}
-              ${isGreyMobile ? "bg-zinc-200/50" : "bg-transparent"}
-              ${isGreyDesktop ? "md:bg-zinc-200/50" : "md:bg-transparent"}
-            `}
-          >
-            <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-black/30 group-hover:text-black/50 transition-colors duration-300 mb-6">
-              {["Product", "Technology", "Operations", "Logistics", "Standards", "Partnerships"][idx]}
-            </span>
-            <h3 className="font-display text-2xl md:text-3xl font-bold text-black tracking-tight leading-tight mb-4">
-              {item.label}
-            </h3>
-            <p className="text-sm leading-relaxed text-black/50 group-hover:text-black/75 transition-colors duration-300 max-w-prose">
-              {item.description}
-            </p>
-          </motion.div>
-        );
-      })}
-    </div>
-  </div>
-</section>
-
-
       {/* Open positions */}
-      <section id="openings" className="bg-[#fcfcfc] pt-20 pb-20">
+      <section id="openings" className="bg-[#fcfcfc] pt-20 pb-0">
         <div className="w-full mx-auto px-4 lg:px-12 xl:px-16 mb-12">
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -351,6 +293,63 @@ const CareersPage = () => {
               </motion.div>
             );
           })}
+        </div>
+      </section>
+
+      <section className="bg-[#fcfcfc] pt-20 pb-20">
+        <div className="w-full mx-auto px-4 lg:px-12 xl:px-16 mb-12">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-xs font-semibold uppercase tracking-[0.12em] text-black/40 mb-3"
+          >
+            Our environment
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="font-display text-4xl md:text-5xl font-bold text-black tracking-tight leading-none"
+          >
+            Why Droga Pharma?
+          </motion.h2>
+        </div>
+
+        <div className="w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            {whyDrogaItems.map((item, idx) => {
+              const isLeftCol = idx % 2 === 0;
+              const row = Math.floor(idx / 2);
+              const col = idx % 2;
+              const isGreyDesktop = (row + col) % 2 === 0;
+              const isGreyMobile = idx % 2 === 0;
+              return (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: idx * 0.07 }}
+                  className={`group flex flex-col hover:bg-[#FFF200] transition-colors duration-300 py-12 px-4
+                    ${isLeftCol ? "md:pl-12 md:pr-10 xl:pl-16 xl:pr-10" : "md:pl-10 md:pr-12 xl:pl-10 xl:pr-16"}
+                    ${isGreyMobile ? "bg-zinc-200/50" : "bg-transparent"}
+                    ${isGreyDesktop ? "md:bg-zinc-200/50" : "md:bg-transparent"}
+                  `}
+                >
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-black/30 group-hover:text-black/50 transition-colors duration-300 mb-6">
+                    {["Product", "Technology", "Operations", "Logistics", "Standards", "Partnerships"][idx]}
+                  </span>
+                  <h3 className="font-display text-2xl md:text-3xl font-bold text-black tracking-tight leading-tight mb-4">
+                    {item.label}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-black/50 group-hover:text-black/75 transition-colors duration-300 max-w-prose">
+                    {item.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
     </div>

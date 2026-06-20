@@ -249,12 +249,14 @@
     animation: marquee 90s linear infinite;
   }
 
-  .animate-marquee:hover {
-    animation-play-state: paused;
-  }
+  @media (hover: hover) {
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
 
-  .animate-marquee-fast:hover {
-    animation-play-state: paused;
+    .animate-marquee-fast:hover {
+      animation-play-state: paused;
+    }
   }
 
   .hr-gradient {

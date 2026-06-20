@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 interface MarqueeClientsProps {
@@ -11,6 +12,8 @@ const MarqueeClients = ({
   variant = "horizontal",
   additionalSlides = 0,
 }: MarqueeClientsProps) => {
+  const [clickedItem, setClickedItem] = useState<string | null>(null);
+
   if (variant === "vertical-3") {
     const totalColumns = Math.max(3, 3 + additionalSlides);
 
@@ -105,27 +108,51 @@ const MarqueeClients = ({
           <div
             key={row.id}
             className="flex w-max animate-marquee-fast"
-            style={row.reverse ? { animationDirection: "reverse", animationDuration: "25s" } : { animationDuration: "25s" }}
+            style={
+              row.reverse
+                ? {
+                    animationDirection: "reverse",
+                    animationDuration: "25s",
+                    animationPlayState: clickedItem ? "paused" : undefined,
+                  }
+                : {
+                    animationDuration: "25s",
+                    animationPlayState: clickedItem ? "paused" : undefined,
+                  }
+            }
           >
-            {row.items.map((client, i) => (
-              <div
-                key={`${row.id}-${client.src}-${i}`}
-                className="flex-shrink-0"
-              >
+            {row.items.map((client, i) => {
+              const itemKey = `${row.id}-${client.src}-${i}`;
+              const isClicked = clickedItem === itemKey;
+              return (
                 <div
-                  className={`bg-[#fbfbfb] cursor-default w-[220px] h-[140px] md:w-[280px] md:h-[180px] flex items-center justify-center border-r border-black/5 group transition-all duration-300 ${
-                    rowIndex === 0 ? "border-t border-b" : "border-b"
-                  } border-black/5`}
+                  key={itemKey}
+                  className="flex-shrink-0"
+                  onClick={() => {
+                    setClickedItem((prev) => (prev === itemKey ? null : itemKey));
+                  }}
                 >
-                  <img
-                    src={client.src}
-                    alt={client.alt}
-                    loading="lazy"
-                    className="max-h-[60px] md:max-h-[80px] w-auto max-w-[140px] md:max-w-[180px] object-contain grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
-                  />
+                  <div
+                    className={`bg-[#fbfbfb] cursor-pointer w-[220px] h-[140px] md:w-[280px] md:h-[180px] flex items-center justify-center border-r border-black/5 group transition-all duration-300 ${
+                      rowIndex === 0 ? "border-t border-b" : "border-b"
+                    } border-black/5`}
+                  >
+                    <img
+                      src={client.src}
+                      alt={client.alt}
+                      loading="lazy"
+                      className={`max-h-[60px] md:max-h-[80px] w-auto max-w-[140px] md:max-w-[180px] object-contain transition-all duration-500 ${
+                        clickedItem !== null
+                          ? isClicked
+                            ? "grayscale-0 opacity-100"
+                            : "grayscale opacity-50"
+                          : "grayscale opacity-50 md:group-hover:grayscale-0 md:group-hover:opacity-100"
+                      }`}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ))}
       </div>

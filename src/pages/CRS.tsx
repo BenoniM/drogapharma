@@ -62,17 +62,21 @@ export default function CRS() {
 
       {/* Header */}
       <section className="page-hero-section">
-        <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
+        <div className="absolute top-[40px] md:top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
           <style>
             {`
               .anim-bg-text {
                 fill: rgba(0, 0, 0, 0);
                 stroke: #000;
-                stroke-width: 2px;
+                stroke-width: 5px;
+
+                /* Long visible line + long gap */
                 stroke-dasharray: 3000 1000;
+
+                /* Smooth infinite movement */
                 animation: strokeDashBg 20s linear infinite;
-                opacity: 0.55;
-                
+
+                opacity: 0.85;
               }
               @keyframes strokeDashBg {
                 from { stroke-dashoffset: 0; }
@@ -99,7 +103,7 @@ export default function CRS() {
         </div>
 
           {/* Title pinned to top of hero */}
-          <div className="absolute top-[140px] md:top-[255px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
+          <div className="relative md:absolute md:top-[255px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -111,8 +115,8 @@ export default function CRS() {
           </div>
 
           {/* Description aligned with title on desktop */}
-          <div className="w-full relative md:absolute md:top-[235px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
-            <div className="flex justify-end">
+          <div className="w-full relative mt-6 md:mt-0 md:absolute md:top-[255px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
+            <div className="flex justify-start md:justify-end">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

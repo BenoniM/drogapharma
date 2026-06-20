@@ -101,7 +101,7 @@ const TestimonialsSection = () => {
       <div className="w-full px-4 md:px-8 lg:px-12 xl:px-16">
         <div className="flex flex-col md:flex-row gap-12 md:gap-8 relative">
           {/* Left Column (Covers sliding cards with solid background) */}
-          <div className="md:w-1/3 flex flex-col justify-between shrink-0 min-h-[300px] md:min-h-[350px] pb-4 relative z-20 bg-white pr-4 md:pr-8">
+          <div className="md:w-1/3 flex flex-col justify-start md:justify-between shrink-0 min-h-0 md:min-h-[350px] gap-4 md:gap-0 pb-4 relative z-20 bg-white pr-4 md:pr-8">
             {/* White cover stretching to the far left of the screen */}
             <div className="absolute top-0 right-full w-[100vw] h-full bg-white z-20" />
             
@@ -111,7 +111,7 @@ const TestimonialsSection = () => {
             </h2>
 
             {/* Controls */}
-            <div className="flex items-center gap-4 mt-8 md:mt-0 relative z-30">
+            <div className="flex items-center gap-4 mt-0 relative z-30">
               <button
                 onClick={handlePrev}
                 className="w-14 h-14 rounded-full border border-black/20 text-black flex items-center justify-center transition-all duration-300 hover:bg-[#FFF200] hover:text-black hover:border-transparent group"

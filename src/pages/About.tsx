@@ -141,15 +141,15 @@ const storySlides = [
     signatureRole: "Group CEO",
   },
   {
-  image: teamImg,
-  alt: "Team",
-  title: "Founder's Message",
-  intro: "Welcome to Droga Pharma, where our journey began with a simple yet profound vision: to make healthcare accessible, sustainable, and reliable for everyone",
-  highlight: "The Heart of Droga Pharma lies in our unwavering commitment to making healthcare accessible.",
-  outro: "Thank you for trusting us with your health and well-being. Together, we are building a brighter and healthier future.",
-  signatureName: "Dr. Abdi Ermolo",
-  signatureRole: "Deputy CEO, Founder",
-},
+    image: teamImg,
+    alt: "Team",
+    title: "Founder's Message",
+    intro: "Welcome to Droga Pharma, where our journey began with a simple yet profound vision: to make healthcare accessible, sustainable, and reliable for everyone",
+    highlight: "The Heart of Droga Pharma lies in our unwavering commitment to making healthcare accessible.",
+    outro: "Thank you for trusting us with your health and well-being. Together, we are building a brighter and healthier future.",
+    signatureName: "Dr. Abdi Ermolo",
+    signatureRole: "Deputy CEO, Founder",
+  },
 ];
 
 const BalanceScale = () => (
@@ -158,7 +158,7 @@ const BalanceScale = () => (
     <path d="M20 35 L20 8" />
     <path d="M12 35 L28 35" />
     <path d="M18 8 L22 8" />
-    
+
     {/* Beam (tilting) */}
     <motion.g animate={{ rotate: [-15, 15, -15] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} style={{ transformOrigin: '20px 10px' }}>
       <path d="M6 10 L34 10" />
@@ -234,7 +234,7 @@ function CoreValuesSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
           {coreValuesCards.map((cv, i) => (
             <div key={i} className="bg-[#FFF200] p-8 md:p-10 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300">
-              <motion.div 
+              <motion.div
                 className="mb-40 inline-flex"
                 animate={cv.animation as any}
               >
@@ -339,7 +339,7 @@ const qualityPolicyData = {
 function QualityPolicySection() {
   const [lang, setLang] = useState<'ENG' | 'AMH'>('ENG');
 
-  const variants = {
+  const variants: import("framer-motion").Variants = {
     initial: { opacity: 0, x: 40 },
     animate: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
     exit: { opacity: 0, x: -40, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
@@ -348,7 +348,7 @@ function QualityPolicySection() {
   return (
     <section className="bg-[#EBEBEB] w-full">
       <div className="flex flex-col lg:flex-row min-h-[850px] md:min-h-[600px] lg:min-h-[540px] max-w-[1920px] mx-auto">
-        
+
         {/* Left Side */}
         <div className="w-full lg:w-[45%] p-8 md:p-12 flex flex-col relative overflow-hidden">
           <AnimatePresence mode="wait">
@@ -393,18 +393,18 @@ function QualityPolicySection() {
               <div className="mb-8 max-w-3xl lg:min-h-[400px]">
                 {qualityPolicyData[lang].description}
               </div>
-              
+
               <div className="mt-auto pt-4 flex justify-end">
                 <button
                   onClick={() => setLang(lang === 'ENG' ? 'AMH' : 'ENG')}
                   className="bg-[#FFF200] text-black px-6 py-2.5 rounded-md text-xs font-semibold shadow-lg hover:bg-[#FFF200] hover:text-black hover:scale-105 transition-all duration-300 flex items-center gap-2 group"
                 >
                   {lang === 'ENG' ? 'አማ' : 'ENG'}
-                  <svg 
-                    className="w-3.5 h-3.5 text-gray-400 group-hover:text-black transition-colors" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24" 
+                  <svg
+                    className="w-3.5 h-3.5 text-gray-400 group-hover:text-black transition-colors"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
@@ -414,7 +414,7 @@ function QualityPolicySection() {
             </motion.div>
           </AnimatePresence>
         </div>
-        
+
       </div>
     </section>
   );
@@ -460,13 +460,13 @@ const About = () => {
         {/* Dark Hero Section */}
         <section className="page-hero-section">
           {/* Subtle curved lines background element (matching image) */}
-          <div className="absolute top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
+          <div className="absolute top-[40px] md:top-0 left-0 w-full h-[55%] pointer-events-none overflow-hidden flex items-center justify-center">
             <style>
               {`
                 .anim-bg-text {
                   fill: rgba(0, 0, 0, 0);
                   stroke: #000;
-                  stroke-width: 2px;
+                  stroke-width: 5px;
 
                   /* Long visible line + long gap */
                   stroke-dasharray: 3000 1000;
@@ -474,7 +474,7 @@ const About = () => {
                   /* Smooth infinite movement */
                   animation: strokeDashBg 20s linear infinite;
 
-                  opacity: 0.55;
+                  opacity: 0.85;
 
                   
                 }
@@ -512,9 +512,9 @@ const About = () => {
               </text>
             </svg>
           </div>
-          
+
           {/* Title pinned to top of hero */}
-          <div className="absolute top-[140px] md:top-[275px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
+          <div className="relative md:absolute md:top-[275px] left-0 right-0 z-10 px-4 lg:px-12 xl:px-16">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -526,8 +526,8 @@ const About = () => {
           </div>
 
           {/* Description aligned with title on desktop */}
-          <div className="w-full relative md:absolute md:top-[255px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
-            <div className="flex justify-end">
+          <div className="w-full relative mt-6 md:mt-0 md:absolute md:top-[255px] z-10 px-4 lg:px-12 xl:px-16 pointer-events-none">
+            <div className="flex justify-start md:justify-end">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -558,96 +558,96 @@ const About = () => {
 
         {/* Story section */}
         <section ref={storyRef} className="bg-white py-16 md:py-24 relative overflow-hidden border-t border-slate-100">
-  <div className="w-full relative px-4 md:px-8 lg:px-12 xl:px-16 z-10">
-    
-    {/* Left Top Header */}
-    <div className="text-left mb-16 md:mb-20">
-      <span className="section-label block text-black/60">Leadership</span>
-      <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-900 mt-2">
-        Founders' Message
-      </h2>
-    </div>
+          <div className="w-full relative px-4 md:px-8 lg:px-12 xl:px-16 z-10">
 
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0 relative">
-
-      {/* Left Card */}
-      <div className="lg:col-span-5 story-card group relative py-4 cursor-default">
-        <div className="parallax-content relative z-10">
-          <ScrollReveal>
-            <div className="px-6 md:px-8 py-4 h-full flex flex-col">
-              <p className="text-base leading-relaxed text-slate-600 mb-8">
-                {storySlides[0].intro}
-              </p>
-              
-              {/* Blockquote with Large Quote Marks */}
-              <div className="mb-8 relative flex items-start gap-3">
-                <span className="font-serif text-5xl md:text-6xl text-[#FFF200] leading-none select-none">
-                  “
-                </span>
-                <p className="text-lg md:text-xl font-semibold leading-snug text-slate-900 italic pt-1">
-                  {storySlides[0].highlight}’’
-                </p>
-              </div>
-
-              <p className="text-base leading-relaxed text-slate-600 mb-10">
-                {storySlides[0].outro}
-              </p>
-              <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200">
-                <p className="font-bold text-base text-slate-900">
-                  {storySlides[0].signatureName}
-                </p>
-                <p className="text-sm mt-1 text-slate-500">
-                  {storySlides[0].signatureRole}
-                </p>
-              </div>
+            {/* Left Top Header */}
+            <div className="text-left mb-16 md:mb-20">
+              <span className="section-label block text-black/60">Leadership</span>
+              <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-900 mt-2">
+                Founders' Message
+              </h2>
             </div>
-          </ScrollReveal>
-        </div>
-      </div>
 
-      {/* Divider on large screens */}
-      <div className="hidden lg:block lg:col-span-2 relative h-full">
-        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-slate-200 origin-top story-divider scale-y-100" />
-      </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-0 relative">
 
-      {/* Right Card */}
-      <div className="lg:col-span-5 story-card group relative py-4 cursor-default">
-        <div className="parallax-content relative z-10 h-full">
-          <ScrollReveal delay={0.2}>
-            <div className="px-6 md:px-8 py-4 h-full flex flex-col">
-              <p className="text-base leading-relaxed text-slate-600 mb-8">
-                {storySlides[1].intro}
-              </p>
-              
-              {/* Blockquote with Large Quote Marks */}
-              <div className="mb-8 relative flex items-start gap-3">
-                <span className="font-serif text-5xl md:text-6xl text-[#FFF200] leading-none select-none">
-                  “
-                </span>
-                <p className="text-lg md:text-xl font-semibold leading-snug text-slate-900 italic pt-1">
-                  {storySlides[1].highlight}’’
-                </p>
+              {/* Left Card */}
+              <div className="lg:col-span-5 story-card group relative py-4 cursor-default">
+                <div className="parallax-content relative z-10">
+                  <ScrollReveal>
+                    <div className="px-6 md:px-8 py-4 h-full flex flex-col">
+                      <p className="text-base leading-relaxed text-slate-600 mb-8">
+                        {storySlides[0].intro}
+                      </p>
+
+                      {/* Blockquote with Large Quote Marks */}
+                      <div className="mb-8 relative flex items-start gap-3">
+                        <span className="font-serif text-5xl md:text-6xl text-[#FFF200] leading-none select-none">
+                          “
+                        </span>
+                        <p className="text-lg md:text-xl font-semibold leading-snug text-slate-900 italic pt-1">
+                          {storySlides[0].highlight}’’
+                        </p>
+                      </div>
+
+                      <p className="text-base leading-relaxed text-slate-600 mb-10">
+                        {storySlides[0].outro}
+                      </p>
+                      <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200">
+                        <p className="font-bold text-base text-slate-900">
+                          {storySlides[0].signatureName}
+                        </p>
+                        <p className="text-sm mt-1 text-slate-500">
+                          {storySlides[0].signatureRole}
+                        </p>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                </div>
               </div>
 
-              <p className="text-base leading-relaxed text-slate-600 mb-10">
-                {storySlides[1].outro}
-              </p>
-              <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200">
-                <p className="font-bold text-base text-slate-900">
-                  {storySlides[1].signatureName}
-                </p>
-                <p className="text-sm mt-1 text-slate-500">
-                  {storySlides[1].signatureRole}
-                </p>
+              {/* Divider on large screens */}
+              <div className="hidden lg:block lg:col-span-2 relative h-full">
+                <div className="absolute left-1/2 top-0 bottom-0 w-px bg-slate-200 origin-top story-divider scale-y-100" />
               </div>
+
+              {/* Right Card */}
+              <div className="lg:col-span-5 story-card group relative py-4 cursor-default">
+                <div className="parallax-content relative z-10 h-full">
+                  <ScrollReveal delay={0.2}>
+                    <div className="px-6 md:px-8 py-4 h-full flex flex-col">
+                      <p className="text-base leading-relaxed text-slate-600 mb-8">
+                        {storySlides[1].intro}
+                      </p>
+
+                      {/* Blockquote with Large Quote Marks */}
+                      <div className="mb-8 relative flex items-start gap-3">
+                        <span className="font-serif text-5xl md:text-6xl text-[#FFF200] leading-none select-none">
+                          “
+                        </span>
+                        <p className="text-lg md:text-xl font-semibold leading-snug text-slate-900 italic pt-1">
+                          {storySlides[1].highlight}’’
+                        </p>
+                      </div>
+
+                      <p className="text-base leading-relaxed text-slate-600 mb-10">
+                        {storySlides[1].outro}
+                      </p>
+                      <div className="inline-block text-left mt-auto pt-6 border-t border-slate-200">
+                        <p className="font-bold text-base text-slate-900">
+                          {storySlides[1].signatureName}
+                        </p>
+                        <p className="text-sm mt-1 text-slate-500">
+                          {storySlides[1].signatureRole}
+                        </p>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                </div>
+              </div>
+
             </div>
-          </ScrollReveal>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
+          </div>
+        </section>
 
         <MissionVisionValues />
         <CoreValuesSection />

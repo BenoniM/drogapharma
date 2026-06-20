@@ -397,7 +397,7 @@ const Home = () => {
             </div>
 
             {/* Building — very large, pushed far right, cut off at bottom */}
-            <div className="absolute bottom-0 right-[-50%] w-[170%] translate-y-[25%]">
+            <div className="absolute bottom-0 right-[-50%] w-[170%] translate-y-[37%]">
               <img
                 src={Headquarters}
                 alt="Droga Pharma headquarters"
@@ -520,16 +520,16 @@ const Home = () => {
                     <img
                       src={cat.primaryImg}
                       alt={cat.title}
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0"
+                      className="absolute inset-0 w-full h-full object-cover opacity-0 md:opacity-100 transition-opacity duration-500 ease-in-out md:group-hover:opacity-0"
                     />
                     <img
                       src={cat.localImg}
                       alt={`${cat.title} alternate`}
-                      className="absolute inset-0 w-full h-full object-cover opacity-0 scale-110 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-100 group-hover:scale-100"
+                      className="absolute inset-0 w-full h-full object-cover opacity-100 scale-100 md:opacity-0 md:scale-110 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:group-hover:opacity-100 md:group-hover:scale-100"
                     />
 
                     {/* White info box overlay on hover */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-[20px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] z-20">
+                    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-0 opacity-100 md:translate-y-[20px] md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] z-20">
                       <div className="flex flex-col shadow-lg">
                         <div className="bg-primary p-5">
                           <h3 className="font-display font-bold text-lg text-black uppercase tracking">{cat.title}</h3>
