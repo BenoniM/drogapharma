@@ -397,7 +397,7 @@ const Home = () => {
             </div>
 
             {/* Building — very large, pushed far right, cut off at bottom */}
-            <div className="absolute bottom-0 right-[-50%] w-[170%] translate-y-[37%]">
+            <div className="absolute bottom-0 right-[-50%] w-[170%] translate-y-[30%]">
               <img
                 src={Headquarters}
                 alt="Droga Pharma headquarters"

@@ -76,6 +76,8 @@ export default function ScrollHero() {
     const ctx = gsap.context(() => {
       const wrap = wrapRef.current!;
       const isMobile = window.innerWidth < 768;
+      const isShortMobile = window.innerHeight < 700;
+      const mobileStartClip = isShortMobile ? "50%" : "55%";
 
       gsap.set(mosaicRef.current, { z: 0, force3D: true });
 
@@ -83,7 +85,7 @@ export default function ScrollHero() {
         // ── MOBILE: yellow panel starts clipped from the BOTTOM ──
         // inset(top right bottom left). Start with ~38vh strip visible at bottom.
         gsap.set(yellowPanelRef.current, {
-          clipPath: "inset(55% 0 0 0)",
+          clipPath: `inset(${mobileStartClip} 0 0 0)`,
           force3D: true,
         });
 
@@ -107,7 +109,7 @@ export default function ScrollHero() {
         // 33→66: yellow panel expands UPWARDS (top inset shrinks to 0)
         tl.fromTo(
           yellowPanelRef.current,
-          { clipPath: "inset(55% 0 0 0)" },
+          { clipPath: `inset(${mobileStartClip} 0 0 0)` },
           {
             clipPath: "inset(0% 0 0 0)",
             ease: "power2.inOut",
@@ -182,6 +184,9 @@ export default function ScrollHero() {
     return () => ctx.revert();
   }, []);
 
+  const isShortMobile = typeof window !== "undefined" && window.innerHeight < 700;
+  const mobilePanelHeight = isShortMobile ? "50dvh" : "45dvh";
+
   const headingStyle: React.CSSProperties = {
     fontSize: "clamp(3.5rem, 7vw, 7.5rem)",
     fontWeight: 900,
@@ -198,7 +203,7 @@ export default function ScrollHero() {
         style={{
           position: "sticky",
           top: 0,
-          height: "100vh",
+          height: "100dvh",
           width: "100%",
           overflow: "hidden",
         }}
@@ -507,8 +512,8 @@ export default function ScrollHero() {
               bottom: 0,
               left: 0,
               width: "100%",
-              height: "45vh",
-              padding: "2.5rem 1.5rem 2.5rem",
+              height: mobilePanelHeight,
+              padding: isShortMobile ? "1.5rem" : "2.5rem 1.5rem 2.5rem",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -612,7 +617,7 @@ export default function ScrollHero() {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              paddingBottom: "45vh",
+              paddingBottom: mobilePanelHeight,
               paddingTop: "64px",
             }}
           >
@@ -738,7 +743,7 @@ export default function ScrollHero() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            paddingBottom: "45vh", // height of yellow box
+            paddingBottom: mobilePanelHeight, // height of yellow box
             paddingTop: "64px", // space for navbar
           }}
         >

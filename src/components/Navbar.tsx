@@ -262,9 +262,10 @@ const Navbar = () => {
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="relative w-full bg-white/95 backdrop-blur-3xl border-t border-black/5 flex flex-col shadow-2xl overflow-hidden z-40"
+                className="relative w-full bg-white/95 backdrop-blur-3xl border-t border-black/5 shadow-2xl overflow-hidden z-40"
               >
-                <div className="w-full py-8 px-6 flex flex-col items-center gap-5">
+                <div className="flex flex-col w-full h-[calc(100dvh-72px)] overflow-y-auto">
+                  <div className="w-full py-8 px-6 flex flex-col items-center gap-5 shrink-0 flex-1">
                   {navLinks.map((item) => {
                     const active = isActive(item);
                     return (
@@ -354,10 +355,11 @@ const Navbar = () => {
                 <Link
                   to="/contact"
                   onClick={() => setIsMobileOpen(false)}
-                  className="w-full text-center py-6 bg-black text-white hover:bg-[#FFF200] hover:text-black font-semibold uppercase tracking-widest transition-colors duration-200 block shrink-0 text-2xl"
+                  className="w-full text-center py-6 bg-black text-white hover:bg-[#FFF200] hover:text-black font-semibold uppercase tracking-widest transition-colors duration-200 block shrink-0 text-2xl mt-auto"
                 >
                   Get in Touch
                 </Link>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
