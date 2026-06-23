@@ -108,9 +108,9 @@ export default function CRS() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight"
+              className="text-black text-5xl md:text-7xl lg:text-[5.5rem] font-semibold tracking-tight"
             >
-              Charities and<br />Foundations
+              Community Social<br />Responsibility
             </motion.h1>
           </div>
 

@@ -40,6 +40,10 @@ const Footer = () => {
           isAddress: true,
         },
       ],
+      socials: [
+        { icon: Facebook, href: "https://web.facebook.com/drogapharmaplc", label: "Facebook" },
+        { icon: Linkedin, href: "https://www.linkedin.com/company/droga-pharma-pvt-ltd-co", label: "LinkedIn" },
+      ],
     },
     {
       title: "Somaliland Branch",
@@ -53,6 +57,10 @@ const Footer = () => {
           text: "Cabaaye Bus Station, Downtown, Hargeysa, Somaliland",
           isAddress: true,
         },
+      ],
+      socials: [
+        { icon: Facebook, href: "https://www.facebook.com/p/Droga-Pharma-Plc-Somaliland", label: "Facebook" },
+        { icon: Linkedin, href: "https://www.linkedin.com/company/droga-pharma-plc-somaliland", label: "LinkedIn" },
       ],
     },
     {
@@ -68,9 +76,8 @@ const Footer = () => {
         },
       ],
       socials: [
-        { icon: Facebook, href: "https://www.facebook.com/DrogaPharma", label: "Facebook" },
-        { icon: X, href: "https://x.com/drogapharma", label: "X" },
-        { icon: Linkedin, href: "https://www.linkedin.com/company/droga-pharma", label: "LinkedIn" },
+        { icon: Facebook, href: "https://www.facebook.com/people/Droga-Pharma-Rwanda", label: "Facebook" },
+        { icon: Linkedin, href: "https://www.linkedin.com/company/droga-pharma-rwanda/", label: "LinkedIn" },
       ],
     },
   ];

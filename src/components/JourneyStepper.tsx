@@ -15,7 +15,7 @@ interface JourneyStepperProps {
 
 const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: false,
+    loop: true,
     align: "start",
     dragFree: true,
   });
@@ -26,18 +26,13 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
-  // Auto-play effect: scrolls every 5 seconds
+  // Auto-play effect: scrolls every 10 seconds
   useEffect(() => {
     if (!emblaApi) return;
 
     const autoplay = setInterval(() => {
-      // If we can't scroll next (reached the end), loop back to the beginning
-      if (!emblaApi.canScrollNext()) {
-        emblaApi.scrollTo(0);
-      } else {
-        emblaApi.scrollNext();
-      }
-    }, 7000); // 5000ms = 5 seconds
+      emblaApi.scrollNext();
+    }, 8000); // 10000ms = 10 seconds
 
     return () => clearInterval(autoplay);
   }, [emblaApi]);
@@ -56,6 +51,10 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
   }, []);
 
   if (!timeline?.length) return null;
+
+  // If the timeline has an odd number of items, duplicate them so that the alternating
+  // background colors and layouts seamlessly loop without repeating adjacent colors.
+  const displayTimeline = timeline.length % 2 !== 0 ? [...timeline, ...timeline] : timeline;
 
   return (
     <div className="w-full h-[95vh] md:h-screen flex flex-col">
@@ -171,12 +170,12 @@ const JourneyStepper = ({ timeline }: JourneyStepperProps) => {
         onMouseMove={handleMouseMove}
       >
         <div className="flex h-full select-none">
-          {timeline.map((item, index) => {
+          {displayTimeline.map((item, index) => {
             const isEven = index % 2 === 0;
 
             return (
               <div
-                key={item.year}
+                key={`${item.year}-${index}`}
                 className="flex-none flex flex-col h-full w-[85vw] md:w-[clamp(200px,22vw,340px)]"
                 style={{
                   padding: "28px 24px",

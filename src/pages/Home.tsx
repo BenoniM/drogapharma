@@ -320,12 +320,12 @@ const Home = () => {
                     </span>
                   </div>
                   <div className="flex-1 flex flex-col gap-4 max-w-[480px]">
-                    <p className="text-base md:text-lg lg:text-xl leading-relaxed text-white font-normal">
+                    <p className="text-base md:text-lg lg:text-xl leading-relaxed text-white font-normal text-justify">
                       Established in 2015, we are working in the pharmaceuticals
                       import, wholesale and retail business, targeting the public
                       as well as the private health sector of Ethiopia.
                     </p>
-                    <p className="text-base md:text-lg lg:text-xl leading-relaxed text-white font-normal">
+                    <p className="text-base md:text-lg lg:text-xl leading-relaxed text-white font-normal text-justify">
                       Our team is made up of highly experienced pharmacists and
                       manufacturing industry professionals who utilize their
                       unique knowledge to create and implement cutting-edge
@@ -371,12 +371,12 @@ const Home = () => {
                 </span>
               </div>
               <div className="flex flex-col gap-3">
-                <p className="text-sm leading-relaxed text-white font-normal">
+                <p className="text-sm leading-relaxed text-white font-normal text-justify">
                   Established in 2015, we are working in the pharmaceuticals
                   import, wholesale and retail business, targeting the public
                   as well as the private health sector of Ethiopia.
                 </p>
-                <p className="text-sm leading-relaxed text-white font-normal">
+                <p className="text-sm leading-relaxed text-white font-normal text-justify">
                   Our team is made up of highly experienced pharmacists and
                   manufacturing industry professionals who utilize their
                   unique knowledge to create and implement cutting-edge
@@ -397,7 +397,7 @@ const Home = () => {
             </div>
 
             {/* Building — very large, pushed far right, cut off at bottom */}
-            <div className="absolute bottom-0 right-[-50%] w-[170%] translate-y-[30%]">
+            <div className="absolute bottom-0 right-[-60%] w-[195%] translate-y-[30%]">
               <img
                 src={Headquarters}
                 alt="Droga Pharma headquarters"

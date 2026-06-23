@@ -32,7 +32,7 @@ const Contact = () => {
 
   const contactInfo = [
     { icon: MapPin, title: "Address", lines: ["Gulele Subcity, Woreda 09, House No. New/Droga Building, Addis Ababa, Ethiopia."] },
-    { icon: Phone, title: "Phone", lines: ["+251-112-73-45-54"] },
+    { icon: Phone, title: "Phone", lines: ["+251-112-30-67-71"] },
     { icon: Mail, title: "Email", lines: ["info@drogapharma.com"] },
     {
       icon: Clock,

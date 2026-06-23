@@ -28,11 +28,11 @@ const navLinks: NavItem[] = [
     label: "Group",
     mega: true,
     children: [
-      { label: "Trust Pharma", path: "https://www.trustethiopharma.com/", description: "Pharmaceutical manufacturing", external: true },
-      { label: "EMA Ethiopia", path: "https://www.emaethiopia.com/", description: "Medical equipment & accessories", external: true },
-      { label: "Droga Consulting", path: "https://drogaconsulting.com/", description: "Distribution & consulting", external: true },
-      { label: "Breeeze Pharmaceutical", path: "https://drogaconsulting.com/", description: "Pharmaceutical distribution", external: true },
-      { label: "Orbit", path: "https://drogaconsulting.com/", description: "Logistics & orbit services", external: true },
+      { label: "Trust Pharmaceutical Manufacturing", path: "https://www.trustethiopharma.com/", description: "Pharmaceutical manufacturing", external: true },
+      { label: "EMA Import Export", path: "https://www.emaethiopia.com/", description: "Medical equipment & accessories", external: true },
+      { label: "Droga Consulting Services", path: "https://drogaconsulting.com/", description: "Distribution & consulting", external: true },
+      { label: "Breeze Pharmaceutical Technologies", path: "https://drogaconsulting.com/", description: "Pharmaceutical distribution", external: true },
+      { label: "Orbit Specialty Eye Center", path: "https://drogaconsulting.com/", description: "Logistics & orbit services", external: true },
       { label: "Droga Pharmacy", path: "https://drogapharmacy.com/", description: "Retail pharmacy network", external: true },
       { label: "Droga Physiotherapy", path: "https://drogaphysiotherapy.com/", description: "Physiotherapy & rehabilitation", external: true },
     ],
@@ -199,7 +199,7 @@ const Navbar = () => {
                             {child.external && <ArrowUpRight size={14} className="text-black/80" />}
                           </div>
                           {child.description && (
-                            <p className="text-xs text-black/70 leading-relaxed font-medium">
+                            <p className="text-xs text-black/40 leading-relaxed font-medium">
                               {child.description}
                             </p>
                           )}

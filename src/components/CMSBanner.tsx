@@ -38,27 +38,17 @@ const CMSBanner = () => {
             </MagneticButton>
           </motion.div>
 
-          {/* Center: CMS and 6637 horizontally divided by a vertical line */}
+          {/* Center: Compliance Text and 6637 */}
           <motion.div 
             variants={staggerItem} 
-            className="w-full md:w-1/3 flex items-center justify-center gap-6 md:gap-8 min-h-[80px]"
+            className="w-full md:w-1/3 flex flex-col items-center justify-center gap-2 min-h-[80px] text-center"
           >
-            {/* Left Side: CMS */}
-            <div className="flex-1 flex justify-center md:justify-end">
-              <h2 className="text-4xl md:text-5xl font-bold text-black font-display tracking-tight leading-none hover:scale-105 transition-transform duration-300">
-                CMS
-              </h2>
-            </div>
-            
-            {/* Vertical Divider */}
-            <div className="h-12 w-[2px] bg-black/30 self-center flex-shrink-0" />
-            
-            {/* Right Side: 6637 */}
-            <div className="flex-1 flex justify-center md:justify-start">
-              <h2 className="text-4xl md:text-5xl font-bold text-black font-display leading-none hover:scale-105 transition-transform duration-300">
-                6637
-              </h2>
-            </div>
+            <p className="text-black/80 font-medium text-sm md:text-lg capitalize">
+              If you have compliance issues, please call
+            </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-black font-display leading-none hover:scale-105 transition-transform duration-300">
+              6637
+            </h2>
           </motion.div>
 
           {/* Right: QR Code */}
