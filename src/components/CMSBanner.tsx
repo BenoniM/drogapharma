@@ -44,7 +44,7 @@ const CMSBanner = () => {
             className="w-full md:w-1/3 flex flex-col items-center justify-center gap-2 min-h-[80px] text-center"
           >
             <p className="text-black/80 font-medium text-sm md:text-lg capitalize">
-              If you have compliance issues, please call
+              If you have any complaints, please call
             </p>
             <h2 className="text-4xl md:text-5xl font-bold text-black font-display leading-none hover:scale-105 transition-transform duration-300">
               6637
