@@ -14,6 +14,7 @@ import isoCert from "@/assets/iso-certificate.jpg";
 import wholesaleCert from "@/assets/drogawholesalecertificate.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const FS = 0.35;
 const TOTAL_H = +(100 / FS).toFixed(3);
@@ -79,6 +80,7 @@ export default function ScrollHero() {
       const wrap = wrapRef.current!;
       
       gsap.set(mosaicRef.current, { z: 0, force3D: true });
+      
       gsap.set(yellowPanelRef.current, {
         clipPath: "inset(50% 0 0 0)",
         force3D: true,
@@ -89,7 +91,7 @@ export default function ScrollHero() {
           trigger: wrap,
           start: "top top",
           end: "bottom bottom",
-          scrub: 1,
+          scrub: true, // true means 0 smoothing delay, perfectly follows the finger
         },
       });
 
@@ -137,7 +139,7 @@ export default function ScrollHero() {
           trigger: wrap,
           start: "top top",
           end: "bottom bottom",
-          scrub: 2,
+          scrub: 2, // Smooth scrub for desktop mouse scrolling
         },
       });
 
