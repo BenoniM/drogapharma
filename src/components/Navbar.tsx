@@ -82,8 +82,6 @@ const Navbar = () => {
       return item.children.some(c => !c.external && location.pathname === c.path.split("?")[0]);
     });
     setMobileExp(activeParent ? activeParent.label : null);
-    
-    // window.scrollTo(0, 0); // Removed as it might interfere with scroll restoration
   }, [location.pathname]);
 
   /* Lock body scroll when mobile menu is open */
@@ -116,7 +114,7 @@ const Navbar = () => {
           }`}
         onMouseLeave={() => setHoveredItem(null)}
       >
-        {/* Navbar Background (Separate layer to allow children to blur independently) */}
+        {/* Navbar Background */}
         <div className="absolute inset-0 bg-white/40 backdrop-blur-xl backdrop-saturate-150 border-b border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.08)] pointer-events-none -z-10" />
 
         {/* ── Nav Bar Row ── */}
@@ -233,7 +231,7 @@ const Navbar = () => {
         </nav>
       </header>
 
-      {/* ── Mobile Navbar (Remains sticky top but styled similarly) ── */}
+      {/* ── Mobile Navbar ── */}
       <header
         className={`lg:hidden fixed top-0 left-0 w-full z-50 transition-transform duration-500 ease-in-out ${
           hidden && !isMobileOpen ? "-translate-y-[150%]" : "translate-y-0"
@@ -266,99 +264,99 @@ const Navbar = () => {
               >
                 <div className="flex flex-col w-full flex-1 overflow-y-auto">
                   <div className="w-full py-8 px-6 flex flex-col items-center gap-5 shrink-0">
-                  {navLinks.map((item) => {
-                    const active = isActive(item);
-                    return (
-                      <div key={item.label} className="w-full flex flex-col items-center">
-                        {item.children ? (
-                          <>
-                            <button
-                              onClick={() => setMobileExp(mobileExp === item.label ? null : item.label)}
-                              className={`w-full py-3.5 text-center text-2xl font-semibold uppercase tracking-widest transition-all duration-300 ${
-                                active ? "text-black bg-[#FFF200]" : "text-black"
-                              }`}
-                            >
-                              {item.label}
-                            </button>
-                            <AnimatePresence>
-                              {mobileExp === item.label && (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  className="overflow-hidden w-full"
-                                >
-                                  <div className="py-5 flex flex-col items-center gap-6">
-                                    {item.children.map((child) => {
-                                      const childActive = !child.external && location.pathname === child.path.split("?")[0];
-                                      return child.external ? (
-                                        <a
-                                          key={child.label}
-                                          href={child.path}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-lg font-semibold uppercase tracking-widest text-black/55 hover:text-black transition-colors flex items-center gap-2"
-                                        >
-                                          {child.label} <ArrowUpRight size={16} />
-                                        </a>
-                                      ) : (
-                                        <Link
-                                          key={child.label}
-                                          to={child.path}
-                                          onClick={() => setIsMobileOpen(false)}
-                                          className="transition-colors flex items-center justify-center"
-                                        >
-                                          {childActive ? (
-                                            <div className="flex items-center gap-3">
-                                              <span className="h-[2px] w-8 bg-black" />
-                                              <span className="text-lg font-semibold uppercase tracking-widest text-black">{child.label}</span>
-                                            </div>
-                                          ) : (
-                                            <span className="text-lg font-semibold uppercase tracking-widest text-black/55 hover:text-black">{child.label}</span>
-                                          )}
-                                        </Link>
-                                      );
-                                    })}
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </>
-                        ) : (
-                          <div className={`w-full text-center transition-all duration-300`}>
-                            {active ? (
-                              <div className="w-full bg-[#FFF200] py-3.5 text-center">
+                    {navLinks.map((item) => {
+                      const active = isActive(item);
+                      return (
+                        <div key={item.label} className="w-full flex flex-col items-center">
+                          {item.children ? (
+                            <>
+                              <button
+                                onClick={() => setMobileExp(mobileExp === item.label ? null : item.label)}
+                                className={`w-full py-3.5 text-center text-lg font-semibold uppercase tracking-widest transition-all duration-300 ${
+                                  active ? "text-black bg-[#FFF200]" : "text-black"
+                                }`}
+                              >
+                                {item.label}
+                              </button>
+                              <AnimatePresence>
+                                {mobileExp === item.label && (
+                                  <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    className="overflow-hidden w-full"
+                                  >
+                                    <div className="py-5 flex flex-col items-center gap-6">
+                                      {item.children.map((child) => {
+                                        const childActive = !child.external && location.pathname === child.path.split("?")[0];
+                                        return child.external ? (
+                                          <a
+                                            key={child.label}
+                                            href={child.path}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-sm font-semibold uppercase tracking-widest text-black/55 hover:text-black transition-colors flex items-center gap-2"
+                                          >
+                                            {child.label} <ArrowUpRight size={14} />
+                                          </a>
+                                        ) : (
+                                          <Link
+                                            key={child.label}
+                                            to={child.path}
+                                            onClick={() => setIsMobileOpen(false)}
+                                            className="transition-colors flex items-center justify-center"
+                                          >
+                                            {childActive ? (
+                                              <div className="flex items-center gap-3">
+                                                <span className="h-[2px] w-8 bg-black" />
+                                                <span className="text-sm font-semibold uppercase tracking-widest text-black">{child.label}</span>
+                                              </div>
+                                            ) : (
+                                              <span className="text-sm font-semibold uppercase tracking-widest text-black/55 hover:text-black">{child.label}</span>
+                                            )}
+                                          </Link>
+                                        );
+                                      })}
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </>
+                          ) : (
+                            <div className="w-full text-center transition-all duration-300">
+                              {active ? (
+                                <div className="w-full bg-[#FFF200] py-3.5 text-center">
+                                  <Link
+                                    to={item.path!}
+                                    onClick={() => setIsMobileOpen(false)}
+                                    className="text-lg font-semibold uppercase tracking-widest text-black block w-full"
+                                  >
+                                    {item.label}
+                                  </Link>
+                                </div>
+                              ) : (
                                 <Link
                                   to={item.path!}
                                   onClick={() => setIsMobileOpen(false)}
-                                  className="text-2xl font-semibold uppercase tracking-widest text-black block w-full"
+                                  className="text-lg font-semibold uppercase tracking-widest text-black/80 hover:text-black block w-full py-3"
                                 >
                                   {item.label}
                                 </Link>
-                              </div>
-                            ) : (
-                              <Link
-                                to={item.path!}
-                                onClick={() => setIsMobileOpen(false)}
-                                className="text-2xl font-semibold uppercase tracking-widest text-black/80 hover:text-black block w-full py-3"
-                              >
-                                {item.label}
-                              </Link>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
 
-                <Link
-                  to="/contact"
-                  onClick={() => setIsMobileOpen(false)}
-                  className="w-full text-center py-6 bg-black text-white hover:bg-[#FFF200] hover:text-black font-semibold uppercase tracking-widest transition-colors duration-200 mt-auto block shrink-0 text-2xl"
-                >
-                  Get in Touch
-                </Link>
+                  <Link
+                    to="/contact"
+                    onClick={() => setIsMobileOpen(false)}
+                    className="w-full text-center py-6 bg-black text-white hover:bg-[#FFF200] hover:text-black font-semibold uppercase tracking-widest transition-colors duration-200 mt-auto block shrink-0 text-lg"
+                  >
+                    Get in Touch
+                  </Link>
                 </div>
               </motion.div>
             )}
@@ -366,7 +364,7 @@ const Navbar = () => {
         </div>
       </header>
 
-      {/* Backdrop Blur Overlay (placed outside both headers to bypass any transformed containing blocks) */}
+      {/* Backdrop */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
