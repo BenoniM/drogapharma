@@ -264,7 +264,7 @@ const Navbar = () => {
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 className="relative w-full bg-white/95 backdrop-blur-3xl border-t border-black/5 shadow-2xl overflow-hidden z-40"
               >
-                <div className="flex flex-col w-full h-[calc(100dvh-72px)] overflow-y-auto">
+                <div className="flex flex-col w-full h-[calc(100svh-72px)] overflow-y-auto">
                   <div className="w-full py-8 [@media(max-height:700px)]:py-4 px-6 flex flex-col items-center gap-5 [@media(max-height:700px)]:gap-2 shrink-0 flex-1">
                   {navLinks.map((item) => {
                     const active = isActive(item);

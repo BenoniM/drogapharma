@@ -185,7 +185,7 @@ export default function ScrollHero() {
   }, []);
 
   const isShortMobile = typeof window !== "undefined" && window.innerHeight < 700;
-  const mobilePanelHeight = isShortMobile ? "50dvh" : "45dvh";
+  const mobilePanelHeight = isShortMobile ? "50svh" : "45svh";
 
   const headingStyle: React.CSSProperties = {
     fontSize: "clamp(3.5rem, 7vw, 7.5rem)",
@@ -203,7 +203,7 @@ export default function ScrollHero() {
         style={{
           position: "sticky",
           top: 0,
-          height: "100dvh",
+          height: "100svh",
           width: "100%",
           overflow: "hidden",
         }}
