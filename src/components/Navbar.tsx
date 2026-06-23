@@ -264,8 +264,8 @@ const Navbar = () => {
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 className="relative w-full bg-white/95 backdrop-blur-3xl border-t border-black/5 shadow-2xl overflow-hidden z-40"
               >
-                <div className="flex flex-col w-full h-[calc(100dvh-72px)] overflow-y-auto">
-                  <div className="w-full py-8 [@media(max-height:700px)]:py-4 px-6 flex flex-col items-center gap-5 [@media(max-height:700px)]:gap-2 shrink-0 flex-1">
+                <div className="flex flex-col w-full max-h-[calc(100dvh-72px)] overflow-y-auto">
+                  <div className="w-full py-8 px-6 flex flex-col items-center gap-5 shrink-0">
                   {navLinks.map((item) => {
                     const active = isActive(item);
                     return (
@@ -274,7 +274,7 @@ const Navbar = () => {
                           <>
                             <button
                               onClick={() => setMobileExp(mobileExp === item.label ? null : item.label)}
-                              className={`w-full py-3.5 [@media(max-height:700px)]:py-2 text-center text-2xl [@media(max-height:700px)]:text-xl font-semibold uppercase tracking-widest transition-all duration-300 ${
+                              className={`w-full py-3.5 text-center text-2xl font-semibold uppercase tracking-widest transition-all duration-300 ${
                                 active ? "text-black bg-[#FFF200]" : "text-black"
                               }`}
                             >
@@ -288,7 +288,7 @@ const Navbar = () => {
                                   exit={{ height: 0, opacity: 0 }}
                                   className="overflow-hidden w-full"
                                 >
-                                  <div className="py-5 [@media(max-height:700px)]:py-3 flex flex-col items-center gap-6 [@media(max-height:700px)]:gap-4">
+                                  <div className="py-5 flex flex-col items-center gap-6">
                                     {item.children.map((child) => {
                                       const childActive = !child.external && location.pathname === child.path.split("?")[0];
                                       return child.external ? (
@@ -297,7 +297,7 @@ const Navbar = () => {
                                           href={child.path}
                                           target="_blank"
                                           rel="noopener noreferrer"
-                                          className="text-lg [@media(max-height:700px)]:text-base font-semibold uppercase tracking-widest text-black/55 hover:text-black transition-colors flex items-center gap-2"
+                                          className="text-lg font-semibold uppercase tracking-widest text-black/55 hover:text-black transition-colors flex items-center gap-2"
                                         >
                                           {child.label} <ArrowUpRight size={16} />
                                         </a>
@@ -311,10 +311,10 @@ const Navbar = () => {
                                           {childActive ? (
                                             <div className="flex items-center gap-3">
                                               <span className="h-[2px] w-8 bg-black" />
-                                              <span className="text-lg [@media(max-height:700px)]:text-base font-semibold uppercase tracking-widest text-black">{child.label}</span>
+                                              <span className="text-lg font-semibold uppercase tracking-widest text-black">{child.label}</span>
                                             </div>
                                           ) : (
-                                            <span className="text-lg [@media(max-height:700px)]:text-base font-semibold uppercase tracking-widest text-black/55 hover:text-black">{child.label}</span>
+                                            <span className="text-lg font-semibold uppercase tracking-widest text-black/55 hover:text-black">{child.label}</span>
                                           )}
                                         </Link>
                                       );
@@ -327,11 +327,11 @@ const Navbar = () => {
                         ) : (
                           <div className={`w-full text-center transition-all duration-300`}>
                             {active ? (
-                              <div className="w-full bg-[#FFF200] py-3.5 [@media(max-height:700px)]:py-2 text-center">
+                              <div className="w-full bg-[#FFF200] py-3.5 text-center">
                                 <Link
                                   to={item.path!}
                                   onClick={() => setIsMobileOpen(false)}
-                                  className="text-2xl [@media(max-height:700px)]:text-xl font-semibold uppercase tracking-widest text-black block w-full"
+                                  className="text-2xl font-semibold uppercase tracking-widest text-black block w-full"
                                 >
                                   {item.label}
                                 </Link>
@@ -340,7 +340,7 @@ const Navbar = () => {
                               <Link
                                 to={item.path!}
                                 onClick={() => setIsMobileOpen(false)}
-                                className="text-2xl [@media(max-height:700px)]:text-xl font-semibold uppercase tracking-widest text-black/80 hover:text-black block w-full py-3 [@media(max-height:700px)]:py-2"
+                                className="text-2xl font-semibold uppercase tracking-widest text-black/80 hover:text-black block w-full py-3"
                               >
                                 {item.label}
                               </Link>
@@ -355,7 +355,7 @@ const Navbar = () => {
                 <Link
                   to="/contact"
                   onClick={() => setIsMobileOpen(false)}
-                  className="w-full text-center py-6 [@media(max-height:700px)]:py-4 bg-black text-white hover:bg-[#FFF200] hover:text-black font-semibold uppercase tracking-widest transition-colors duration-200 block shrink-0 text-2xl [@media(max-height:700px)]:text-xl mt-auto"
+                  className="w-full text-center py-6 bg-black text-white hover:bg-[#FFF200] hover:text-black font-semibold uppercase tracking-widest transition-colors duration-200 block shrink-0 text-2xl"
                 >
                   Get in Touch
                 </Link>

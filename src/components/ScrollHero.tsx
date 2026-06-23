@@ -76,8 +76,6 @@ export default function ScrollHero() {
     const ctx = gsap.context(() => {
       const wrap = wrapRef.current!;
       const isMobile = window.innerWidth < 768;
-      const isShortMobile = window.innerHeight < 700;
-      const mobileStartClip = isShortMobile ? "50%" : "55%";
 
       gsap.set(mosaicRef.current, { z: 0, force3D: true });
 
@@ -85,7 +83,7 @@ export default function ScrollHero() {
         // ── MOBILE: yellow panel starts clipped from the BOTTOM ──
         // inset(top right bottom left). Start with ~38vh strip visible at bottom.
         gsap.set(yellowPanelRef.current, {
-          clipPath: `inset(${mobileStartClip} 0 0 0)`,
+          clipPath: "inset(55% 0 0 0)",
           force3D: true,
         });
 
@@ -109,7 +107,7 @@ export default function ScrollHero() {
         // 33→66: yellow panel expands UPWARDS (top inset shrinks to 0)
         tl.fromTo(
           yellowPanelRef.current,
-          { clipPath: `inset(${mobileStartClip} 0 0 0)` },
+          { clipPath: "inset(55% 0 0 0)" },
           {
             clipPath: "inset(0% 0 0 0)",
             ease: "power2.inOut",
@@ -184,12 +182,6 @@ export default function ScrollHero() {
     return () => ctx.revert();
   }, []);
 
-  const isShortMobile = typeof window !== "undefined" && window.innerHeight < 700;
-  const mobilePanelHeight = isShortMobile ? "50svh" : "45svh";
-  const certWidth = isShortMobile ? "min(35vw, 110px)" : "160px";
-  const mobilePanelPadding = isShortMobile ? "1rem" : "2.5rem 1.5rem 2.5rem";
-  const mobilePanelGap = isShortMobile ? "1rem" : "1.5rem";
-
   const headingStyle: React.CSSProperties = {
     fontSize: "clamp(3.5rem, 7vw, 7.5rem)",
     fontWeight: 900,
@@ -206,7 +198,7 @@ export default function ScrollHero() {
         style={{
           position: "sticky",
           top: 0,
-          height: "100svh",
+          height: "100vh",
           width: "100%",
           overflow: "hidden",
         }}
@@ -515,8 +507,8 @@ export default function ScrollHero() {
               bottom: 0,
               left: 0,
               width: "100%",
-              height: mobilePanelHeight,
-              padding: mobilePanelPadding,
+              height: "45vh",
+              padding: "2.5rem 1.5rem 2.5rem",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -542,7 +534,7 @@ export default function ScrollHero() {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                gap: mobilePanelGap,
+                gap: "1.5rem",
                 width: "100%",
               }}
             >
@@ -555,7 +547,7 @@ export default function ScrollHero() {
                   key={cert.label}
                   className="group"
                   style={{
-                    width: certWidth,
+                    width: "160px",
                     position: "relative",
                     cursor: "pointer",
                     overflow: "hidden",
@@ -620,7 +612,7 @@ export default function ScrollHero() {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              paddingBottom: mobilePanelHeight,
+              paddingBottom: "45vh",
               paddingTop: "64px",
             }}
           >
@@ -746,7 +738,7 @@ export default function ScrollHero() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            paddingBottom: mobilePanelHeight, // height of yellow box
+            paddingBottom: "45vh", // height of yellow box
             paddingTop: "64px", // space for navbar
           }}
         >
