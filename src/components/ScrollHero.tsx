@@ -73,113 +73,113 @@ export default function ScrollHero() {
   const certsRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+
+    mm.add("(max-width: 767px)", () => {
       const wrap = wrapRef.current!;
-      const isMobile = window.innerWidth < 768;
-
+      
       gsap.set(mosaicRef.current, { z: 0, force3D: true });
+      gsap.set(yellowPanelRef.current, {
+        clipPath: "inset(50% 0 0 0)",
+        force3D: true,
+      });
 
-      if (isMobile) {
-        // ── MOBILE: yellow panel starts clipped from the BOTTOM ──
-        // inset(top right bottom left). Start with ~38vh strip visible at bottom.
-        gsap.set(yellowPanelRef.current, {
-          clipPath: "inset(50% 0 0 0)",
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: wrap,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+        },
+      });
+
+      // 0→33: zoom out mosaic using MOBILE_FS so it fills 100vw, translate UP
+      tl.fromTo(
+        mosaicRef.current,
+        { scale: 1, y: 0 },
+        { scale: MOBILE_FS, y: "-15vh", ease: "none", duration: 33, force3D: true },
+        0,
+      );
+
+      // 33→66: yellow panel expands UPWARDS (top inset shrinks to 0)
+      tl.fromTo(
+        yellowPanelRef.current,
+        { clipPath: "inset(50% 0 0 0)" },
+        {
+          clipPath: "inset(0% 0 0 0)",
+          ease: "power2.inOut",
+          duration: 22,
           force3D: true,
-        });
+        },
+        38,
+      );
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: wrap,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 2,
-          },
-        });
-
-        // 0→33: zoom out mosaic using MOBILE_FS so it fills 100vw, translate UP
-        tl.fromTo(
-          mosaicRef.current,
-          { scale: 1, y: 0 },
-          { scale: MOBILE_FS, y: "-15dvh", ease: "none", duration: 33, force3D: true },
-          0,
-        );
-
-        // 33→66: yellow panel expands UPWARDS (top inset shrinks to 0)
-        tl.fromTo(
-          yellowPanelRef.current,
-          { clipPath: "inset(50% 0 0 0)" },
-          {
-            clipPath: "inset(0% 0 0 0)",
-            ease: "power2.inOut",
-            duration: 22,
-            force3D: true,
-          },
-          38,
-        );
-
-        // desc3 fades in on phase 3 (mobile: no desc1/desc2)
-        tl.fromTo(
-          desc3Ref.current,
-          { opacity: 0 },
-          { opacity: 1, ease: "power2.out", duration: 8 },
-          50,
-        );
-      } else {
-        // ── DESKTOP: original behaviour ──
-        gsap.set(yellowPanelRef.current, {
-          clipPath: "inset(0 0 0 62%)",
-          force3D: true,
-        });
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: wrap,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 2,
-          },
-        });
-
-        tl.fromTo(
-          mosaicRef.current,
-          { scale: 1, x: 0 },
-          { scale: FS, x: "-19vw", ease: "none", duration: 33, force3D: true },
-          0,
-        );
-
-        tl.to(desc1Ref.current, { opacity: 0, ease: "power2.inOut", duration: 6 }, 24);
-        tl.fromTo(
-          desc2Ref.current,
-          { opacity: 0 },
-          { opacity: 1, ease: "power2.out", duration: 6 },
-          27,
-        );
-
-        tl.to(certsRef.current, { opacity: 0, ease: "power2.inOut", duration: 8 }, 35);
-
-        tl.fromTo(
-          yellowPanelRef.current,
-          { clipPath: "inset(0 0 0 62%)" },
-          {
-            clipPath: "inset(0 0 0 0%)",
-            ease: "power2.inOut",
-            duration: 18,
-            force3D: true,
-          },
-          38,
-        );
-
-        tl.to(desc2Ref.current, { opacity: 0, ease: "power2.inOut", duration: 6 }, 40);
-        tl.fromTo(
-          desc3Ref.current,
-          { opacity: 0 },
-          { opacity: 1, ease: "power2.out", duration: 8 },
-          46,
-        );
-      }
+      // desc3 fades in on phase 3 (mobile: no desc1/desc2)
+      tl.fromTo(
+        desc3Ref.current,
+        { opacity: 0 },
+        { opacity: 1, ease: "power2.out", duration: 8 },
+        50,
+      );
     });
 
-    return () => ctx.revert();
+    mm.add("(min-width: 768px)", () => {
+      const wrap = wrapRef.current!;
+      
+      gsap.set(mosaicRef.current, { z: 0, force3D: true });
+      gsap.set(yellowPanelRef.current, {
+        clipPath: "inset(0 0 0 62%)",
+        force3D: true,
+      });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: wrap,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 2,
+        },
+      });
+
+      tl.fromTo(
+        mosaicRef.current,
+        { scale: 1, x: 0 },
+        { scale: FS, x: "-19vw", ease: "none", duration: 33, force3D: true },
+        0,
+      );
+
+      tl.to(desc1Ref.current, { opacity: 0, ease: "power2.inOut", duration: 6 }, 24);
+      tl.fromTo(
+        desc2Ref.current,
+        { opacity: 0 },
+        { opacity: 1, ease: "power2.out", duration: 6 },
+        27,
+      );
+
+      tl.to(certsRef.current, { opacity: 0, ease: "power2.inOut", duration: 8 }, 35);
+
+      tl.fromTo(
+        yellowPanelRef.current,
+        { clipPath: "inset(0 0 0 62%)" },
+        {
+          clipPath: "inset(0 0 0 0%)",
+          ease: "power2.inOut",
+          duration: 18,
+          force3D: true,
+        },
+        38,
+      );
+
+      tl.to(desc2Ref.current, { opacity: 0, ease: "power2.inOut", duration: 6 }, 40);
+      tl.fromTo(
+        desc3Ref.current,
+        { opacity: 0 },
+        { opacity: 1, ease: "power2.out", duration: 8 },
+        46,
+      );
+    });
+
+    return () => mm.revert();
   }, []);
 
   const headingStyle: React.CSSProperties = {
@@ -193,12 +193,12 @@ export default function ScrollHero() {
   };
 
   return (
-    <div ref={wrapRef} style={{ height: "300dvh", position: "relative" }}>
+    <div ref={wrapRef} style={{ height: "300vh", position: "relative" }}>
       <div
         style={{
           position: "sticky",
           top: 0,
-          height: "100dvh",
+          height: "100vh",
           width: "100%",
           overflow: "hidden",
         }}
@@ -213,9 +213,9 @@ export default function ScrollHero() {
           style={{
             position: "absolute",
             left: `calc(50% - ${(TOTAL_W / 2).toFixed(3)}vw)`,
-            top: `calc(50% - ${(TOTAL_H / 2).toFixed(3)}dvh)`,
+            top: `calc(50% - ${(TOTAL_H / 2).toFixed(3)}vh)`,
             width: `${TOTAL_W}vw`,
-            height: `${TOTAL_H}dvh`,
+            height: `${TOTAL_H}vh`,
             zIndex: 10,
           }}
         >
@@ -239,7 +239,7 @@ export default function ScrollHero() {
                   left: 0,
                   top: 0,
                   width: `calc(50% - ${GAP / 2}px)`,
-                  height: `calc(${SIDE_H}dvh - ${GAP}px)`,
+                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
                 }}
               />
               <Cell
@@ -249,25 +249,25 @@ export default function ScrollHero() {
                   right: 0,
                   top: 0,
                   width: `calc(50% - ${GAP / 2}px)`,
-                  height: `calc(${SIDE_H}dvh - ${GAP}px)`,
+                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
                 }}
               />
               <Cell
                 imgSrc={grp5}
                 style={{
                   left: 0,
-                  top: `${SIDE_H}dvh`,
+                  top: `${SIDE_H}vh`,
                   width: `calc(${SIDE_W}vw - ${GAP}px)`,
-                  height: "100dvh",
+                  height: "100vh",
                 }}
               />
               <Cell
                 imgSrc={grp6}
                 style={{
                   right: 0,
-                  top: `${SIDE_H}dvh`,
+                  top: `${SIDE_H}vh`,
                   width: `calc(${SIDE_W}vw - ${GAP}px)`,
-                  height: "100dvh",
+                  height: "100vh",
                 }}
               />
               <Cell
@@ -276,7 +276,7 @@ export default function ScrollHero() {
                   left: 0,
                   bottom: 0,
                   width: `calc(50% - ${GAP / 2}px)`,
-                  height: `calc(${SIDE_H}dvh - ${GAP}px)`,
+                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
                 }}
               />
               <Cell
@@ -285,7 +285,7 @@ export default function ScrollHero() {
                   right: 0,
                   bottom: 0,
                   width: `calc(50% - ${GAP / 2}px)`,
-                  height: `calc(${SIDE_H}dvh - ${GAP}px)`,
+                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
                 }}
               />
             </div>
@@ -295,9 +295,9 @@ export default function ScrollHero() {
                 position: "absolute",
                 zIndex: 2,
                 left: `${SIDE_W}vw`,
-                top: `${SIDE_H}dvh`,
+                top: `${SIDE_H}vh`,
                 width: "100vw",
-                height: "100dvh",
+                height: "100vh",
                 overflow: "hidden",
               }}
             >
@@ -365,7 +365,7 @@ export default function ScrollHero() {
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-end",
-              padding: "0 3vw 6dvh",
+              padding: "0 3vw 6vh",
             }}
           >
             <div style={{ position: "relative", minHeight: "18rem", flexShrink: 0 }}>
@@ -507,7 +507,7 @@ export default function ScrollHero() {
               bottom: 0,
               left: 0,
               width: "100%",
-              height: "50dvh",
+              height: "50vh",
               padding: "2rem 1.5rem",
               display: "flex",
               flexDirection: "column",
@@ -612,7 +612,7 @@ export default function ScrollHero() {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              paddingBottom: "50dvh",
+              paddingBottom: "50vh",
               paddingTop: "72px",
             }}
           >
@@ -658,7 +658,7 @@ export default function ScrollHero() {
               zIndex: 35,
             }}
           >
-            <div style={{ position: "absolute", left: "4vw", bottom: "6dvh" }}>
+            <div style={{ position: "absolute", left: "4vw", bottom: "6vh" }}>
               <p
                 style={{
                   color: "#000",
@@ -698,7 +698,7 @@ export default function ScrollHero() {
             pointerEvents: "none",
           }}
         >
-          <div style={{ position: "absolute", left: "4vw", bottom: "6dvh" }}>
+          <div style={{ position: "absolute", left: "4vw", bottom: "6vh" }}>
             <p
               style={{
                 color: "#fff",
@@ -738,7 +738,7 @@ export default function ScrollHero() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            paddingBottom: "50dvh", // height of yellow box
+            paddingBottom: "50vh", // height of yellow box
             paddingTop: "72px", // space for navbar
           }}
         >
