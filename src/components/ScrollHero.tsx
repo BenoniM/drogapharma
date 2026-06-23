@@ -83,7 +83,7 @@ export default function ScrollHero() {
         // ── MOBILE: yellow panel starts clipped from the BOTTOM ──
         // inset(top right bottom left). Start with ~38vh strip visible at bottom.
         gsap.set(yellowPanelRef.current, {
-          clipPath: "inset(55% 0 0 0)",
+          clipPath: "inset(50% 0 0 0)",
           force3D: true,
         });
 
@@ -100,14 +100,14 @@ export default function ScrollHero() {
         tl.fromTo(
           mosaicRef.current,
           { scale: 1, y: 0 },
-          { scale: MOBILE_FS, y: "-15vh", ease: "none", duration: 33, force3D: true },
+          { scale: MOBILE_FS, y: "-15dvh", ease: "none", duration: 33, force3D: true },
           0,
         );
 
         // 33→66: yellow panel expands UPWARDS (top inset shrinks to 0)
         tl.fromTo(
           yellowPanelRef.current,
-          { clipPath: "inset(55% 0 0 0)" },
+          { clipPath: "inset(50% 0 0 0)" },
           {
             clipPath: "inset(0% 0 0 0)",
             ease: "power2.inOut",
@@ -193,12 +193,12 @@ export default function ScrollHero() {
   };
 
   return (
-    <div ref={wrapRef} style={{ height: "300vh", position: "relative" }}>
+    <div ref={wrapRef} style={{ height: "300dvh", position: "relative" }}>
       <div
         style={{
           position: "sticky",
           top: 0,
-          height: "100vh",
+          height: "100dvh",
           width: "100%",
           overflow: "hidden",
         }}
@@ -213,9 +213,9 @@ export default function ScrollHero() {
           style={{
             position: "absolute",
             left: `calc(50% - ${(TOTAL_W / 2).toFixed(3)}vw)`,
-            top: `calc(50% - ${(TOTAL_H / 2).toFixed(3)}vh)`,
+            top: `calc(50% - ${(TOTAL_H / 2).toFixed(3)}dvh)`,
             width: `${TOTAL_W}vw`,
-            height: `${TOTAL_H}vh`,
+            height: `${TOTAL_H}dvh`,
             zIndex: 10,
           }}
         >
@@ -239,7 +239,7 @@ export default function ScrollHero() {
                   left: 0,
                   top: 0,
                   width: `calc(50% - ${GAP / 2}px)`,
-                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
+                  height: `calc(${SIDE_H}dvh - ${GAP}px)`,
                 }}
               />
               <Cell
@@ -249,25 +249,25 @@ export default function ScrollHero() {
                   right: 0,
                   top: 0,
                   width: `calc(50% - ${GAP / 2}px)`,
-                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
+                  height: `calc(${SIDE_H}dvh - ${GAP}px)`,
                 }}
               />
               <Cell
                 imgSrc={grp5}
                 style={{
                   left: 0,
-                  top: `${SIDE_H}vh`,
+                  top: `${SIDE_H}dvh`,
                   width: `calc(${SIDE_W}vw - ${GAP}px)`,
-                  height: "100vh",
+                  height: "100dvh",
                 }}
               />
               <Cell
                 imgSrc={grp6}
                 style={{
                   right: 0,
-                  top: `${SIDE_H}vh`,
+                  top: `${SIDE_H}dvh`,
                   width: `calc(${SIDE_W}vw - ${GAP}px)`,
-                  height: "100vh",
+                  height: "100dvh",
                 }}
               />
               <Cell
@@ -276,7 +276,7 @@ export default function ScrollHero() {
                   left: 0,
                   bottom: 0,
                   width: `calc(50% - ${GAP / 2}px)`,
-                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
+                  height: `calc(${SIDE_H}dvh - ${GAP}px)`,
                 }}
               />
               <Cell
@@ -285,7 +285,7 @@ export default function ScrollHero() {
                   right: 0,
                   bottom: 0,
                   width: `calc(50% - ${GAP / 2}px)`,
-                  height: `calc(${SIDE_H}vh - ${GAP}px)`,
+                  height: `calc(${SIDE_H}dvh - ${GAP}px)`,
                 }}
               />
             </div>
@@ -295,9 +295,9 @@ export default function ScrollHero() {
                 position: "absolute",
                 zIndex: 2,
                 left: `${SIDE_W}vw`,
-                top: `${SIDE_H}vh`,
+                top: `${SIDE_H}dvh`,
                 width: "100vw",
-                height: "100vh",
+                height: "100dvh",
                 overflow: "hidden",
               }}
             >
@@ -365,7 +365,7 @@ export default function ScrollHero() {
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-end",
-              padding: "0 3vw 6vh",
+              padding: "0 3vw 6dvh",
             }}
           >
             <div style={{ position: "relative", minHeight: "18rem", flexShrink: 0 }}>
@@ -507,8 +507,8 @@ export default function ScrollHero() {
               bottom: 0,
               left: 0,
               width: "100%",
-              height: "45vh",
-              padding: "2.5rem 1.5rem 2.5rem",
+              height: "50dvh",
+              padding: "2rem 1.5rem",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -547,7 +547,7 @@ export default function ScrollHero() {
                   key={cert.label}
                   className="group"
                   style={{
-                    width: "160px",
+                    width: "clamp(120px, 35vw, 160px)",
                     position: "relative",
                     cursor: "pointer",
                     overflow: "hidden",
@@ -612,8 +612,8 @@ export default function ScrollHero() {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              paddingBottom: "45vh",
-              paddingTop: "64px",
+              paddingBottom: "50dvh",
+              paddingTop: "72px",
             }}
           >
             <p
@@ -630,7 +630,7 @@ export default function ScrollHero() {
             </p>
             <h2
               style={{
-                fontSize: "clamp(3.5rem, 14vw, 6rem)",
+                fontSize: "clamp(3rem, 12vw, 6rem)",
                 fontWeight: 900,
                 color: "#000",
                 lineHeight: 0.88,
@@ -658,7 +658,7 @@ export default function ScrollHero() {
               zIndex: 35,
             }}
           >
-            <div style={{ position: "absolute", left: "4vw", bottom: "6vh" }}>
+            <div style={{ position: "absolute", left: "4vw", bottom: "6dvh" }}>
               <p
                 style={{
                   color: "#000",
@@ -698,7 +698,7 @@ export default function ScrollHero() {
             pointerEvents: "none",
           }}
         >
-          <div style={{ position: "absolute", left: "4vw", bottom: "6vh" }}>
+          <div style={{ position: "absolute", left: "4vw", bottom: "6dvh" }}>
             <p
               style={{
                 color: "#fff",
@@ -738,8 +738,8 @@ export default function ScrollHero() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            paddingBottom: "45vh", // height of yellow box
-            paddingTop: "64px", // space for navbar
+            paddingBottom: "50dvh", // height of yellow box
+            paddingTop: "72px", // space for navbar
           }}
         >
           <p
@@ -755,9 +755,9 @@ export default function ScrollHero() {
           >
             Droga Pharma
           </p>
-          <h1
+            <h1
             style={{
-              fontSize: "clamp(3.5rem, 14vw, 6rem)",
+              fontSize: "clamp(3rem, 12vw, 6rem)",
               fontWeight: 900,
               color: "#fff",
               lineHeight: 0.88,

@@ -236,11 +236,11 @@ const Navbar = () => {
       {/* ── Mobile Navbar (Remains sticky top but styled similarly) ── */}
       <header
         className={`lg:hidden fixed top-0 left-0 w-full z-50 transition-transform duration-500 ease-in-out ${
-          hidden ? "-translate-y-[150%]" : "translate-y-0"
-        }`}
+          hidden && !isMobileOpen ? "-translate-y-[150%]" : "translate-y-0"
+        } ${isMobileOpen ? "bottom-0" : ""}`}
       >
-        <div className="w-full flex flex-col transition-colors duration-300">
-          <div className={`relative z-50 flex items-center justify-between h-[72px] px-6 transition-colors duration-300 ${
+        <div className="w-full h-full flex flex-col transition-colors duration-300">
+          <div className={`relative z-50 flex items-center justify-between h-[72px] shrink-0 px-6 transition-colors duration-300 ${
             isMobileOpen ? "bg-white" : "bg-white/45 backdrop-blur-xl border-b border-black/5"
           }`}>
             <Link to="/" className="flex items-center" onClick={() => setIsMobileOpen(false)}>
@@ -259,12 +259,12 @@ const Navbar = () => {
             {isMobileOpen && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
+                animate={{ height: "100%", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="relative w-full bg-white/95 backdrop-blur-3xl border-t border-black/5 shadow-2xl overflow-hidden z-40"
+                className="relative w-full flex-1 flex flex-col bg-white/95 backdrop-blur-3xl border-t border-black/5 shadow-2xl overflow-hidden z-40"
               >
-                <div className="flex flex-col w-full max-h-[calc(100dvh-72px)] overflow-y-auto">
+                <div className="flex flex-col w-full flex-1 overflow-y-auto">
                   <div className="w-full py-8 px-6 flex flex-col items-center gap-5 shrink-0">
                   {navLinks.map((item) => {
                     const active = isActive(item);
@@ -355,7 +355,7 @@ const Navbar = () => {
                 <Link
                   to="/contact"
                   onClick={() => setIsMobileOpen(false)}
-                  className="w-full text-center py-6 bg-black text-white hover:bg-[#FFF200] hover:text-black font-semibold uppercase tracking-widest transition-colors duration-200 block shrink-0 text-2xl"
+                  className="w-full text-center py-6 bg-black text-white hover:bg-[#FFF200] hover:text-black font-semibold uppercase tracking-widest transition-colors duration-200 mt-auto block shrink-0 text-2xl"
                 >
                   Get in Touch
                 </Link>
