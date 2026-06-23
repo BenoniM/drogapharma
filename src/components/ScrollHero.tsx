@@ -186,6 +186,9 @@ export default function ScrollHero() {
 
   const isShortMobile = typeof window !== "undefined" && window.innerHeight < 700;
   const mobilePanelHeight = isShortMobile ? "50svh" : "45svh";
+  const certWidth = isShortMobile ? "min(35vw, 110px)" : "160px";
+  const mobilePanelPadding = isShortMobile ? "1rem" : "2.5rem 1.5rem 2.5rem";
+  const mobilePanelGap = isShortMobile ? "1rem" : "1.5rem";
 
   const headingStyle: React.CSSProperties = {
     fontSize: "clamp(3.5rem, 7vw, 7.5rem)",
@@ -513,7 +516,7 @@ export default function ScrollHero() {
               left: 0,
               width: "100%",
               height: mobilePanelHeight,
-              padding: isShortMobile ? "1.5rem" : "2.5rem 1.5rem 2.5rem",
+              padding: mobilePanelPadding,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -539,7 +542,7 @@ export default function ScrollHero() {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                gap: "1.5rem",
+                gap: mobilePanelGap,
                 width: "100%",
               }}
             >
@@ -552,7 +555,7 @@ export default function ScrollHero() {
                   key={cert.label}
                   className="group"
                   style={{
-                    width: "160px",
+                    width: certWidth,
                     position: "relative",
                     cursor: "pointer",
                     overflow: "hidden",
