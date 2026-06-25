@@ -7,26 +7,46 @@ import heroBgOne from "@/assets/herobg/2.jpg";
 import heroBgTwo from "@/assets/herobg/4.jpg";
 import heroBgThree from "@/assets/herobg/5.jpg";
 
+import g1 from "@/assets/Gallery/487169433_1106026924896430_3663953883861550644_n.jpg";
+import g2 from "@/assets/Gallery/498619240_1145316644300791_4232051411002959692_n.jpg";
+import g3 from "@/assets/Gallery/499041524_1145316767634112_7207453203925552654_n.jpg";
+import g4 from "@/assets/Gallery/photo_2026-06-25_09-57-51.jpg";
+import g5 from "@/assets/Gallery/photo_2026-06-25_09-58-44.jpg";
+import g6 from "@/assets/Gallery/photo_2026-06-25_09-59-27.jpg";
+import g7 from "@/assets/Gallery/photo_2026-06-25_09-59-40.jpg";
+import g8 from "@/assets/Gallery/photo_2026-06-25_09-59-51.jpg";
+import g9 from "@/assets/Gallery/photo_2026-06-25_10-00-26.jpg";
+import g10 from "@/assets/Gallery/photo_2026-06-25_10-01-42.jpg";
+import g11 from "@/assets/Gallery/photo_2026-06-25_10-01-54.jpg";
+import g12 from "@/assets/Gallery/photo_2026-06-25_10-02-38.jpg";
+import g13 from "@/assets/Gallery/photo_2026-06-25_10-02-58.jpg";
+import g14 from "@/assets/Gallery/photo_2026-06-25_10-03-09.jpg";
+import g15 from "@/assets/Gallery/photo_2026-06-25_10-03-24.jpg";
+import g16 from "@/assets/Gallery/photo_2026-06-25_10-04-27.jpg";
+import g17 from "@/assets/Gallery/photo_2026-06-25_15-09-06.jpg";
+
+
 const row1Images = [
-  "https://images.pexels.com/photos/33410957/pexels-photo-33410957.jpeg",
-  "https://images.pexels.com/photos/11876277/pexels-photo-11876277.jpeg",
-  "https://images.pexels.com/photos/1407487/pexels-photo-1407487.jpeg",
-  "https://images.pexels.com/photos/13025284/pexels-photo-13025284.jpeg",
-  "https://images.pexels.com/photos/11299583/pexels-photo-11299583.jpeg",
-  "https://images.pexels.com/photos/905956/pexels-photo-905956.jpeg",
-  "https://images.pexels.com/photos/14479234/pexels-photo-14479234.jpeg",
-  "https://images.pexels.com/photos/31291737/pexels-photo-31291737.jpeg",
+  g1,
+  g2,
+  g3,
+  g4,
+  g5,
+  g6,
+  g7,
+  g8,
+  g9,
 ];
 
 const row2Images = [
-  "https://images.pexels.com/photos/37722714/pexels-photo-37722714.jpeg",
-  "https://images.pexels.com/photos/30395628/pexels-photo-30395628.jpeg",
-  "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg",
-  "https://images.pexels.com/photos/4476718/pexels-photo-4476718.jpeg",
-  "https://images.pexels.com/photos/18506932/pexels-photo-18506932.jpeg",
-  "https://images.pexels.com/photos/20346013/pexels-photo-20346013.jpeg",
-  "https://images.pexels.com/photos/28984522/pexels-photo-28984522.jpeg",
-  "https://images.pexels.com/photos/15005692/pexels-photo-15005692.jpeg",
+  g10,
+  g11,
+  g12,
+  g13,
+  g14,
+  g15,
+  g16,
+  g17,
 ];
 
 const Gallery = () => {

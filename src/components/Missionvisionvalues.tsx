@@ -1,6 +1,8 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import missionImg from "@/assets/MissionVision/499041524_1145316767634112_7207453203925552654_n.jpg";
+import visionImg from "@/assets/MissionVision/photo_2026-06-25_10-03-09.jpg";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -11,13 +13,13 @@ const SLIDES = [
     id: "mission",
     label: "Our Mission",
     text: "We build ethical companies that provide quality products and services by our talented members to serve humanity and contribute to socio-economic development.",
-    image: "https://images.pexels.com/photos/9301292/pexels-photo-9301292.jpeg",
+    image: missionImg,
   },
   {
     id: "vision",
     label: "Our Vision",
     text: "To be the leading group company in Ethiopia that creates health and wealth for human being.",
-    image: "https://images.pexels.com/photos/1331386/pexels-photo-1331386.jpeg",
+    image: visionImg,
   },
 ];
 
