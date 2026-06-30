@@ -48,6 +48,48 @@ import heroBgOne from "@/assets/herobg/2.jpg";
 import heroBgTwo from "@/assets/herobg/4.jpg";
 import heroBgThree from "@/assets/herobg/5.jpg";
 
+// Individual product photos
+import alrinastImg from "@/assets/Products/alrinast.jpg";
+import aspicamImg from "@/assets/Products/aspicam-15mg.jpg";
+import atrox10Img from "@/assets/Products/atrox-10mg.jpg";
+import atrox20Img from "@/assets/Products/atrox-20mg.jpg";
+import atrox40Img from "@/assets/Products/atrox-40mg.jpg";
+import betablok25Img from "@/assets/Products/betablok-25mg.jpg";
+import betablok50Img from "@/assets/Products/betablok-50mg.jpg";
+import bosoMedicusImg from "@/assets/Products/boso-medicus.png";
+import bosoClinicusImg from "@/assets/Products/boso-clinicus.jpg";
+import cefdiaImg from "@/assets/Products/cefdia.jpg";
+import dorzyTImg from "@/assets/Products/dorzy-t.png";
+import hyorthInjectionImg from "@/assets/Products/hyorth-injection.jpg";
+import hyorthXLImg from "@/assets/Products/image.png";
+import livercolImg from "@/assets/Products/livercol-10mg.jpg";
+import optifreshPlusImg from "@/assets/Products/optifresh-plus.png";
+import prilamImg from "@/assets/Products/prilam.png";
+import flyntaImg from "@/assets/Products/flynta.png";
+import panocerImg from "@/assets/Products/panocer-40mg-tablets-14s.png";
+import sthethoscopeImg from "@/assets/Products/sthethoscope.png";
+import valcoImg from "@/assets/Products/valco.jpg";
+import vildaImg from "@/assets/Products/vilda.png";
+import visomerEyeDropImg from "@/assets/Products/visomer-eye-drop.png";
+import precisaImg from "@/assets/Products/precisa-blood-glucose.png";
+import geteinImg from "@/assets/Products/gretein.jpg";
+import surgicellImg from "@/assets/Products/surgicell.jpg";
+import boneWaxImg from "@/assets/Products/bone-wax.jpg";
+import daclonNylonImg from "@/assets/Products/daclon-nylon.jpg";
+import polypropyleneMeshImg from "@/assets/Products/polypropylen-surgical-mesh.jpg";
+import polypropyleneBlueImg from "@/assets/Products/polypropylene-blue-needles-round.jpg";
+import silkImg from "@/assets/Products/silk-0-cutting.jpg";
+import surgicrylPGAImg from "@/assets/Products/Surgicryl-PGA.png";
+import orthoInstrumentsImg from "@/assets/Products/all-types-of-orthopedics-instruments-sets.jpg";
+import platingSystemImg from "@/assets/Products/plating-system-screw-and-plates.jpg";
+import nailingSystemImg from "@/assets/Products/nailing-system-bolt-and-nails.png";
+import spineSystemImg from "@/assets/Products/spine-system-pedical-screws-rods-and-instruments.jpg";
+import amputationSetImg from "@/assets/Products/amputation-set-large-and-small.jpg";
+import lowmanHohmanImg from "@/assets/Products/lowman-and-hohman.jpg";
+import gigliSawWireImg from "@/assets/Products/gigli-saw-wire.jpg";
+import maxilofacialImg from "@/assets/Products/maxilofacial-instrument-set-and-implants.jpg";
+import popCutterImg from "@/assets/Products/pop-cutter-rod-cutter-and-wire-cutter.jpg";
+
 const allProducts = [
   // Medicine
   { name: "Cefdia 400mg Film Coated Tablet", category: "Medicine", manufacturer: "ILKO", origin: "Turkey", desc: "Cefixime - Anti-Infection" },
@@ -132,6 +174,89 @@ const categoryImages: Record<string, string> = {
   Surgical: productsImg,
   Orthopedics: medDevicesImg,
 };
+
+// Real product photography, matched by exact product name.
+// Anything not listed here falls back to its category image.
+const productImages: Record<string, string> = {
+  // Medicine
+  "Cefdia 400mg Film Coated Tablet": cefdiaImg,
+  "20mg FCT": flyntaImg,
+  "Prilam Dr. 10mg/10mg": prilamImg,
+  "Aspicam-15mg Tab": aspicamImg,
+  "Alrinast 5mg 2*10 Tab": alrinastImg,
+  "Panocer 40mg ECT of 14": panocerImg,
+  "Panocer 40mg ECT of 28": panocerImg,
+  "Hyorth Injection": hyorthInjectionImg,
+  "Hyorth XL Injection": hyorthXLImg,
+  "Atrox 10mg 2*15 Tab": atrox10Img,
+  "Atrox 20mg 2*15 Tab": atrox20Img,
+  "Atrox 40mg 2*15 Tab": atrox40Img,
+  "Betablok SDK 25 mg CR FCT of 20": betablok25Img,
+  "Betablok SDK 25 mg CR FCT of 30": betablok25Img,
+  "Betablok SDK 50 mg CR FCT of 20": betablok50Img,
+  "Betablok SDK 50 mg CR FCT of 30": betablok50Img,
+  "Livercol 10mg FCT": livercolImg,
+  "Livercol 20mg FCT": livercolImg,
+  "Valcodin 5mg/160mg FCT": valcoImg,
+  "Valcodin 10mg/160mg FCT": valcoImg,
+  "Valcor Plus 80mg/12.5mg FCT": valcoImg,
+  "Valcor Plus 160mg/12.5mg FCT": valcoImg,
+  "Vildabet Met 50/850mg": vildaImg,
+  "Vildabet Met 50/1000mg": vildaImg,
+  "Dorzy-T": dorzyTImg,
+  "Optifresh-Plus": optifreshPlusImg,
+  "Visomer Eye Drop": visomerEyeDropImg,
+  "Visomer-P Eye Ointment": visomerEyeDropImg,
+
+  // Diagnostics
+  "Precisa Blood Glucose Test Kit": precisaImg,
+  "Getein 1160 Immunofluorescence Quantitative Analyzer": geteinImg,
+  "Boso Medicus X with AC Adapter & Battery Operated": bosoMedicusImg,
+  "Boso Clinicus I, Blue 60mm with Adult Cuff": bosoClinicusImg,
+  "Boso Clinicus I, Blue 60mm with Pediatric & Adult Cuff": bosoClinicusImg,
+  "Boso Clinicus I, Blue 60mm with Neonatal, Pediatric & Adult (Medium, Large & Extra Large) Cuff": bosoClinicusImg,
+  "Sthethoscope for Adult & Children (Luxascope Sonus SX)": sthethoscopeImg,
+  "Sthetoscope Cardio (Luxascope Sonus CX)": sthethoscopeImg,
+
+  // Surgical
+  "Surgicell (Absorbable Haemostat Oxidised Regenerated Cellulose)": surgicellImg,
+  "Bone Wax": boneWaxImg,
+  "Daclon Nylon 9/0 & 10/0": daclonNylonImg,
+  "Polypropylene Surgical Mesh 7.5x15cm of 5": polypropyleneMeshImg,
+  "Polypropylen Surgical Mesh 10x15cm of 5": polypropyleneMeshImg,
+  "Polypropylen Surgical Mesh 15x15cm of 5": polypropyleneMeshImg,
+  "Polypropylene Blue 0,2/0,3/0,4/0,5/0,6/0,7/0,8/0 2 Needles Round": polypropyleneBlueImg,
+  "Silk 2 Cutting & Round": silkImg,
+  "Silk 1 Cutting & Round": silkImg,
+  "Silk 0 Cutting": silkImg,
+  "Silk 2/0 Cutting": silkImg,
+  "Silk 3/0 Cutting & Round": silkImg,
+  "Silk 4/0 Cutting & Round": silkImg,
+  "Silk 5/0 Cutting": silkImg,
+  "Silk 6/0 Cutting & Round": silkImg,
+  "Surgicryl PGA 2 Cutting & Round": surgicrylPGAImg,
+  "Surgicryl PGA 1 Round": surgicrylPGAImg,
+  "Surgicryl PGA 0 Round": surgicrylPGAImg,
+  "Surgicryl PGA 2/0 Cutting & Round": surgicrylPGAImg,
+  "Surgicryl PGA 3/0 Cutting & Round": surgicrylPGAImg,
+  "Surgicryl PGA 4/0 Round": surgicrylPGAImg,
+  "Surgicryl PGA 5/0 Cutting & Round": surgicrylPGAImg,
+  "Surgicryl PGA 6/0 Cutting & Round": surgicrylPGAImg,
+
+  // Orthopedics
+  "All types of Orthopedics Instruments sets": orthoInstrumentsImg,
+  "Plating System(Screw and Plates)": platingSystemImg,
+  "Nailing System(Bolt and Nails)": nailingSystemImg,
+  "Spine System(Pedical Screws,rods and Instruments)": spineSystemImg,
+  "Amputation Set Large and Small": amputationSetImg,
+  "Lowman and Hohman": lowmanHohmanImg,
+  "7 Gigli saw wire with handle": gigliSawWireImg,
+  "Maxilofacial Instrument set and implants": maxilofacialImg,
+  "POP Cutter,Rod Cutter,and Wire Cutter": popCutterImg,
+};
+
+const getProductImage = (product: { name: string; category: string }) =>
+  productImages[product.name] || categoryImages[product.category] || productsImg;
 
 const categories = [
   "All",
@@ -383,7 +508,7 @@ const Products = () => {
                               </div>
                               <div className="w-[200px] aspect-[4/3] bg-white p-2 flex items-center justify-center shrink-0">
                                 <img
-                                  src={categoryImages[product.category] || productsImg}
+                                  src={getProductImage(product)}
                                   alt={product.name}
                                   className="max-w-full max-h-full object-contain mix-blend-multiply"
                                 />
