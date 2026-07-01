@@ -137,7 +137,7 @@ export default function CRS() {
       <section className="relative z-20 pl-4 lg:pl-12 xl:pl-16 pr-0 -mt-24 mb-16 w-full md:w-[90%] lg:w-[85%] ml-auto">
         <div className="w-full h-[250px] md:h-[400px] overflow-hidden relative bg-black">
           <img
-            src={initiatives[0]?.image || "https://images.unsplash.com/photo-1593113589914-075568e09f58?auto=format&fit=crop&w=1200"}
+            src={initiatives[5]?.image || "https://images.unsplash.com/photo-1593113589914-075568e09f58?auto=format&fit=crop&w=1200"}
             alt="Charity"
             className="w-full h-full object-cover"
           />

@@ -21,7 +21,7 @@ import medicinesImg from "@/assets/medicines.jpg";
 import medDevicesImg from "@/assets/medical-devices.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
-import heroBgOne from "@/assets/herobg/2.jpg";
+import heroBgOne from "@/assets/Gallery/photo_2026-06-25_15-09-06.jpg";
 import heroBgTwo from "@/assets/herobg/4.jpg";
 import heroBgThree from "@/assets/herobg/5.jpg";
 
@@ -233,8 +233,6 @@ const Blog = () => {
             <ImageSlider
               images={[
                 { src: heroBgOne, alt: "Droga Pharma blog" },
-                { src: heroBgTwo, alt: "Healthcare" },
-                { src: heroBgThree, alt: "Research" },
               ]}
               className="absolute inset-0 z-0"
             />

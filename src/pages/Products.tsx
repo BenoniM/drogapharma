@@ -45,7 +45,6 @@ import medicinesImg from "@/assets/medicines.jpg";
 import medDevicesImg from "@/assets/medical-devices.jpg";
 import labImg from "@/assets/lab-research.jpg";
 import heroBgOne from "@/assets/herobg/2.jpg";
-import heroBgTwo from "@/assets/herobg/4.jpg";
 import heroBgThree from "@/assets/herobg/5.jpg";
 
 // Individual product photos
@@ -392,8 +391,7 @@ const Products = () => {
             <ImageSlider
               images={[
                 { src: heroBgOne, alt: "Products" },
-                { src: heroBgTwo, alt: "Medicines" },
-                { src: heroBgThree, alt: "Medical devices" },
+                { src: heroBgThree, alt: "Medicines" },
               ]}
               className="absolute inset-0 z-0"
             />

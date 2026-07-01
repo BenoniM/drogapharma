@@ -15,9 +15,9 @@ import teamImg from "@/assets/abdi.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
 import heroImg from "@/assets/hero-pharma.jpg";
 import labImg from "@/assets/lab-research.jpg";
-import heroBgOne from "@/assets/herobg/2.jpg";
-import heroBgTwo from "@/assets/herobg/4.jpg";
-import heroBgThree from "@/assets/herobg/5.jpg";
+import heroBgOne from "@/assets/Gallery/487169433_1106026924896430_3663953883861550644_n.jpg";
+import heroBgTwo from "@/assets/Gallery/photo_2026-06-25_10-00-26.jpg";
+import heroBgThree from "@/assets/Gallery/photo_2026-06-25_10-02-38.jpg";
 import healthcareTeamImg from "@/assets/henoknew.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 

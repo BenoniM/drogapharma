@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import ImageSlider from "@/components/ImageSlider";
-import heroBgOne from "@/assets/herobg/2.jpg";
+import heroBgOne from "@/assets/Gallery/photo_2026-06-25_10-04-27.jpg";
 import heroBgTwo from "@/assets/herobg/4.jpg";
 import heroBgThree from "@/assets/herobg/5.jpg";
 
@@ -143,9 +143,7 @@ const Gallery = () => {
           <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
             <ImageSlider
               images={[
-                { src: heroBgOne, alt: "Gallery Highlight 1" },
-                { src: heroBgTwo, alt: "Gallery Highlight 2" },
-                { src: heroBgThree, alt: "Gallery Highlight 3" },
+                { src: heroBgOne, alt: "Gallery Highlight 1" }
               ]}
               className="absolute inset-0 z-0"
             />
@@ -164,10 +162,10 @@ const Gallery = () => {
               100% { transform: translateX(0); }
             }
             .animate-marquee-left {
-              animation: marquee-left 7s linear infinite;
+              animation: marquee-left 15s linear infinite;
             }
             .animate-marquee-right {
-              animation: marquee-right 7s linear infinite;
+              animation: marquee-right 15s linear infinite;
             }
             .marquee-container:hover .animate-marquee-left,
             .marquee-container:hover .animate-marquee-right {

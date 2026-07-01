@@ -9,7 +9,7 @@ import heroImg from "@/assets/hero-pharma.jpg";
 import labImg from "@/assets/lab-research.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 import medicinesImg from "@/assets/medicines.jpg";
-import heroBgOne from "@/assets/herobg/2.jpg";
+import heroBgOne from "@/assets/herobg/image_2026-03-27.png";
 import heroBgTwo from "@/assets/herobg/4.jpg";
 import heroBgThree from "@/assets/herobg/5.jpg";
 import certificateRecognitionImg from "@/assets/certificateofrecognitionfromministryofhealthethiopia.jpg";
@@ -232,8 +232,6 @@ const Certifications = () => {
             <ImageSlider
               images={[
                 { src: heroBgOne, alt: "Certifications" },
-                { src: heroBgTwo, alt: "Quality" },
-                { src: heroBgThree, alt: "Medicines" },
               ]}
               className="absolute inset-0 z-0"
             />

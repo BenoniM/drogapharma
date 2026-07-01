@@ -9,9 +9,8 @@ import PageTransition from "@/components/PageTransition";
 import {
   Truck, Search, Shield, Thermometer, Package, FileCheck, FlaskConical,
 } from "lucide-react";
-import heroBgOne from "@/assets/herobg/2.jpg";
+import heroBgOne from "@/assets/Gallery/498619240_1145316644300791_4232051411002959692_n.jpg";
 import heroBgTwo from "@/assets/herobg/4.jpg";
-import heroBgThree from "@/assets/herobg/5.jpg";
 import warehouseImg from "@/assets/warehouse.jpg";
 import supplyImg from "@/assets/supply-chain.jpg";
 
@@ -533,7 +532,6 @@ const Services = () => {
               images={[
                 { src: heroBgOne, alt: "Services" },
                 { src: heroBgTwo, alt: "Supply chain" },
-                { src: heroBgThree, alt: "Healthcare" },
               ]}
               className="absolute inset-0 z-0"
             />

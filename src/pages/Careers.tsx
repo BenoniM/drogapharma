@@ -15,19 +15,12 @@ import TextPressure from "@/components/TextPressure";
 import AccordGallery from "@/components/AccordGallery";
 import ImageSlider from "@/components/ImageSlider";
 import { cardHover } from "@/lib/variants";
+import HeroImage from "@/assets/Gallery/photo_2026-06-25_10-02-58.jpg";
 
 const careersHeroImages = [
   {
-    src: "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1920&q=80",
+    src: HeroImage,
     alt: "Careers at Droga Pharma",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1920&q=80",
-    alt: "Career growth opportunities",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1920&q=80",
-    alt: "Professional hiring process",
   },
 ];
 
