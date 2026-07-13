@@ -139,8 +139,8 @@ export function MissionVisionValues() {
         }
         .mvv-slide-content {
           position: absolute; inset: 0; z-index: 2;
-          display: flex; align-items: center;
-          padding: 0 clamp(2.5rem, 7vw, 6rem);
+          display: flex; align-items: flex-end;
+          padding: 0 clamp(2.5rem, 7vw, 6rem) clamp(1.5rem, 6vh, 4rem);
         }
         .mvv-slide-card { max-width: min(680px, 55vw); }
         .mvv-eyebrow {
