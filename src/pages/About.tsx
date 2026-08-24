@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -262,6 +263,7 @@ import OurTeam from "@/components/OurTeam";
 import JourneyStepper from "@/components/JourneyStepper";
 import Certifications from "@/components/Certifications";
 import MarqueeClients from "@/components/MarqueeClients";
+const Organogram = lazy(() => import("@/components/Organogram"));
 
 const qualityPolicyData = {
   ENG: {
@@ -662,6 +664,21 @@ const About = () => {
         <Certifications />
 
         <QualityPolicySection />
+
+        {/* Governance, Leadership & Organogram */}
+        <div id="governance">
+          <OurTeam />
+          <Suspense fallback={
+            <div className="py-20 flex items-center justify-center bg-[#fafafa] border-t border-black/5">
+              <div className="flex flex-col items-center gap-3 text-slate-400">
+                <div className="w-10 h-10 rounded-full border-4 border-slate-200 border-t-black animate-spin" />
+                <span className="text-xs font-semibold uppercase tracking-widest">Loading Organogram…</span>
+              </div>
+            </div>
+          }>
+            <Organogram />
+          </Suspense>
+        </div>
 
         {/* Clients */}
         <section className="bg-[#fffdfd] section-padding">

@@ -32,7 +32,8 @@ const Contact = () => {
 
   const contactInfo = [
     { icon: MapPin, title: "Address", lines: ["Gulele Subcity, Woreda 09, House No. New/Droga Building, Addis Ababa, Ethiopia."] },
-    { icon: Phone, title: "Phone", lines: ["+251-112-30-67-71"] },
+    { icon: Phone, title: "Hotline (Short Code)", lines: ["6637"], hotline: true },
+    { icon: Phone, title: "Phone / Mobile", lines: ["+251 11 230 6771", "+251 91 366 7537"] },
     { icon: Mail, title: "Email", lines: ["info@drogapharma.com"] },
     {
       icon: Clock,
@@ -249,7 +250,7 @@ const Contact = () => {
 
         {/* Kept Content: Additional Contact Info */}
         <section className="container-wide pb-10">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 pt-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 pt-8">
             {contactInfo.map((info, i) => (
               <motion.div
                 key={info.title}
@@ -257,18 +258,28 @@ const Contact = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="flex flex-col gap-3"
+                className={`flex flex-col gap-3 ${(info as any).hotline ? "col-span-full md:col-span-1" : ""}`}
               >
-                <div className="w-10 h-10 rounded-full flex items-center justify-center text-black bg-[#FFF200]">
-                  <info.icon size={18} />
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-black ${(info as any).hotline ? "bg-black" : "bg-[#FFF200]"}`}>
+                  <info.icon size={18} className={(info as any).hotline ? "text-[#FFF200]" : "text-black"} />
                 </div>
                 <div>
                   <h4 className="font-semibold text-black mb-2 text-sm">{info.title}</h4>
-                  {info.lines.map((line) => (
-                    <p key={line} className="text-gray-500 text-[13px] mb-1 font-medium">
-                      {line}
-                    </p>
-                  ))}
+                  {info.lines.map((line) =>
+                    (info as any).hotline ? (
+                      <a
+                        key={line}
+                        href={`tel:${line}`}
+                        className="inline-flex items-center gap-2 text-xl font-black text-black bg-[#FFF200] px-3 py-1 rounded-lg hover:bg-black hover:text-[#FFF200] transition-colors mb-1"
+                      >
+                        {line}
+                      </a>
+                    ) : (
+                      <p key={line} className="text-gray-500 text-[13px] mb-1 font-medium">
+                        {line}
+                      </p>
+                    )
+                  )}
                 </div>
               </motion.div>
             ))}

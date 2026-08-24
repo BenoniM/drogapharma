@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import InquiryCart from "./components/InquiryCart";
 import CMSBanner from "./components/CMSBanner";
+import CustomerSupportChat from "./components/CustomerSupportChat";
 import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -75,6 +76,7 @@ const AppShell = () => {
       <CMSBanner />
       <Footer />
       <InquiryCart />
+      <CustomerSupportChat />
       <ScrollToTop />
     </>
   );

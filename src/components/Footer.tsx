@@ -30,7 +30,8 @@ const Footer = () => {
     {
       title: "Headquarter (Ethiopia)",
       contacts: [
-        { icon: Phone, text: "+251112306771", href: "tel:+251112306771" },
+        { icon: Phone, text: "Hotline: 6637 (Short Code)", href: "tel:6637", isHotline: true },
+        { icon: Phone, text: "+251 11 230 6771", href: "tel:+251112306771" },
         { icon: Smartphone, text: "+251 91 366 7537", href: "tel:+251913667537" },
         { icon: Mail, text: "info@drogapharma.com", href: "mailto:info@drogapharma.com" },
         { icon: Mail, text: "pharmadroga@gmail.com", href: "mailto:pharmadroga@gmail.com" },
@@ -148,16 +149,25 @@ const Footer = () => {
                 <div className="flex flex-col gap-2.5">
                   {branch.contacts.map((contact, cIdx) => (
                     <div key={cIdx} className="flex items-start gap-3 group">
-                        <div className={`w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-colors duration-500 ${isHovered ? "group-hover:bg-white/10" : "group-hover:bg-black/8"}`}>
-                        <contact.icon size={12} className={`transition-colors duration-500 ${tc}`} />
+                      <div className={`w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-colors duration-500 ${isHovered ? "group-hover:bg-white/10" : "group-hover:bg-black/8"}`}>
+                        <contact.icon size={12} className={`transition-colors duration-500 ${(contact as any).isHotline ? "text-yellow-500" : tc}`} />
                       </div>
                       {contact.href ? (
-                        <a
-                          href={contact.href}
-                          className={`text-xs font-medium transition-colors duration-500 py-1 ${tc2} ${isHovered ? "hover:text-white" : "hover:text-black"}`}
-                        >
-                          {contact.text}
-                        </a>
+                        (contact as any).isHotline ? (
+                          <a
+                            href={contact.href}
+                            className="inline-flex items-center gap-1.5 text-xs font-bold py-0.5 px-2.5 rounded-full bg-[#FFF200] text-black hover:bg-black hover:text-[#FFF200] transition-colors"
+                          >
+                            {contact.text}
+                          </a>
+                        ) : (
+                          <a
+                            href={contact.href}
+                            className={`text-xs font-medium transition-colors duration-500 py-1 ${tc2} ${isHovered ? "hover:text-white" : "hover:text-black"}`}
+                          >
+                            {contact.text}
+                          </a>
+                        )
                       ) : (
                         <span className={`text-xs font-medium py-1 leading-relaxed transition-colors duration-500 ${tc2}`}>
                           {contact.text}
