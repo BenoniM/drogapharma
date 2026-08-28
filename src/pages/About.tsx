@@ -668,16 +668,19 @@ const About = () => {
         {/* Governance, Leadership & Organogram */}
         <div id="governance">
           <OurTeam />
-          <Suspense fallback={
-            <div className="py-20 flex items-center justify-center bg-[#fafafa] border-t border-black/5">
-              <div className="flex flex-col items-center gap-3 text-slate-400">
-                <div className="w-10 h-10 rounded-full border-4 border-slate-200 border-t-black animate-spin" />
-                <span className="text-xs font-semibold uppercase tracking-widest">Loading Organogram…</span>
+          {/* Organogram hidden — remove the 'hidden' class to restore */}
+          <div className="hidden">
+            <Suspense fallback={
+              <div className="py-20 flex items-center justify-center bg-[#fafafa] border-t border-black/5">
+                <div className="flex flex-col items-center gap-3 text-slate-400">
+                  <div className="w-10 h-10 rounded-full border-4 border-slate-200 border-t-black animate-spin" />
+                  <span className="text-xs font-semibold uppercase tracking-widest">Loading Organogram…</span>
+                </div>
               </div>
-            </div>
-          }>
-            <Organogram />
-          </Suspense>
+            }>
+              <Organogram />
+            </Suspense>
+          </div>
         </div>
 
         {/* Clients */}
