@@ -105,9 +105,8 @@ const TestimonialsSection = () => {
             {/* White cover stretching to the far left of the screen */}
             <div className="absolute top-0 right-full w-[100vw] h-full bg-white z-20" />
             
-            <h2 className="text-4xl md:text-5xl lg:text-[56px] font-bold text-black leading-[1.1] tracking-tight relative z-30">
-              Our <br className="hidden md:block" />
-              Testimonials
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-black relative z-30">
+              Our Testimonials
             </h2>
 
             {/* Controls */}

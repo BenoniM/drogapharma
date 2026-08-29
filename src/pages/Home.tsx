@@ -314,18 +314,18 @@ const Home = () => {
             <ScrollReveal>
               <div className="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-16">
                 <div className="flex items-start gap-4 md:gap-8 lg:w-[45%] xl:w-[40%]">
-                  <div className="w-16 md:w-20 flex-shrink-0 pt-1">
-                    <span className="text-sm font-medium text-white/80">
+                  <div className="flex-shrink-0 pt-1">
+                    <h2 className="font-display text-3xl md:text-4xl font-bold text-white">
                       About Us
-                    </span>
+                    </h2>
                   </div>
-                  <div className="flex-1 flex flex-col gap-4 max-w-[480px]">
-                    <p className="text-base md:text-lg lg:text-xl leading-relaxed text-white font-normal text-justify">
+                  <div className="flex-1 flex flex-col gap-8 max-w-[480px]">
+                    <p className="text-sm md:text-base lg:text-lg leading-relaxed text-white font-normal">
                       Established in 2015, we are working in the pharmaceuticals
                       import, wholesale and retail business, targeting the public
                       as well as the private health sector of Ethiopia.
                     </p>
-                    <p className="text-base md:text-lg lg:text-xl leading-relaxed text-white font-normal text-justify">
+                    <p className="text-sm md:text-base lg:text-lg leading-relaxed text-white font-normal">
                       Our team is made up of highly experienced pharmacists and
                       manufacturing industry professionals who utilize their
                       unique knowledge to create and implement cutting-edge
@@ -366,17 +366,17 @@ const Home = () => {
             {/* Text — top left */}
             <div className="px-5 pt-2 pb-4 flex items-start gap-3">
               <div className="flex-shrink-0 pt-0.5">
-                <span className="text-xs font-medium text-white/70 uppercase tracking-widest">
+                <h2 className="font-display text-3xl md:text-4xl font-bold text-white">
                   About Us
-                </span>
+                </h2>
               </div>
-              <div className="flex flex-col gap-3">
-                <p className="text-sm leading-relaxed text-white font-normal text-justify">
+              <div className="flex flex-col gap-6">
+                <p className="text-xs leading-relaxed text-white font-normal">
                   Established in 2015, we are working in the pharmaceuticals
                   import, wholesale and retail business, targeting the public
                   as well as the private health sector of Ethiopia.
                 </p>
-                <p className="text-sm leading-relaxed text-white font-normal text-justify">
+                <p className="text-xs leading-relaxed text-white font-normal">
                   Our team is made up of highly experienced pharmacists and
                   manufacturing industry professionals who utilize their
                   unique knowledge to create and implement cutting-edge
@@ -408,7 +408,7 @@ const Home = () => {
         </section>
 
         {/* Reverse split (Our Experts) moved here as requested */}
-        <section className="bg-[#f2f2f0]">
+        <section className="bg-white">
           <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[550px]">
             <div className="flex items-center p-10 md:p-16 lg:p-20 order-2 lg:order-1">
               <ScrollReveal
@@ -497,11 +497,11 @@ const Home = () => {
         </section> */}
 
         {/* Products — Image Hover Cards */}
-        <section className="bg-[#E6E6E6] py-16 md:py-24">
+        <section className="bg-white py-16 md:py-24">
           <div className="w-full px-4 md:px-8 lg:px-12 xl:px-16">
             <ScrollReveal>
               <div className="text-center mb-12">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-black uppercase tracking-wide">
+                <h2 className="font-display text-3xl md:text-4xl font-bold text-black">
                   Product Categories
                 </h2>
               </div>
@@ -613,9 +613,9 @@ const Home = () => {
           <div className="container-narrow mb-12">
             <ScrollReveal>
               <div className="text-center">
-                <span className="text-md font-semibold tracking-[0.2em] uppercase text-primary-foreground/60 block mb-4">
+                <h2 className="font-display text-3xl md:text-4xl font-bold text-black mb-4">
                   Our Partners
-                </span>
+                </h2>
 
                 <p className="text-black mt-3  mx-auto text-2xl">
                   Serving leading healthcare organizations across Ethiopia
