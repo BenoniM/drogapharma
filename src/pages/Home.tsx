@@ -257,9 +257,9 @@ const Home = () => {
         <section className="hidden bg-[#eeeaea] border-b border-background/10">
           <div className="container grid grid-cols-1 md:grid-cols-3">
             {[
-              { label: "Medicine", icon: Pill, to: "/products" },
-              { label: "Diagnostics", icon: Stethoscope, to: "/products" },
-              { label: "Surgical", icon: FlaskConical, to: "/products" },
+              { label: "Medicine", icon: Pill, to: "/products?category=Medicine" },
+              { label: "Diagnostics", icon: Stethoscope, to: "/products?category=Diagnostics" },
+              { label: "Surgical", icon: FlaskConical, to: "/products?category=Surgical" },
             ].map((item, i) => (
               <motion.div
                 key={item.label}
@@ -516,7 +516,7 @@ const Home = () => {
             >
               {categories.map((cat) => (
                 <motion.div key={cat.title} variants={staggerItem}>
-                  <Link to="/products" className="relative group overflow-hidden aspect-[2/3] block bg-white">
+                  <Link to={`/products?category=${encodeURIComponent(cat.title)}`} className="relative group overflow-hidden aspect-[2/3] block bg-white">
                     <img
                       src={cat.primaryImg}
                       alt={cat.title}
