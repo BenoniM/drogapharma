@@ -386,7 +386,7 @@ const Products = () => {
         </section>
 
         {/* Image overlapping the hero - moved to right edge */}
-        <section className="relative z-20 pl-4 md:pl-8 pr-0 -mt-24 w-full md:w-[90%] lg:w-[85%] ml-auto">
+        <section className="relative z-20 pl-4 lg:pl-12 xl:pl-16 pr-0 -mt-24 w-full md:w-[90%] lg:w-[85%] ml-auto">
           <div className="w-full h-[250px] md:h-[400px] rounded-l-md overflow-hidden shadow-2xl relative bg-black">
             <ImageSlider
               images={[
@@ -400,7 +400,7 @@ const Products = () => {
 
         {/* Filters & Grid */}
         <section id="filters-section" className="bg-white py-20 min-h-screen">
-          <div className="container-wide px-6 lg:px-12 mx-auto">
+          <div className="w-full mx-auto px-4 lg:px-12 xl:px-16">
 
             {/* Filter Section */}
             <div className="mb-6">
